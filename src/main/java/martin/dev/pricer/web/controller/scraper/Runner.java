@@ -2,9 +2,7 @@ package martin.dev.pricer.web.controller.scraper;
 
 import martin.dev.pricer.data.services.product.ItemRepository;
 import martin.dev.pricer.data.services.product.PriceRepository;
-import martin.dev.pricer.scraper.client.HttpClient;
-import martin.dev.pricer.scraper.parser.hsamuel.HSamuelPage;
-import org.jsoup.nodes.Document;
+import martin.dev.pricer.scraper.parser.hsamuel.Parser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +24,9 @@ public class Runner {
     @GetMapping
     public ResponseEntity<?> getItems() {
 
-        Document pageContentInJsoup = HttpClient.readContentInJsoupDocument("https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?icid=hs-nv-watches-him&Pg=1");
-        HSamuelPage hSamuelMain = new HSamuelPage(pageContentInJsoup, itemRepository, priceRepository);
-        hSamuelMain.parseListOfAdElements();
-        hSamuelMain.parseElementsToItems();
+        Parser parser = new Parser(itemRepository, priceRepository);
+
+        parser.parse();
 
         return new ResponseEntity<>(HttpStatus.OK);
 

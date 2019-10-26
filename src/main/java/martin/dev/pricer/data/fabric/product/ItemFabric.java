@@ -20,6 +20,7 @@ public class ItemFabric {
 
     public void checkAgainstDatabase(HashMap<String, String> dataSet){
 
+
         Item item = itemRepository.findItemByUpc(dataSet.get("upc"));
         if (item != null){
             Price lastPrice = priceRepository.findFirstByItemOrderByFoundAtDesc(item);

@@ -17,15 +17,19 @@ public class Parser {
 
     public void parse(){
         Document pageContentInJsoup = HttpClient.readContentInJsoupDocument("https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?icid=hs-nv-watches-him&Pg=1");
-        HSamuelPage hSamuelMain = new HSamuelPage(pageContentInJsoup, itemRepository, priceRepository);
+        HSamuelPage hSamuelMain = new HSamuelPage(pageContentInJsoup);
         hSamuelMain.parseMaxPageNum();
-        hSamuelMain.parseCurrentPageNum();
+        int max = hSamuelMain.getMaxPageNum();
 
-        while (hSamuelMain.getCurrentPageNum() < hSamuelMain.getMaxPageNum() + 1){
-
+        for (int i = 1; i < max +1; i++){
+            String base = "https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?icid=hs-nv-watches-him&Pg=";
+            System.out.println(base + i);
+            Document document = HttpClient.readContentInJsoupDocument(base + i);
+            HSamuelPage samuelPage = new HSamuelPage(document, itemRepository, priceRepository);
+            samuelPage.parseListOfAdElements();
+            samuelPage.parseElementsToItems();
         }
 
-        hSamuelMain.parseListOfAdElements();
-        hSamuelMain.parseElementsToItems();
+
     }
 }

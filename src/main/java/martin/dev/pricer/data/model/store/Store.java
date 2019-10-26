@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import martin.dev.pricer.data.model.BaseEntity;
+import martin.dev.pricer.data.model.product.Item;
+import martin.dev.pricer.data.model.product.Price;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -25,4 +27,8 @@ public class Store extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<StoreUrl> links = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private Set<Item> prices = new HashSet<>();
 }

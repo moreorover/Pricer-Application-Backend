@@ -22,6 +22,10 @@ public class HSamuelPage implements PageParser {
     private ItemRepository itemRepository;
     private PriceRepository priceRepository;
 
+    public HSamuelPage(Document pageInJsoup) {
+        this.pageInJsoup = pageInJsoup;
+    }
+
     public HSamuelPage(Document pageInJsoup, ItemRepository itemRepository, PriceRepository priceRepository) {
         this.pageInJsoup = pageInJsoup;
         this.itemRepository = itemRepository;
@@ -36,13 +40,18 @@ public class HSamuelPage implements PageParser {
         return currentPageNum;
     }
 
+    public Elements getProducts() {
+        return products;
+    }
+
     public void parseListOfAdElements() {
         products = pageInJsoup.select("div.product-tile.js-product-item");
     }
 
     public void parseMaxPageNum(){
-        Elements paginationElements = pageInJsoup.select("ol[class*=pageNumbers]");
-        Element lastPageElement = paginationElements.get(5);
+        Element paginationBlockElement = pageInJsoup.selectFirst("ol[class*=pageNumbers]");
+        Elements paginationButtons = paginationBlockElement.select("li");
+        Element lastPageElement = paginationButtons.get(5);
         String lastPageText = lastPageElement.text();
         maxPageNum = Integer.parseInt(lastPageText);
     }

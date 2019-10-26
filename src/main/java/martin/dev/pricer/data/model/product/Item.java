@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import martin.dev.pricer.data.model.BaseEntity;
+import martin.dev.pricer.data.model.store.Store;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -29,5 +30,9 @@ public class Item extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "category_id")}
     )
     private Set<Category> categories = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
 }
