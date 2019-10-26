@@ -20,7 +20,7 @@ public class Item extends BaseEntity {
     private String url;
     private String img;
 
-    @OneToMany(mappedBy = "price", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private Set<Price> prices = new HashSet<>();
 
     @ManyToMany

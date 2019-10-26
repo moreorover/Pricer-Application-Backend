@@ -2,7 +2,7 @@ package martin.dev.pricer.scraper.parser;
 
 import org.jsoup.nodes.Document;
 
-public interface MainParser {
+public interface PageParser {
 
     void parseListOfAdElements();
 }

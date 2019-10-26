@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service;
 @Repository
 @Service
 public interface ItemRepository extends JpaRepository<Item, Long> {
+
+    Item findItemByUpc(String upc);
 }

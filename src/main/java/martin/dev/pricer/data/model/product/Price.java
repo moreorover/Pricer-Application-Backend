@@ -6,6 +6,7 @@ import lombok.Setter;
 import martin.dev.pricer.data.model.BaseEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,6 @@ public class Price extends BaseEntity {
     private LocalDateTime foundAt;
 
     @ManyToOne
-//    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id")
     private Item item;
 }
