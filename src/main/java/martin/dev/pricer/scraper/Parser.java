@@ -3,6 +3,7 @@ package martin.dev.pricer.scraper;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParser;
+import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
 
 public class Parser {
 
@@ -21,9 +22,9 @@ public class Parser {
 
                 storeUrlHandler.setStatusScraping(storeUrl);
 
-                HSamuelParser hSamuelParser = new HSamuelParser(itemRepository, priceRepository, storeUrlRepository, storeUrl);
+                HSamuelParserProcessor hSamuelParserProcessor = new HSamuelParserProcessor(storeUrl);
 
-                hSamuelParser.parse();
+                hSamuelParserProcessor.scrapePages();
             }
 
             storeUrlHandler.setStatusReady(storeUrl);

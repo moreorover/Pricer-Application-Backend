@@ -1,5 +1,6 @@
 package martin.dev.pricer.scraper.parser.hsamuel;
 
+import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
@@ -26,7 +27,8 @@ public class HSamuelParserProcessor {
             List<ParsedItemDto> parsedItemDtos = hSamuelFactory.getParsedAds();
 
             //TODO call method to deal with parsed ads
-
+//            ItemPriceProcessor itemPriceProcessor = new ItemPriceProcessor();
+//            itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl.getStore());
 
             initFactory(nexUrlToScrape);
 
