@@ -26,9 +26,19 @@ public class ItemPriceProcessor {
             Item item = itemRepository.findItemByUpc(parsedItemDto.getUpc());
             if (item != null) {
                 Price lastPrice = priceRepository.findFirstByItemOrderByFoundAtDesc(item);
-                if (lastPrice == null || lastPrice.getPrice() != parsedItemDto.getPrice()) {
+                if (lastPrice == null) {
                     Price price = new Price();
                     price.setPrice(parsedItemDto.getPrice());
+                    price.setDelta(0.0);
+                    price.setItem(item);
+                    price.setFoundAt(LocalDateTime.now());
+
+                    priceRepository.save(price);
+                } else if (lastPrice.getPrice() != parsedItemDto.getPrice()) {
+                    Price price = new Price();
+                    price.setPrice(parsedItemDto.getPrice());
+                    double delta = Math.abs(lastPrice.getPrice() - parsedItemDto.getPrice()) / ((lastPrice.getPrice() + parsedItemDto.getPrice()) / 2);
+                    price.setDelta(delta);
                     price.setItem(item);
                     price.setFoundAt(LocalDateTime.now());
 
@@ -46,6 +56,7 @@ public class ItemPriceProcessor {
                 Price price = new Price();
                 price.setPrice(parsedItemDto.getPrice());
                 price.setItem(item1);
+                price.setDelta(0.0);
                 price.setFoundAt(LocalDateTime.now());
 
                 item1.getPrices().add(price);

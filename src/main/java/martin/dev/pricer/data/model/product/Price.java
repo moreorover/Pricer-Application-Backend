@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class Price extends BaseEntity {
 
     private Double price;
+    private Double delta;
     private LocalDateTime foundAt;
 
     @ManyToOne
