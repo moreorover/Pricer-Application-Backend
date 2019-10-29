@@ -1,7 +1,6 @@
 package martin.dev.pricer.scraper.parser.hsamuel;
 
-import martin.dev.pricer.data.fabric.product.ItemFabric;
-import martin.dev.pricer.data.model.product.Item;
+import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.services.product.ItemRepository;
 import martin.dev.pricer.data.services.product.PriceRepository;
 import martin.dev.pricer.scraper.parser.PageParser;
@@ -9,15 +8,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HSamuelPage implements PageParser {
 
     private Document pageInJsoup;
     private Elements products;
     private int maxPageNum;
-    private int currentPageNum;
 
     private ItemRepository itemRepository;
     private PriceRepository priceRepository;
@@ -26,7 +21,7 @@ public class HSamuelPage implements PageParser {
         this.pageInJsoup = pageInJsoup;
     }
 
-    public HSamuelPage(Document pageInJsoup, ItemRepository itemRepository, PriceRepository priceRepository) {
+    public HSamuelPage(ItemRepository itemRepository, PriceRepository priceRepository, Document pageInJsoup) {
         this.pageInJsoup = pageInJsoup;
         this.itemRepository = itemRepository;
         this.priceRepository = priceRepository;
@@ -34,10 +29,6 @@ public class HSamuelPage implements PageParser {
 
     public int getMaxPageNum() {
         return maxPageNum;
-    }
-
-    public int getCurrentPageNum() {
-        return currentPageNum;
     }
 
     public Elements getProducts() {
@@ -56,18 +47,13 @@ public class HSamuelPage implements PageParser {
         maxPageNum = Integer.parseInt(lastPageText);
     }
 
-    public void parseCurrentPageNum(){
-        Element currentPageElement = pageInJsoup.selectFirst("span[class=current]");
-        currentPageNum = Integer.parseInt(currentPageElement.text());
-    }
-
     public void parseElementsToItems() {
         products.forEach(element -> {
             HSamuelAdElement hSamuelAd = new HSamuelAdElement(element);
 
-            ItemFabric itemFabric = new ItemFabric(itemRepository, priceRepository);
+            ItemPriceProcessor itemPriceProcessor = new ItemPriceProcessor(itemRepository, priceRepository);
 
-            itemFabric.checkAgainstDatabase(hSamuelAd.parseAll());
+            itemPriceProcessor.checkAgainstDatabase(hSamuelAd.parseAll());
         });
     }
 }

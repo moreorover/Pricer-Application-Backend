@@ -8,12 +8,12 @@ import martin.dev.pricer.data.services.product.PriceRepository;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-public class ItemFabric {
+public class ItemPriceProcessor {
 
     private ItemRepository itemRepository;
     private PriceRepository priceRepository;
 
-    public ItemFabric(ItemRepository itemRepository, PriceRepository priceRepository) {
+    public ItemPriceProcessor(ItemRepository itemRepository, PriceRepository priceRepository) {
         this.itemRepository = itemRepository;
         this.priceRepository = priceRepository;
     }

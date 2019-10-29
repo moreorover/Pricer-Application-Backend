@@ -1,11 +1,12 @@
 package martin.dev.pricer.web.controller.scraper;
 
-import martin.dev.pricer.data.services.product.ItemRepository;
-import martin.dev.pricer.data.services.product.PriceRepository;
-import martin.dev.pricer.scraper.parser.hsamuel.Parser;
+import martin.dev.pricer.data.request.ParseDto;
+import martin.dev.pricer.data.services.store.StoreUrlHandler;
+import martin.dev.pricer.scraper.Parser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,20 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/scrape")
 public class Runner {
 
-    private ItemRepository itemRepository;
-    private PriceRepository priceRepository;
+    private StoreUrlHandler storeUrlHandler;
 
-    public Runner(ItemRepository itemRepository, PriceRepository priceRepository) {
-        this.itemRepository = itemRepository;
-        this.priceRepository = priceRepository;
+    public Runner(StoreUrlHandler storeUrlHandler) {
+        this.storeUrlHandler = storeUrlHandler;
     }
 
     @GetMapping
-    public ResponseEntity<?> getItems() {
+    public ResponseEntity<?> getItems(@RequestBody ParseDto parseDto) {
+        Parser parser = new Parser(storeUrlHandler);
 
-        Parser parser = new Parser(itemRepository, priceRepository);
-
-        parser.parse();
+        parser.parse(parseDto.getDays(), parseDto.getHours(), parseDto.getMinutes());
 
         return new ResponseEntity<>(HttpStatus.OK);
 
