@@ -1,15 +1,15 @@
 package martin.dev.pricer.scraper.parser;
 
-import java.util.HashMap;
+import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
 
 public interface AdElementParser {
 
     String parseTitle();
     String parseUpc();
-    String parsePrice();
+    Double parsePrice();
     String parseImage();
     String parseUrl();
 
-    HashMap<String, String> parseAll();
+    ParsedItemDto parseAll();
 
 }

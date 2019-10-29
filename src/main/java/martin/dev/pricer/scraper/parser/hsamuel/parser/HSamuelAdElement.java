@@ -1,9 +1,8 @@
-package martin.dev.pricer.scraper.parser.hsamuel;
+package martin.dev.pricer.scraper.parser.hsamuel.parser;
 
+import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
 import martin.dev.pricer.scraper.parser.AdElementParser;
 import org.jsoup.nodes.Element;
-
-import java.util.HashMap;
 
 public class HSamuelAdElement implements AdElementParser {
 
@@ -25,10 +24,10 @@ public class HSamuelAdElement implements AdElementParser {
     }
 
     @Override
-    public String parsePrice() {
+    public Double parsePrice() {
         String priceString = adInHtml.select("p[class*=current-price]").text();
         priceString = priceString.replaceAll("[^\\d.]", "");
-        return priceString;
+        return Double.parseDouble(priceString);
     }
 
     @Override
@@ -45,14 +44,8 @@ public class HSamuelAdElement implements AdElementParser {
     }
 
     @Override
-    public HashMap<String, String> parseAll() {
-        HashMap<String, String> dataMap = new HashMap<>();
-        dataMap.put("title", parseTitle());
-        dataMap.put("url", parseUrl());
-        dataMap.put("img", parseImage());
-        dataMap.put("upc", parseUpc());
-        dataMap.put("price", parsePrice());
-        return dataMap;
+    public ParsedItemDto parseAll() {
+        return new ParsedItemDto(parseTitle(), parseUrl(), parseImage(), parseUpc(), parsePrice());
     }
 
 

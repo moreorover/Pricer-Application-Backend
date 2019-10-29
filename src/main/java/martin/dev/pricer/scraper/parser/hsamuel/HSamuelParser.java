@@ -5,6 +5,7 @@ import martin.dev.pricer.data.services.product.ItemRepository;
 import martin.dev.pricer.data.services.product.PriceRepository;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.client.HttpClient;
+import martin.dev.pricer.scraper.parser.hsamuel.parser.HSamuelPage;
 import org.jsoup.nodes.Document;
 
 import java.time.LocalDateTime;
@@ -36,10 +37,10 @@ public class HSamuelParser {
 
             System.out.println(full);
             Document document = HttpClient.readContentInJsoupDocument(full);
-            HSamuelPage samuelPage = new HSamuelPage(itemRepository, priceRepository, document);
+            HSamuelPage samuelPage = new HSamuelPage(document);
             samuelPage.parseListOfAdElements();
-            if (samuelPage.getProducts().size() > 0){
-                samuelPage.parseElementsToItems();
+            if (samuelPage.getAdElements().size() > 0){
+//                samuelPage.parseElementsToItems();
             }
         }
 

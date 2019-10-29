@@ -1,40 +1,48 @@
 package martin.dev.pricer.scraper.parser.hsamuel;
 
+import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
 import org.jsoup.nodes.Document;
 
+import java.util.List;
+
 public class HSamuelParserProcessor {
 
     private StoreUrl storeUrl;
-    private Document pageContentInJsoup;
-    private HSamuelPage hSamuelPage;
+    private HSamuelFactory hSamuelFactory;
 
-    public void fetchPageContentFromWeb(){
-        pageContentInJsoup = HttpClient.readContentInJsoupDocument(storeUrl.getUrlLink());
-        hSamuelPage = new HSamuelPage(pageContentInJsoup);
+    public HSamuelParserProcessor(StoreUrl storeUrl) {
+        this.storeUrl = storeUrl;
     }
 
-    public int fetchMaxPageToScrape(){
-        hSamuelPage.parseMaxPageNum();
-        return hSamuelPage.getMaxPageNum();
-    }
+    public void scrapePages() {
+        initFactory(storeUrl.getUrlLink());
 
-    public void scrapePages(int maxPageNum){
-        for (int i = 1; i < maxPageNum + 1; i++){
+        for (int i = 1; i < hSamuelFactory.getMaxPageNumber() + 1; i++) {
             String nexUrlToScrape = makeNextPageUrl(i);
-
             System.out.println(nexUrlToScrape);
 
-            HSamuelParserProcessor hSamuelParserProcessor = new HSamuelParserProcessor();
+            List<ParsedItemDto> parsedItemDtos = hSamuelFactory.getParsedAds();
+
+            //TODO call method to deal with parsed ads
+
+
+            initFactory(nexUrlToScrape);
+
         }
 
     }
 
-    public String makeNextPageUrl(int pageNum){
+    public String makeNextPageUrl(int pageNum) {
         String full = storeUrl.getUrlLink();
         String[] x = full.split("Pg=");
         return x[0] + "Pg=" + pageNum;
+    }
+
+    public void initFactory(String targetUrl) {
+        Document document = HttpClient.readContentInJsoupDocument(targetUrl);
+        hSamuelFactory = new HSamuelFactory(document);
     }
 
 
