@@ -1,7 +1,6 @@
 package martin.dev.pricer.web.controller.scraper;
 
-import martin.dev.pricer.data.request.ParseDto;
-import martin.dev.pricer.data.services.store.StoreUrlHandler;
+import martin.dev.pricer.data.model.dto.request.ParseDto;
 import martin.dev.pricer.scraper.Parser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/scrape")
 public class Runner {
 
-    private StoreUrlHandler storeUrlHandler;
+    private Parser parser;
 
-    public Runner(StoreUrlHandler storeUrlHandler) {
-        this.storeUrlHandler = storeUrlHandler;
+    public Runner(Parser parser) {
+        this.parser = parser;
     }
 
     @GetMapping
     public ResponseEntity<?> getItems(@RequestBody ParseDto parseDto) {
-        Parser parser = new Parser(storeUrlHandler);
 
         parser.parse(parseDto.getDays(), parseDto.getHours(), parseDto.getMinutes());
 

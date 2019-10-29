@@ -8,7 +8,6 @@ import martin.dev.pricer.data.services.product.ItemRepository;
 import martin.dev.pricer.data.services.product.PriceRepository;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 
 public class ItemPriceProcessor {
@@ -21,13 +20,13 @@ public class ItemPriceProcessor {
         this.priceRepository = priceRepository;
     }
 
-    public void checkAgainstDatabase(List<ParsedItemDto> dataSet, Store store){
+    public void checkAgainstDatabase(List<ParsedItemDto> dataSet, Store store) {
 
         dataSet.forEach(parsedItemDto -> {
             Item item = itemRepository.findItemByUpc(parsedItemDto.getUpc());
-            if (item != null){
+            if (item != null) {
                 Price lastPrice = priceRepository.findFirstByItemOrderByFoundAtDesc(item);
-                if (lastPrice == null || lastPrice.getPrice() != parsedItemDto.getPrice()){
+                if (lastPrice == null || lastPrice.getPrice() != parsedItemDto.getPrice()) {
                     Price price = new Price();
                     price.setPrice(parsedItemDto.getPrice());
                     price.setItem(item);

@@ -1,4 +1,4 @@
-package martin.dev.pricer.data.request;
+package martin.dev.pricer.data.model.dto.request;
 
 
 import lombok.AllArgsConstructor;

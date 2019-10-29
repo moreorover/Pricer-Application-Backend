@@ -12,23 +12,25 @@ public class HSamuelParserProcessor {
 
     private StoreUrl storeUrl;
     private HSamuelFactory hSamuelFactory;
+    private ItemPriceProcessor itemPriceProcessor;
 
-    public HSamuelParserProcessor(StoreUrl storeUrl) {
-        this.storeUrl = storeUrl;
+    public HSamuelParserProcessor(ItemPriceProcessor itemPriceProcessor) {
+        this.itemPriceProcessor = itemPriceProcessor;
     }
 
-    public void scrapePages() {
+    public void scrapePages(StoreUrl storeUrl) {
+        this.storeUrl = storeUrl;
         initFactory(storeUrl.getUrlLink());
+        int maxPageNum = hSamuelFactory.getMaxPageNumber();
 
-        for (int i = 1; i < hSamuelFactory.getMaxPageNumber() + 1; i++) {
+        for (int i = 1; i < maxPageNum + 1; i++) {
             String nexUrlToScrape = makeNextPageUrl(i);
             System.out.println(nexUrlToScrape);
 
             List<ParsedItemDto> parsedItemDtos = hSamuelFactory.getParsedAds();
 
-            //TODO call method to deal with parsed ads
-//            ItemPriceProcessor itemPriceProcessor = new ItemPriceProcessor();
-//            itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl.getStore());
+//            TODO call method to deal with parsed ads
+            itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl.getStore());
 
             initFactory(nexUrlToScrape);
 
