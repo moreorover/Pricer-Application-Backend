@@ -1,7 +1,7 @@
 package martin.dev.pricer.scraper.parser.hsamuel;
 
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
-import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
 import org.jsoup.nodes.Document;

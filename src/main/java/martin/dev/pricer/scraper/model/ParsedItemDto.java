@@ -1,4 +1,4 @@
-package martin.dev.pricer.data.model.dto.parse;
+package martin.dev.pricer.scraper.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

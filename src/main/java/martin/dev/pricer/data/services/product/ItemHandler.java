@@ -1,15 +1,13 @@
 package martin.dev.pricer.data.services.product;
 
-import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.product.Category;
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.model.product.Price;
 import martin.dev.pricer.data.model.store.StoreUrl;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ItemHandler {
 

@@ -1,6 +1,6 @@
 package martin.dev.pricer.data.fabric.product;
 
-import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.model.product.Price;
 import martin.dev.pricer.data.model.store.StoreUrl;

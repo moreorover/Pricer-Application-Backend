@@ -1,6 +1,6 @@
 package martin.dev.pricer.scraper.parser;
 
-import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 
 public interface AdElementParser {
 
