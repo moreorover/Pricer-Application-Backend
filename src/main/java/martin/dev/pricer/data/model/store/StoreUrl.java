@@ -1,14 +1,14 @@
 package martin.dev.pricer.data.model.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 import martin.dev.pricer.data.model.BaseEntity;
+import martin.dev.pricer.data.model.product.Category;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -27,5 +27,12 @@ public class StoreUrl extends BaseEntity {
     @JsonIgnore
     @JoinColumn(name = "store_id")
     private Store store;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            joinColumns = {@JoinColumn(name = "storeUrl_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    private Set<Category> categories = new HashSet<>();
 
 }

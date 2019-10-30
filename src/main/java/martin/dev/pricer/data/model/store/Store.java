@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import martin.dev.pricer.data.model.BaseEntity;
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.model.product.Price;

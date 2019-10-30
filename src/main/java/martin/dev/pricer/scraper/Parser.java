@@ -19,7 +19,7 @@ public class Parser {
     public void parse() {
         StoreUrl storeUrl;
         try {
-            storeUrl = storeUrlHandler.fetchUrlToScrape(0, 6, 0);
+            storeUrl = storeUrlHandler.fetchUrlToScrape(0, 2, 0);
 
             if (storeUrl.getStore().getName().equals("H. Samuel")) {
 

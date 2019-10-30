@@ -30,21 +30,19 @@ public class HSamuelParserProcessor {
             List<ParsedItemDto> parsedItemDtos = hSamuelFactory.getParsedAds();
 
 //            TODO call method to deal with parsed ads
-            itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl.getStore());
+            itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl);
 
             initFactory(nexUrlToScrape);
-
         }
-
     }
 
-    public String makeNextPageUrl(int pageNum) {
+    private String makeNextPageUrl(int pageNum) {
         String full = storeUrl.getUrlLink();
         String[] x = full.split("Pg=");
         return x[0] + "Pg=" + pageNum;
     }
 
-    public void initFactory(String targetUrl) {
+    private void initFactory(String targetUrl) {
         Document document = HttpClient.readContentInJsoupDocument(targetUrl);
         hSamuelFactory = new HSamuelFactory(document);
     }

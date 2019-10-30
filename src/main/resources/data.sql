@@ -25,7 +25,7 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (330, 2, 'https://www.superdrug.com/Fragrance/Fragrance-For-Him/c/fragranceforhim?q=%3AbestBiz%3AinStockFlag%3Atrue&text=&minSel=5.0&maxSel=88.0&minSlider=5.0&maxSlider=88.0&resultsForPage=60&sort=bestBiz&inStockFlagtrue=on//', TIMESTAMP '2019-10-24 13:07:00.02315', 'DISABLED'),
 (332, 3, 'https://www.thefragranceshop.co.uk/womens-perfumes-and-fragrances.aspx', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
 (333, 3, 'https://www.thefragranceshop.co.uk/mens-aftershaves-and-fragrances.aspx', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
-(334, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:18:00.02315', 'READY'),
+(334, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:18:00.02315', 'DISABLED'),
 (335, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 10:09:00.02315', 'READY'),
 (336, 5, 'https://www.debenhams.com/women/accessories/watches?shipToCntry=GB', TIMESTAMP '2019-10-24 12:37:00.02315', 'DISABLED'),
 (337, 5, 'https://www.debenhams.com/men/watches?shipToCntry=GB', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
@@ -40,3 +40,9 @@ INSERT INTO `category` (`id`, `name`) VALUES
 (3, 'Watch'),
 (4, 'Jewelery'),
 (5, 'Fragrance');
+
+INSERT INTO `store_url_categories` (`store_url_id`, `category_id`) VALUES
+(334, 2),
+(334, 3),
+(335, 1),
+(335, 3);

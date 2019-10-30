@@ -3,66 +3,37 @@ package martin.dev.pricer.data.fabric.product;
 import martin.dev.pricer.data.model.dto.parse.ParsedItemDto;
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.model.product.Price;
-import martin.dev.pricer.data.model.store.Store;
-import martin.dev.pricer.data.services.product.ItemRepository;
-import martin.dev.pricer.data.services.product.PriceRepository;
+import martin.dev.pricer.data.model.store.StoreUrl;
+import martin.dev.pricer.data.services.product.ItemHandler;
+import martin.dev.pricer.data.services.product.PriceHandler;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ItemPriceProcessor {
 
-    private ItemRepository itemRepository;
-    private PriceRepository priceRepository;
+    private ItemHandler itemHandler;
+    private PriceHandler priceHandler;
 
-    public ItemPriceProcessor(ItemRepository itemRepository, PriceRepository priceRepository) {
-        this.itemRepository = itemRepository;
-        this.priceRepository = priceRepository;
+    public ItemPriceProcessor(ItemHandler itemHandler, PriceHandler priceHandler) {
+        this.itemHandler = itemHandler;
+        this.priceHandler = priceHandler;
     }
 
-    public void checkAgainstDatabase(List<ParsedItemDto> dataSet, Store store) {
+    public void checkAgainstDatabase(List<ParsedItemDto> dataSet, StoreUrl storeUrl) {
 
         dataSet.forEach(parsedItemDto -> {
-            Item item = itemRepository.findItemByUpc(parsedItemDto.getUpc());
+            Item item = itemHandler.findItemByUpc(parsedItemDto);
             if (item != null) {
-                Price lastPrice = priceRepository.findFirstByItemOrderByFoundAtDesc(item);
+                itemHandler.updateItemCategories(item, storeUrl.getCategories());
+                Price lastPrice = priceHandler.fetchLastPriceForItem(item);
                 if (lastPrice == null) {
-                    Price price = new Price();
-                    price.setPrice(parsedItemDto.getPrice());
-                    price.setDelta(0.0);
-                    price.setItem(item);
-                    price.setFoundAt(LocalDateTime.now());
-
-                    priceRepository.save(price);
+                    priceHandler.firstPriceForItem(parsedItemDto, item);
                 } else if (lastPrice.getPrice() != parsedItemDto.getPrice()) {
-                    Price price = new Price();
-                    price.setPrice(parsedItemDto.getPrice());
                     double delta = Math.abs(lastPrice.getPrice() - parsedItemDto.getPrice()) / ((lastPrice.getPrice() + parsedItemDto.getPrice()) / 2);
-                    price.setDelta(delta);
-                    price.setItem(item);
-                    price.setFoundAt(LocalDateTime.now());
-
-                    priceRepository.save(price);
+                    priceHandler.changedPriceForItem(parsedItemDto, item, delta);
                 }
             } else {
-
-                Item item1 = new Item();
-                item1.setUrl(parsedItemDto.getUrl());
-                item1.setUpc(parsedItemDto.getUpc());
-                item1.setTitle(parsedItemDto.getTitle());
-                item1.setImg(parsedItemDto.getImg());
-                item1.setStore(store);
-
-                Price price = new Price();
-                price.setPrice(parsedItemDto.getPrice());
-                price.setItem(item1);
-                price.setDelta(0.0);
-                price.setFoundAt(LocalDateTime.now());
-
-                item1.getPrices().add(price);
-
-                itemRepository.save(item1);
-
+                itemHandler.createNewItemWithPrice(parsedItemDto, storeUrl);
             }
         });
     }

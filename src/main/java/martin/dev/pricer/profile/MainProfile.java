@@ -1,7 +1,9 @@
 package martin.dev.pricer.profile;
 
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
+import martin.dev.pricer.data.services.product.ItemHandler;
 import martin.dev.pricer.data.services.product.ItemRepository;
+import martin.dev.pricer.data.services.product.PriceHandler;
 import martin.dev.pricer.data.services.product.PriceRepository;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
@@ -26,22 +28,32 @@ public class MainProfile {
     }
 
     @Bean
-    public StoreUrlHandler getStoreUrlHandler(){
+    public StoreUrlHandler getStoreUrlHandler() {
         return new StoreUrlHandler(storeUrlRepository);
     }
 
     @Bean
-    public ItemPriceProcessor getItemPriceProcessor(){
-        return new ItemPriceProcessor(itemRepository, priceRepository);
+    public ItemHandler getItemHandler() {
+        return new ItemHandler(itemRepository);
     }
 
     @Bean
-    public HSamuelParserProcessor getHSamuelParserProcessor(){
+    public PriceHandler getPriceHandler() {
+        return new PriceHandler(priceRepository);
+    }
+
+    @Bean
+    public ItemPriceProcessor getItemPriceProcessor() {
+        return new ItemPriceProcessor(getItemHandler(), getPriceHandler());
+    }
+
+    @Bean
+    public HSamuelParserProcessor getHSamuelParserProcessor() {
         return new HSamuelParserProcessor(getItemPriceProcessor());
     }
 
     @Bean
-    public Parser getParser(){
+    public Parser getParser() {
         return new Parser(getStoreUrlHandler(), getHSamuelParserProcessor());
     }
 }
