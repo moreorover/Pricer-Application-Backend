@@ -33,3 +33,10 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (340, 7, 'https://www.watchshop.com/mens-watches.html?show=200&page=1', '2020-09-03 21:13:00.02315', 'DISABLED'),
 (341, 7, 'https://www.watchshop.com/ladies-watches.html?show=200&page=1', '2020-09-03 21:12:00.02315', 'DISABLED');
+
+INSERT INTO `category` (`id`, `name`) VALUES
+(1, 'Men'),
+(2, 'Women'),
+(3, 'Watch'),
+(4, 'Jewelery'),
+(5, 'Fragrance');
