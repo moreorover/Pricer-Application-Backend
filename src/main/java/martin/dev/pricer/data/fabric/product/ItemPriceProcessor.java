@@ -29,7 +29,7 @@ public class ItemPriceProcessor {
                 if (lastPrice == null) {
                     priceHandler.firstPriceForItem(parsedItemDto, item);
                 } else if (lastPrice.getPrice() != parsedItemDto.getPrice()) {
-                    double delta = Math.abs(lastPrice.getPrice() - parsedItemDto.getPrice()) / ((lastPrice.getPrice() + parsedItemDto.getPrice()) / 2);
+                    double delta = 100 * ((parsedItemDto.getPrice() - lastPrice.getPrice()) / lastPrice.getPrice());
                     priceHandler.changedPriceForItem(parsedItemDto, item, delta);
                 }
             } else {
