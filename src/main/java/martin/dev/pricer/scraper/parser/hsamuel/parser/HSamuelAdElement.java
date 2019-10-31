@@ -1,9 +1,11 @@
 package martin.dev.pricer.scraper.parser.hsamuel.parser;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.scraper.parser.AdElementParser;
 import org.jsoup.nodes.Element;
 
+@Slf4j
 public class HSamuelAdElement implements AdElementParser {
 
     private Element adInHtml;
@@ -45,7 +47,9 @@ public class HSamuelAdElement implements AdElementParser {
 
     @Override
     public ParsedItemDto parseAll() {
-        return new ParsedItemDto(parseTitle(), parseUrl(), parseImage(), parseUpc(), parsePrice());
+        ParsedItemDto parsedItemDto = new ParsedItemDto(parseTitle(), parseUrl(), parseImage(), parseUpc(), parsePrice());
+        log.info(parsedItemDto.toString());
+        return parsedItemDto;
     }
 
 

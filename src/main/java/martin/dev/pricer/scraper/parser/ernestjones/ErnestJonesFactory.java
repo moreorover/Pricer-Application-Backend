@@ -2,6 +2,7 @@ package martin.dev.pricer.scraper.parser.ernestjones;
 
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.scraper.parser.Factory;
+import martin.dev.pricer.scraper.parser.FactoryImpl;
 import martin.dev.pricer.scraper.parser.ernestjones.parser.EernestJonesAdElement;
 import martin.dev.pricer.scraper.parser.ernestjones.parser.ErnestJonesPage;
 import org.jsoup.nodes.Document;
@@ -10,24 +11,22 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ErnestJonesFactory implements Factory {
-
-    private ErnestJonesPage ernestJonesPage;
+public class ErnestJonesFactory extends FactoryImpl<ErnestJonesPage> {
 
     public ErnestJonesFactory(Document pageContentInJsoup) {
-        this.ernestJonesPage = new ErnestJonesPage(pageContentInJsoup);
+        setPage(new ErnestJonesPage(pageContentInJsoup));
     }
 
     @Override
     public int getMaxPageNumber() {
-        ernestJonesPage.parseMaxPageNum();
-        return ernestJonesPage.getMaxPageNum();
+        getPage().parseMaxPageNum();
+        return getPage().getMaxPageNum();
     }
 
     @Override
     public Elements getAds() {
-        ernestJonesPage.parseListOfAdElements();
-        return ernestJonesPage.getAdElements();
+        getPage().parseListOfAdElements();
+        return getPage().getAdElements();
     }
 
     @Override

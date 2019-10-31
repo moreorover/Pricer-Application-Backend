@@ -6,42 +6,21 @@ import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.scraper.parser.ParserProcessor;
+import martin.dev.pricer.scraper.parser.ParserProcessorImpl;
 import org.jsoup.nodes.Document;
 
 import java.util.List;
 
 @Slf4j
-public class ErnestJonesParserProcessor implements ParserProcessor {
-
-    private StoreUrl storeUrl;
-    private ErnestJonesFactory ernestJonesFactory;
-    private ItemPriceProcessor itemPriceProcessor;
+public class ErnestJonesParserProcessor extends ParserProcessorImpl<ErnestJonesFactory> {
 
     public ErnestJonesParserProcessor(ItemPriceProcessor itemPriceProcessor) {
-        this.itemPriceProcessor = itemPriceProcessor;
-    }
-
-    @Override
-    public void scrapePages(StoreUrl storeUrl) {
-        this.storeUrl = storeUrl;
-        initFactory(storeUrl.getUrlLink());
-        int maxPageNum = ernestJonesFactory.getMaxPageNumber();
-
-        for (int i = 1; i < maxPageNum + 1; i++) {
-            String nexUrlToScrape = makeNextPageUrl(i);
-            log.info(nexUrlToScrape);
-
-            List<ParsedItemDto> parsedItemDtos = ernestJonesFactory.getParsedAds();
-
-            itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl);
-
-            initFactory(nexUrlToScrape);
-        }
+        super(itemPriceProcessor);
     }
 
     @Override
     public String makeNextPageUrl(int pageNum) {
-        String full = storeUrl.getUrlLink();
+        String full = getStoreUrl().getUrlLink();
         String[] x = full.split("Pg=");
         return x[0] + "Pg=" + pageNum;
     }
@@ -49,7 +28,7 @@ public class ErnestJonesParserProcessor implements ParserProcessor {
     @Override
     public void initFactory(String targetUrl) {
         Document document = HttpClient.readContentInJsoupDocument(targetUrl);
-        ernestJonesFactory = new ErnestJonesFactory(document);
+        setFactory(new ErnestJonesFactory(document));
     }
 
 
