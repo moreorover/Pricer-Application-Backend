@@ -26,6 +26,10 @@ public class Parser {
                 storeUrlHandler.setStatusScraping(storeUrl);
 
                 hSamuelParserProcessor.scrapePages(storeUrl);
+            } else if (storeUrl.getStore().getName().equals("Ernest Jones")){
+                storeUrlHandler.setStatusScraping(storeUrl);
+
+                hSamuelParserProcessor.scrapePages(storeUrl);
             }
 
             storeUrlHandler.setStatusReady(storeUrl);

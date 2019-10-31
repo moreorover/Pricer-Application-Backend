@@ -26,11 +26,11 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (332, 3, 'https://www.thefragranceshop.co.uk/womens-perfumes-and-fragrances.aspx', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
 (333, 3, 'https://www.thefragranceshop.co.uk/mens-aftershaves-and-fragrances.aspx', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
 (334, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:18:00.02315', 'DISABLED'),
-(335, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 10:09:00.02315', 'READY'),
+(335, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 10:09:00.02315', 'DISABLED'),
 (336, 5, 'https://www.debenhams.com/women/accessories/watches?shipToCntry=GB', TIMESTAMP '2019-10-24 12:37:00.02315', 'DISABLED'),
 (337, 5, 'https://www.debenhams.com/men/watches?shipToCntry=GB', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
-(338, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:36:00.02315', 'DISABLED'),
-(339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(338, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:36:00.02315', 'READY'),
+(339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
 (340, 7, 'https://www.watchshop.com/mens-watches.html?show=200&page=1', '2020-09-03 21:13:00.02315', 'DISABLED'),
 (341, 7, 'https://www.watchshop.com/ladies-watches.html?show=200&page=1', '2020-09-03 21:12:00.02315', 'DISABLED');
 
@@ -45,4 +45,8 @@ INSERT INTO `store_url_categories` (`store_url_id`, `category_id`) VALUES
 (334, 2),
 (334, 3),
 (335, 1),
-(335, 3);
+(335, 3),
+(338, 2),
+(338, 3),
+(339, 1),
+(339, 3);
