@@ -5,13 +5,14 @@ import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
+import martin.dev.pricer.scraper.parser.ParserProcessor;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class HSamuelParserProcessor {
+public class HSamuelParserProcessor implements ParserProcessor {
 
     private StoreUrl storeUrl;
     private HSamuelFactory hSamuelFactory;
@@ -23,6 +24,7 @@ public class HSamuelParserProcessor {
         this.itemPriceProcessor = itemPriceProcessor;
     }
 
+    @Override
     public void scrapePages(StoreUrl storeUrl) {
         this.storeUrl = storeUrl;
         initFactory(storeUrl.getUrlLink());
@@ -41,13 +43,15 @@ public class HSamuelParserProcessor {
         }
     }
 
-    private String makeNextPageUrl(int pageNum) {
+    @Override
+    public String makeNextPageUrl(int pageNum) {
         String full = storeUrl.getUrlLink();
         String[] x = full.split("Pg=");
         return x[0] + "Pg=" + pageNum;
     }
 
-    private void initFactory(String targetUrl) {
+    @Override
+    public void initFactory(String targetUrl) {
         Document document = HttpClient.readContentInJsoupDocument(targetUrl);
         hSamuelFactory = new HSamuelFactory(document);
     }

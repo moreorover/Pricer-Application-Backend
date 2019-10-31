@@ -2,6 +2,7 @@ package martin.dev.pricer.scraper.parser.superdrug;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import martin.dev.pricer.scraper.parser.Factory;
 import martin.dev.pricer.scraper.parser.superdrug.parser.SuperDrugAdElement;
 import martin.dev.pricer.scraper.parser.superdrug.parser.SuperDrugPage;
 import org.jsoup.nodes.Document;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class SuperDrugFactory {
+public class SuperDrugFactory implements Factory {
 
     private SuperDrugPage superDrugPage;
 
@@ -19,17 +20,20 @@ public class SuperDrugFactory {
         this.superDrugPage = new SuperDrugPage(pageContentInJsoup);
     }
 
-    int getMaxPageNumber() {
+    @Override
+    public int getMaxPageNumber() {
         superDrugPage.parseMaxPageNum();
         return superDrugPage.getMaxPageNum();
     }
 
-    private Elements getAds() {
+    @Override
+    public Elements getAds() {
         superDrugPage.parseListOfAdElements();
         return superDrugPage.getAdElements();
     }
 
-    List<ParsedItemDto> getParsedAds() {
+    @Override
+    public List<ParsedItemDto> getParsedAds() {
         List<ParsedItemDto> itemDtoList = new ArrayList<>();
 
         getAds().forEach(adInHtml -> {

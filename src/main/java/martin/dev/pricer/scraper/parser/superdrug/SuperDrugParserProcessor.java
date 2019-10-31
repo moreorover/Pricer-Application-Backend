@@ -5,12 +5,13 @@ import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import martin.dev.pricer.scraper.parser.ParserProcessor;
 import org.jsoup.nodes.Document;
 
 import java.util.List;
 
 @Slf4j
-public class SuperDrugParserProcessor {
+public class SuperDrugParserProcessor implements ParserProcessor {
 
     private StoreUrl storeUrl;
     private SuperDrugFactory superDrugFactory;
@@ -20,6 +21,7 @@ public class SuperDrugParserProcessor {
         this.itemPriceProcessor = itemPriceProcessor;
     }
 
+    @Override
     public void scrapePages(StoreUrl storeUrl) {
         this.storeUrl = storeUrl;
         initFactory(storeUrl.getUrlLink());
@@ -38,13 +40,15 @@ public class SuperDrugParserProcessor {
         }
     }
 
-    private String makeNextPageUrl(int pageNum) {
+    @Override
+    public String makeNextPageUrl(int pageNum) {
         String full = storeUrl.getUrlLink();
         String[] x = full.split("&page=0");
         return x[0] + "&page=0" + pageNum + "&resultsForPage=60&sort=bestBiz";
     }
 
-    private void initFactory(String targetUrl) {
+    @Override
+    public void initFactory(String targetUrl) {
         Document document = HttpClient.readContentInJsoupDocument(targetUrl);
         superDrugFactory = new SuperDrugFactory(document);
     }
