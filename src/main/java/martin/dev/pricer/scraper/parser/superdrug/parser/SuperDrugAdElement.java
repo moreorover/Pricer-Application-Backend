@@ -1,27 +1,20 @@
 package martin.dev.pricer.scraper.parser.superdrug.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.PricerApplication;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
-import martin.dev.pricer.scraper.parser.AdElementParser;
+import martin.dev.pricer.scraper.parser.AdElementParserImpl;
 import org.jsoup.nodes.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Slf4j
-public class SuperDrugAdElement implements AdElementParser {
-
-    private Element adInHtml;
-
-    private static final Logger logger = LoggerFactory.getLogger(PricerApplication.class);
+public class SuperDrugAdElement extends AdElementParserImpl {
 
     public SuperDrugAdElement(Element adInHtml) {
-        this.adInHtml = adInHtml;
+        super(adInHtml);
     }
 
     @Override
     public String parseTitle() {
-        Element titleElement = adInHtml.selectFirst("a[class*=item__productName]");
+        Element titleElement = getAdInHtml().selectFirst("a[class*=item__productName]");
         return titleElement.text();
     }
 
@@ -34,16 +27,16 @@ public class SuperDrugAdElement implements AdElementParser {
 
     @Override
     public Double parsePrice() {
-        String priceString = adInHtml.selectFirst("span[class*=item__price--now]").text();
+        String priceString = getAdInHtml().selectFirst("span[class*=item__price--now]").text();
         priceString = priceString.replaceAll("[^\\d.]", "");
         return Double.parseDouble(priceString);
     }
 
     @Override
     public String parseImage() {
-        Element imgElement = adInHtml.selectFirst("img");
+        Element imgElement = getAdInHtml().selectFirst("img");
         String urlBase = "https://www.superdrug.com/";
-        if (!imgElement.attr("src").equals("")){
+        if (!imgElement.attr("src").equals("")) {
             return urlBase + imgElement.attr("src");
         } else {
             return urlBase + imgElement.attr("data-src");
@@ -52,7 +45,7 @@ public class SuperDrugAdElement implements AdElementParser {
 
     @Override
     public String parseUrl() {
-        Element titleElement = adInHtml.selectFirst("a[class*=item__productName]");
+        Element titleElement = getAdInHtml().selectFirst("a[class*=item__productName]");
         String urlBase = "https://www.superdrug.com/";
         return urlBase + titleElement.attr("href");
     }

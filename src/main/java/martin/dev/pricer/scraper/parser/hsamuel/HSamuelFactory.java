@@ -1,5 +1,6 @@
 package martin.dev.pricer.scraper.parser.hsamuel;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.scraper.parser.FactoryImpl;
 import martin.dev.pricer.scraper.parser.hsamuel.parser.HSamuelAdElement;
@@ -10,6 +11,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class HSamuelFactory extends FactoryImpl<HSamuelPage> {
 
     public HSamuelFactory(Document pageContentInJsoup) {
@@ -33,6 +35,7 @@ public class HSamuelFactory extends FactoryImpl<HSamuelPage> {
         List<ParsedItemDto> itemDtoList = new ArrayList<>();
 
         getAds().forEach(adInHtml -> {
+            log.info(adInHtml.outerHtml());
             HSamuelAdElement hSamuelAdElement = new HSamuelAdElement(adInHtml);
             itemDtoList.add(hSamuelAdElement.parseAll());
         });
