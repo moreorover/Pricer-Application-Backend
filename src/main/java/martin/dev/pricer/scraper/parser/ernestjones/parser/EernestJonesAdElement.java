@@ -20,7 +20,7 @@ public class EernestJonesAdElement implements AdElementParser {
     @Override
     public String parseUpc() {
         Element skuElement = adInHtml.selectFirst("meta");
-        return skuElement.attr("content");
+        return "EJ_" + skuElement.attr("content");
     }
 
     @Override

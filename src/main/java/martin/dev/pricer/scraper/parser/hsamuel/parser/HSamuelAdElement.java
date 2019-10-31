@@ -19,8 +19,8 @@ public class HSamuelAdElement implements AdElementParser {
 
     @Override
     public String parseUpc() {
-        Element skuElement = adInHtml.selectFirst("meta");
-        return skuElement.attr("content");
+        Element upcElement = adInHtml.selectFirst("meta");
+        return "HS_" + upcElement.attr("content");
     }
 
     @Override

@@ -1,39 +1,36 @@
-package martin.dev.pricer.scraper.parser.hsamuel;
+package martin.dev.pricer.scraper.parser.superdrug;
 
-import martin.dev.pricer.PricerApplication;
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class HSamuelParserProcessor {
+@Slf4j
+public class SuperDrugParserProcessor {
 
     private StoreUrl storeUrl;
-    private HSamuelFactory hSamuelFactory;
+    private SuperDrugFactory superDrugFactory;
     private ItemPriceProcessor itemPriceProcessor;
 
-    private static final Logger logger = LoggerFactory.getLogger(PricerApplication.class);
-
-    public HSamuelParserProcessor(ItemPriceProcessor itemPriceProcessor) {
+    public SuperDrugParserProcessor(ItemPriceProcessor itemPriceProcessor) {
         this.itemPriceProcessor = itemPriceProcessor;
     }
 
     public void scrapePages(StoreUrl storeUrl) {
         this.storeUrl = storeUrl;
         initFactory(storeUrl.getUrlLink());
-        int maxPageNum = hSamuelFactory.getMaxPageNumber();
+        int maxPageNum = superDrugFactory.getMaxPageNumber();
 
-        for (int i = 1; i < maxPageNum + 1; i++) {
+        for (int i = 0; i < maxPageNum + 1; i++) {
             String nexUrlToScrape = makeNextPageUrl(i);
-//            System.out.println(nexUrlToScrape);
-            logger.info(nexUrlToScrape);
 
-            List<ParsedItemDto> parsedItemDtos = hSamuelFactory.getParsedAds();
+            log.info("Parsing page: " + nexUrlToScrape);
+
+            List<ParsedItemDto> parsedItemDtos = superDrugFactory.getParsedAds();
 
             itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl);
 
@@ -43,12 +40,12 @@ public class HSamuelParserProcessor {
 
     private String makeNextPageUrl(int pageNum) {
         String full = storeUrl.getUrlLink();
-        String[] x = full.split("Pg=");
-        return x[0] + "Pg=" + pageNum;
+        String[] x = full.split("&page=0");
+        return x[0] + "&page=0" + pageNum + "&resultsForPage=60&sort=bestBiz";
     }
 
     private void initFactory(String targetUrl) {
         Document document = HttpClient.readContentInJsoupDocument(targetUrl);
-        hSamuelFactory = new HSamuelFactory(document);
+        superDrugFactory = new SuperDrugFactory(document);
     }
 }

@@ -10,6 +10,7 @@ import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.Parser;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesParserProcessor;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
+import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -59,7 +60,12 @@ public class MainProfile {
     }
 
     @Bean
+    public SuperDrugParserProcessor getSuperDrugParserProcessor(){
+        return new SuperDrugParserProcessor(getItemPriceProcessor());
+    }
+
+    @Bean
     public Parser getParser() {
-        return new Parser(getStoreUrlHandler(), getHSamuelParserProcessor(), getErnestJonesParserProcessor());
+        return new Parser(getStoreUrlHandler(), getHSamuelParserProcessor(), getErnestJonesParserProcessor(), getSuperDrugParserProcessor());
     }
 }
