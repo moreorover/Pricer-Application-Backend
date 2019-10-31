@@ -1,17 +1,17 @@
-package martin.dev.pricer.scraper.parser.hsamuel.parser;
+package martin.dev.pricer.scraper.parser.ernestjones.parser;
 
 import martin.dev.pricer.scraper.parser.PageParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class HSamuelPage implements PageParser {
+public class ErnestJonesPage implements PageParser {
 
     private Document pageInJsoup;
     private Elements adElements;
     private int maxPageNum;
 
-    public HSamuelPage(Document pageInJsoup) {
+    public ErnestJonesPage(Document pageInJsoup) {
         this.pageInJsoup = pageInJsoup;
     }
 
@@ -34,7 +34,7 @@ public class HSamuelPage implements PageParser {
     public void parseMaxPageNum() {
         Element paginationBlockElement = pageInJsoup.selectFirst("ol[class*=pageNumbers]");
         Elements paginationButtons = paginationBlockElement.select("li");
-        Element lastPageElement = paginationButtons.get(5);
+        Element lastPageElement = paginationButtons.get(7);
         String lastPageText = lastPageElement.text();
         maxPageNum = Integer.parseInt(lastPageText);
     }

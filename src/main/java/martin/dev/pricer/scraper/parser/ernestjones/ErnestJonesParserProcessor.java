@@ -1,39 +1,39 @@
-package martin.dev.pricer.scraper.parser.hsamuel;
+package martin.dev.pricer.scraper.parser.ernestjones;
 
 import martin.dev.pricer.PricerApplication;
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class HSamuelParserProcessor {
+public class ErnestJonesParserProcessor {
 
     private StoreUrl storeUrl;
-    private HSamuelFactory hSamuelFactory;
+    private ErnestJonesFactory ernestJonesFactory;
     private ItemPriceProcessor itemPriceProcessor;
 
     private static final Logger logger = LoggerFactory.getLogger(PricerApplication.class);
 
-    public HSamuelParserProcessor(ItemPriceProcessor itemPriceProcessor) {
+    public ErnestJonesParserProcessor(ItemPriceProcessor itemPriceProcessor) {
         this.itemPriceProcessor = itemPriceProcessor;
     }
 
     public void scrapePages(StoreUrl storeUrl) {
         this.storeUrl = storeUrl;
         initFactory(storeUrl.getUrlLink());
-        int maxPageNum = hSamuelFactory.getMaxPageNumber();
+        int maxPageNum = ernestJonesFactory.getMaxPageNumber();
 
         for (int i = 1; i < maxPageNum + 1; i++) {
             String nexUrlToScrape = makeNextPageUrl(i);
 //            System.out.println(nexUrlToScrape);
             logger.info(nexUrlToScrape);
 
-            List<ParsedItemDto> parsedItemDtos = hSamuelFactory.getParsedAds();
+            List<ParsedItemDto> parsedItemDtos = ernestJonesFactory.getParsedAds();
 
             itemPriceProcessor.checkAgainstDatabase(parsedItemDtos, storeUrl);
 
@@ -49,7 +49,7 @@ public class HSamuelParserProcessor {
 
     private void initFactory(String targetUrl) {
         Document document = HttpClient.readContentInJsoupDocument(targetUrl);
-        hSamuelFactory = new HSamuelFactory(document);
+        ernestJonesFactory = new ErnestJonesFactory(document);
     }
 
 
