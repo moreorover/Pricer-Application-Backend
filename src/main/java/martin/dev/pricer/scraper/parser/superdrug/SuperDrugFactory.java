@@ -24,11 +24,6 @@ public class SuperDrugFactory {
         return superDrugPage.getMaxPageNum();
     }
 
-    public String getNextPageUrl() {
-        superDrugPage.parseNextPageUrl();
-        return superDrugPage.getNextPageUrl();
-    }
-
     private Elements getAds() {
         superDrugPage.parseListOfAdElements();
         return superDrugPage.getAdElements();

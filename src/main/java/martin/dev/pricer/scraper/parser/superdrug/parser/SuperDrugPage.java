@@ -21,10 +21,6 @@ public class SuperDrugPage implements PageParser {
         return maxPageNum;
     }
 
-    public String getNextPageUrl() {
-        return nextPageUrl;
-    }
-
     @Override
     public Elements getAdElements() {
         return adElements;
@@ -46,11 +42,5 @@ public class SuperDrugPage implements PageParser {
             String elementText = paginationElements.get(countOfPaginationElements - 2).text();
             maxPageNum = Integer.parseInt(elementText);
         }
-    }
-
-    public void parseNextPageUrl() {
-        Element paginationElement = pageInJsoup.selectFirst("li.next.pagination__item.direction");
-        Element aHrefElement = paginationElement.selectFirst("a");
-        nextPageUrl = "https://www.superdrug.com/" + aHrefElement.attr("href");
     }
 }
