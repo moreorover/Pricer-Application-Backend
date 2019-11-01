@@ -7,6 +7,7 @@ import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.product.ItemService;
 import martin.dev.pricer.data.services.product.PriceHandler;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ItemPriceProcessor {
@@ -30,6 +31,8 @@ public class ItemPriceProcessor {
                     priceHandler.firstPriceForItem(parsedItemDto, item);
                 } else if (lastPrice.getPrice() != parsedItemDto.getPrice()) {
                     double delta = 100 * ((parsedItemDto.getPrice() - lastPrice.getPrice()) / lastPrice.getPrice());
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    delta = Double.parseDouble(df.format(delta));
                     priceHandler.changedPriceForItem(parsedItemDto, item, delta);
                 }
             } else {
