@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface Factory {
 
+    PageParser getPage();
+
     int getMaxPageNumber();
 
     Elements getAds();

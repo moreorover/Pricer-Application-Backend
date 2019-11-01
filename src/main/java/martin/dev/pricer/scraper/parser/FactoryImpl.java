@@ -1,7 +1,6 @@
 package martin.dev.pricer.scraper.parser;
 
 import martin.dev.pricer.scraper.model.ParsedItemDto;
-import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.List;
@@ -10,11 +9,12 @@ public abstract class FactoryImpl<T extends PageParser> implements Factory {
 
     private T page;
 
-    public T getPage() {
+    @Override
+    public final T getPage() {
         return page;
     }
 
-    public void setPage(T page) {
+    public final void setPage(T page) {
         this.page = page;
     }
 

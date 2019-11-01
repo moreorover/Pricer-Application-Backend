@@ -11,7 +11,8 @@ public abstract class AdElementParserImpl implements AdElementParser {
         this.adInHtml = adInHtml;
     }
 
-    public Element getAdInHtml() {
+    @Override
+    public final Element getAdInHtml() {
         return adInHtml;
     }
 

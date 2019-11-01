@@ -1,6 +1,5 @@
 package martin.dev.pricer.scraper.parser;
 
-import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
 
@@ -14,23 +13,23 @@ public abstract class ParserProcessorImpl<T extends Factory> implements ParserPr
         this.itemPriceProcessor = itemPriceProcessor;
     }
 
-    public StoreUrl getStoreUrl() {
+    public final StoreUrl getStoreUrl() {
         return storeUrl;
     }
 
-    public void setStoreUrl(StoreUrl storeUrl) {
+    public final void setStoreUrl(StoreUrl storeUrl) {
         this.storeUrl = storeUrl;
     }
 
-    public T getFactory() {
+    public final T getFactory() {
         return factory;
     }
 
-    public void setFactory(T factory) {
+    public final void setFactory(T factory) {
         this.factory = factory;
     }
 
-    public ItemPriceProcessor getItemPriceProcessor() {
+    public final ItemPriceProcessor getItemPriceProcessor() {
         return itemPriceProcessor;
     }
 

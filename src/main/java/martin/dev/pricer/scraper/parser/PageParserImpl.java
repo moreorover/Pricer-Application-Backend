@@ -14,24 +14,27 @@ public abstract class PageParserImpl implements PageParser {
     }
 
     @Override
-    public int getMaxPageNum() {
+    public final int getMaxPageNum() {
         return maxPageNum;
     }
 
-    public void setMaxPageNum(int maxPageNum) {
+    @Override
+    public final void setMaxPageNum(int maxPageNum) {
         this.maxPageNum = maxPageNum;
     }
 
     @Override
-    public Elements getAdElements() {
+    public final Elements getAdElements() {
         return adElements;
     }
 
-    public void setAdElements(Elements adElements) {
+    @Override
+    public final void setAdElements(Elements adElements) {
         this.adElements = adElements;
     }
 
-    public Document getPageInJsoup() {
+    @Override
+    public final Document getPageInJsoup() {
         return pageInJsoup;
     }
 

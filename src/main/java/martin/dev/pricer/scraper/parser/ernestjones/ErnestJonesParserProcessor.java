@@ -26,6 +26,24 @@ public class ErnestJonesParserProcessor extends ParserProcessorImpl<ErnestJonesF
     }
 
     @Override
+    public void scrapePages(StoreUrl storeUrl) {
+        setStoreUrl(storeUrl);
+        initFactory(storeUrl.getUrlLink());
+        int maxPageNum = getFactory().getMaxPageNumber();
+
+        for (int i = 1; i < maxPageNum + 1; i++) {
+            String nexUrlToScrape = makeNextPageUrl(i);
+            log.info(nexUrlToScrape);
+
+            List<ParsedItemDto> parsedItemDtos = getFactory().getParsedAds();
+
+            getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
+
+            initFactory(nexUrlToScrape);
+        }
+    }
+
+    @Override
     public void initFactory(String targetUrl) {
         Document document = HttpClient.readContentInJsoupDocument(targetUrl);
         setFactory(new ErnestJonesFactory(document));
