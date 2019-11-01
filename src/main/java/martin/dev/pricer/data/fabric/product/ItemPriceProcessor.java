@@ -4,27 +4,27 @@ import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.model.product.Price;
 import martin.dev.pricer.data.model.store.StoreUrl;
-import martin.dev.pricer.data.services.product.ItemHandler;
+import martin.dev.pricer.data.services.product.ItemService;
 import martin.dev.pricer.data.services.product.PriceHandler;
 
 import java.util.List;
 
 public class ItemPriceProcessor {
 
-    private ItemHandler itemHandler;
+    private ItemService itemService;
     private PriceHandler priceHandler;
 
-    public ItemPriceProcessor(ItemHandler itemHandler, PriceHandler priceHandler) {
-        this.itemHandler = itemHandler;
+    public ItemPriceProcessor(ItemService itemService, PriceHandler priceHandler) {
+        this.itemService = itemService;
         this.priceHandler = priceHandler;
     }
 
     public void checkAgainstDatabase(List<ParsedItemDto> dataSet, StoreUrl storeUrl) {
 
         dataSet.forEach(parsedItemDto -> {
-            Item item = itemHandler.findItemByUpc(parsedItemDto);
+            Item item = itemService.findItemByUpc(parsedItemDto);
             if (item != null) {
-                itemHandler.updateItemCategories(item, storeUrl.getCategories());
+                itemService.updateItemCategories(item, storeUrl.getCategories());
                 Price lastPrice = priceHandler.fetchLastPriceForItem(item);
                 if (lastPrice == null) {
                     priceHandler.firstPriceForItem(parsedItemDto, item);
@@ -33,7 +33,7 @@ public class ItemPriceProcessor {
                     priceHandler.changedPriceForItem(parsedItemDto, item, delta);
                 }
             } else {
-                itemHandler.createNewItemWithPrice(parsedItemDto, storeUrl);
+                itemService.createNewItemWithPrice(parsedItemDto, storeUrl);
             }
         });
     }

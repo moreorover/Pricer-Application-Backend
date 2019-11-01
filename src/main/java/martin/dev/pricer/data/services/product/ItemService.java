@@ -5,15 +5,17 @@ import martin.dev.pricer.data.model.product.Category;
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.model.product.Price;
 import martin.dev.pricer.data.model.store.StoreUrl;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class ItemHandler {
+@Service
+public class ItemService {
 
     private ItemRepository itemRepository;
 
-    public ItemHandler(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 
