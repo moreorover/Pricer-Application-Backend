@@ -30,14 +30,16 @@ public class HSamuelParserProcessor extends ParserProcessorImpl<HSamuelFactory> 
         initFactory(storeUrl.getUrlLink());
         int maxPageNum = getFactory().getMaxPageNumber();
 
-        for (int i = 1; i < maxPageNum + 1; i++) {
-            String nexUrlToScrape = makeNextPageUrl(i);
-            log.info("Parsing page: " + nexUrlToScrape);
+        int currentRotation = 1;
+
+        while (currentRotation <= maxPageNum){
+            log.info("Parsing page: " + makeNextPageUrl(currentRotation));
 
             List<ParsedItemDto> parsedItemDtos = getFactory().getParsedAds();
 
             getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
 
+            String nexUrlToScrape = makeNextPageUrl(++currentRotation);
             initFactory(nexUrlToScrape);
         }
     }
