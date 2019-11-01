@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.parser.ernestjones;
+package martin.dev.pricer.scraper.parser.hsamuel;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
@@ -11,26 +11,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-public class ErnestJonesScraper extends Scraper {
+@Slf4j
+public class HSamuelScraper extends Scraper {
 
     @Autowired
-    private ErnestJonesParser ernestJonesParser;
+    private HSamuelParser hSamuelParser;
 
     @Override
     public void scrapePages(StoreUrl storeUrl) {
         setStoreUrl(storeUrl);
         initFactory(storeUrl.getUrlLink());
-        int maxPageNum = ernestJonesParser.parseMaxPageNum(getPageContentInJsoupHtml());
+        int maxPageNum = hSamuelParser.parseMaxPageNum(getPageContentInJsoupHtml());
 
         int currentRotation = 1;
 
         while (currentRotation <= maxPageNum){
             log.info("Parsing page: " + makeNextPageUrl(currentRotation));
 
-            Elements parsedItemElements = ernestJonesParser.parseListOfAdElements(getPageContentInJsoupHtml());
-            List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> ernestJonesParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
+            Elements parsedItemElements = hSamuelParser.parseListOfAdElements(getPageContentInJsoupHtml());
+            List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> hSamuelParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
 
             getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
 

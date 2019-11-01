@@ -10,7 +10,7 @@ import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.Parser;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
-import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
+import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,8 +51,8 @@ public class MainProfile {
     }
 
     @Bean
-    public HSamuelParserProcessor getHSamuelParserProcessor() {
-        return new HSamuelParserProcessor(getItemPriceProcessor());
+    public HSamuelScraper getHSamuelScraper() {
+        return new HSamuelScraper();
     }
 
     @Bean
@@ -72,6 +72,6 @@ public class MainProfile {
 
     @Bean
     public Parser getParser() {
-        return new Parser(getStoreUrlHandler(), getHSamuelParserProcessor(), getErnestJonesScraper(), getSuperDrugParserProcessor(), getArgosScraper());
+        return new Parser(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugParserProcessor(), getArgosScraper());
     }
 }

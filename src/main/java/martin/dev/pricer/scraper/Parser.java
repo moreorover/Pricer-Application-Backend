@@ -5,7 +5,7 @@ import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
-import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
+import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -13,14 +13,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class Parser {
 
     private StoreUrlHandler storeUrlHandler;
-    private HSamuelParserProcessor hSamuelParserProcessor;
+    private HSamuelScraper hSamuelScraper;
     private ErnestJonesScraper ernestJonesScraper;
     private SuperDrugParserProcessor superDrugParserProcessor;
     private ArgosScraper argosService;
 
-    public Parser(StoreUrlHandler storeUrlHandler, HSamuelParserProcessor hSamuelParserProcessor, ErnestJonesScraper ernestJonesScraper, SuperDrugParserProcessor superDrugParserProcessor, ArgosScraper argosService) {
+    public Parser(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugParserProcessor superDrugParserProcessor, ArgosScraper argosService) {
         this.storeUrlHandler = storeUrlHandler;
-        this.hSamuelParserProcessor = hSamuelParserProcessor;
+        this.hSamuelScraper = hSamuelScraper;
         this.ernestJonesScraper = ernestJonesScraper;
         this.superDrugParserProcessor = superDrugParserProcessor;
         this.argosService = argosService;
@@ -38,7 +38,7 @@ public class Parser {
             switch (storeUrl.getStore().getName()) {
                 case "H. Samuel":
                     storeUrlHandler.setStatusScraping(storeUrl);
-                    hSamuelParserProcessor.scrapePages(storeUrl);
+                    hSamuelScraper.scrapePages(storeUrl);
                     break;
                 case "Ernest Jones":
                     storeUrlHandler.setStatusScraping(storeUrl);

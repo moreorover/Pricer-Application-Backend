@@ -25,12 +25,12 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (330, 2, 'https://www.superdrug.com/Fragrance/Fragrance-For-Him/c/fragranceforhim?q=%3AbestBiz%3AinStockFlag%3Atrue&page=0&resultsForPage=60&sort=bestBiz', TIMESTAMP '2019-10-24 13:07:00.02315', 'DISABLED'),
 (332, 3, 'https://www.thefragranceshop.co.uk/womens-perfumes-and-fragrances.aspx', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
 (333, 3, 'https://www.thefragranceshop.co.uk/mens-aftershaves-and-fragrances.aspx', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
-(334, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:18:00.02315', 'DISABLED'),
-(335, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-20 10:09:00.02315', 'DISABLED'),
+(334, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:18:00.02315', 'READY'),
+(335, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-20 10:09:00.02315', 'READY'),
 (336, 5, 'https://www.debenhams.com/women/accessories/watches?shipToCntry=GB', TIMESTAMP '2019-10-24 12:37:00.02315', 'DISABLED'),
 (337, 5, 'https://www.debenhams.com/men/watches?shipToCntry=GB', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
-(338, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:36:00.02315', 'READY'),
-(339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
+(338, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:36:00.02315', 'DISABLED'),
+(339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (340, 7, 'https://www.watchshop.com/mens-watches.html?show=200&page=1', '2020-09-03 21:13:00.02315', 'DISABLED'),
 (341, 7, 'https://www.watchshop.com/ladies-watches.html?show=200&page=1', '2020-09-03 21:12:00.02315', 'DISABLED');
 
