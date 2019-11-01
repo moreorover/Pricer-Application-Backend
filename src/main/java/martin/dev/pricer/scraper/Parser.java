@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
-import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesParserProcessor;
+import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,14 +14,14 @@ public class Parser {
 
     private StoreUrlHandler storeUrlHandler;
     private HSamuelParserProcessor hSamuelParserProcessor;
-    private ErnestJonesParserProcessor ernestJonesParserProcessor;
+    private ErnestJonesScraper ernestJonesScraper;
     private SuperDrugParserProcessor superDrugParserProcessor;
     private ArgosScraper argosService;
 
-    public Parser(StoreUrlHandler storeUrlHandler, HSamuelParserProcessor hSamuelParserProcessor, ErnestJonesParserProcessor ernestJonesParserProcessor, SuperDrugParserProcessor superDrugParserProcessor, ArgosScraper argosService) {
+    public Parser(StoreUrlHandler storeUrlHandler, HSamuelParserProcessor hSamuelParserProcessor, ErnestJonesScraper ernestJonesScraper, SuperDrugParserProcessor superDrugParserProcessor, ArgosScraper argosService) {
         this.storeUrlHandler = storeUrlHandler;
         this.hSamuelParserProcessor = hSamuelParserProcessor;
-        this.ernestJonesParserProcessor = ernestJonesParserProcessor;
+        this.ernestJonesScraper = ernestJonesScraper;
         this.superDrugParserProcessor = superDrugParserProcessor;
         this.argosService = argosService;
     }
@@ -42,7 +42,7 @@ public class Parser {
                     break;
                 case "Ernest Jones":
                     storeUrlHandler.setStatusScraping(storeUrl);
-                    ernestJonesParserProcessor.scrapePages(storeUrl);
+                    ernestJonesScraper.scrapePages(storeUrl);
                     break;
                 case "Superdrug":
                     storeUrlHandler.setStatusScraping(storeUrl);

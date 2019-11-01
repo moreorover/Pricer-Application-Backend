@@ -1,15 +1,15 @@
 package martin.dev.pricer.profile;
 
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
-import martin.dev.pricer.data.services.product.ItemService;
 import martin.dev.pricer.data.services.product.ItemRepository;
-import martin.dev.pricer.data.services.product.PriceService;
+import martin.dev.pricer.data.services.product.ItemService;
 import martin.dev.pricer.data.services.product.PriceRepository;
+import martin.dev.pricer.data.services.product.PriceService;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.Parser;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
-import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesParserProcessor;
+import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
 import org.springframework.context.annotation.Bean;
@@ -56,22 +56,22 @@ public class MainProfile {
     }
 
     @Bean
-    public ErnestJonesParserProcessor getErnestJonesParserProcessor(){
-        return new ErnestJonesParserProcessor(getItemPriceProcessor());
+    public ErnestJonesScraper getErnestJonesScraper() {
+        return new ErnestJonesScraper();
     }
 
     @Bean
-    public SuperDrugParserProcessor getSuperDrugParserProcessor(){
+    public SuperDrugParserProcessor getSuperDrugParserProcessor() {
         return new SuperDrugParserProcessor(getItemPriceProcessor());
     }
 
     @Bean
-    public ArgosScraper getArgosService(){
+    public ArgosScraper getArgosScraper() {
         return new ArgosScraper();
     }
 
     @Bean
     public Parser getParser() {
-        return new Parser(getStoreUrlHandler(), getHSamuelParserProcessor(), getErnestJonesParserProcessor(), getSuperDrugParserProcessor(), getArgosService());
+        return new Parser(getStoreUrlHandler(), getHSamuelParserProcessor(), getErnestJonesScraper(), getSuperDrugParserProcessor(), getArgosScraper());
     }
 }
