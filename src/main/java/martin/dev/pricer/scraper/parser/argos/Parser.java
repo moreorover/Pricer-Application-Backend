@@ -21,5 +21,5 @@ public interface Parser {
 
     String parseUrl(Element adInJsoupHtml);
 
-    ParsedItemDto fetchObject(Element adInJsoupHtml);
+    ParsedItemDto fetchItemDtoFromHtml(Element adInJsoupHtml);
 }

@@ -1,5 +1,6 @@
 package martin.dev.pricer.scraper.parser.argos;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -7,6 +8,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ArgosParser implements Parser {
 
     @Override
@@ -57,12 +59,16 @@ public class ArgosParser implements Parser {
     }
 
     @Override
-    public ParsedItemDto fetchObject(Element adInJsoupHtml) {
+    public ParsedItemDto fetchItemDtoFromHtml(Element adInJsoupHtml) {
         String title = parseTitle(adInJsoupHtml);
         String upc = parseUpc(adInJsoupHtml);
         Double price = parsePrice(adInJsoupHtml);
         String img = parseImage(adInJsoupHtml);
         String url = parseUrl(adInJsoupHtml);
+
+        ParsedItemDto parsedItemDto = new ParsedItemDto(title, url, img, upc, price);
+        log.info(adInJsoupHtml.outerHtml());
+        log.info(parsedItemDto.toString());
         return new ParsedItemDto(title, url, img, upc, price);
     }
 }

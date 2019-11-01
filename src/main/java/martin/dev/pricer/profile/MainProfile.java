@@ -8,7 +8,7 @@ import martin.dev.pricer.data.services.product.PriceRepository;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.Parser;
-import martin.dev.pricer.scraper.parser.argos.ArgosService;
+import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesParserProcessor;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
@@ -66,8 +66,8 @@ public class MainProfile {
     }
 
     @Bean
-    public ArgosService getArgosService(){
-        return new ArgosService(getItemPriceProcessor());
+    public ArgosScraper getArgosService(){
+        return new ArgosScraper();
     }
 
     @Bean
