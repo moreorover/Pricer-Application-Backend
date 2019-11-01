@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.parser.argos;
+package martin.dev.pricer.scraper.parser;
 
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;

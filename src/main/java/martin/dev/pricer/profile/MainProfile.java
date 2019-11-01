@@ -7,11 +7,11 @@ import martin.dev.pricer.data.services.product.PriceRepository;
 import martin.dev.pricer.data.services.product.PriceService;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
-import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.ParseLauncher;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
-import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
+import martin.dev.pricer.scraper.parser.superdrug.SuperDrugScraper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -61,8 +61,8 @@ public class MainProfile {
     }
 
     @Bean
-    public SuperDrugParserProcessor getSuperDrugParserProcessor() {
-        return new SuperDrugParserProcessor(getItemPriceProcessor());
+    public SuperDrugScraper getSuperDrugScraper() {
+        return new SuperDrugScraper();
     }
 
     @Bean
@@ -71,7 +71,7 @@ public class MainProfile {
     }
 
     @Bean
-    public Parser getParser() {
-        return new Parser(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugParserProcessor(), getArgosScraper());
+    public ParseLauncher getParser() {
+        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper());
     }
 }

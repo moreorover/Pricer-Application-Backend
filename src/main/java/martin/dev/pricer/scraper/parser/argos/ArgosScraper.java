@@ -3,6 +3,7 @@ package martin.dev.pricer.scraper.parser.argos;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import martin.dev.pricer.scraper.parser.Scraper;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

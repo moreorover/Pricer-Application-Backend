@@ -2,6 +2,7 @@ package martin.dev.pricer.scraper.parser.argos;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import martin.dev.pricer.scraper.parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

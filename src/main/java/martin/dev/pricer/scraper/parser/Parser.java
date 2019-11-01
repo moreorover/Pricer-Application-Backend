@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.parser.argos;
+package martin.dev.pricer.scraper.parser;
 
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;

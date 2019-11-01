@@ -6,24 +6,24 @@ import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
-import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
+import martin.dev.pricer.scraper.parser.superdrug.SuperDrugScraper;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @Slf4j
-public class Parser {
+public class ParseLauncher {
 
     private StoreUrlHandler storeUrlHandler;
     private HSamuelScraper hSamuelScraper;
     private ErnestJonesScraper ernestJonesScraper;
-    private SuperDrugParserProcessor superDrugParserProcessor;
-    private ArgosScraper argosService;
+    private SuperDrugScraper superDrugScraper;
+    private ArgosScraper argosScraper;
 
-    public Parser(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugParserProcessor superDrugParserProcessor, ArgosScraper argosService) {
+    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper) {
         this.storeUrlHandler = storeUrlHandler;
         this.hSamuelScraper = hSamuelScraper;
         this.ernestJonesScraper = ernestJonesScraper;
-        this.superDrugParserProcessor = superDrugParserProcessor;
-        this.argosService = argosService;
+        this.superDrugScraper = superDrugScraper;
+        this.argosScraper = argosScraper;
     }
 
     @Scheduled(fixedRate = 60000, initialDelay = 5000)
@@ -46,11 +46,11 @@ public class Parser {
                     break;
                 case "Superdrug":
                     storeUrlHandler.setStatusScraping(storeUrl);
-                    superDrugParserProcessor.scrapePages(storeUrl);
+                    superDrugScraper.scrapePages(storeUrl);
                     break;
                 case "Argos":
                     storeUrlHandler.setStatusScraping(storeUrl);
-                    argosService.scrapePages(storeUrl);
+                    argosScraper.scrapePages(storeUrl);
                     break;
             }
 

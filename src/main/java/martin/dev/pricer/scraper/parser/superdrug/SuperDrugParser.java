@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.parser.ernestjones;
+package martin.dev.pricer.scraper.parser.superdrug;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
@@ -8,53 +8,63 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
-public class ErnestJonesParser implements Parser {
-
+@Slf4j
+public class SuperDrugParser implements Parser {
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        return pageContentInJsoupHtml.select("div.product-tile.js-product-item");
+        return pageContentInJsoupHtml.select("div[class=item__content]");
     }
 
     @Override
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
-        Element paginationBlockElement = pageContentInJsoupHtml.selectFirst("ol[class*=pageNumbers]");
-        Elements paginationButtons = paginationBlockElement.select("li");
-        Element lastPageElement = paginationButtons.get(7);
-        String lastPageText = lastPageElement.text();
-        return Integer.parseInt(lastPageText);
+        Elements paginationElements = pageContentInJsoupHtml.select("ul[class=pagination__list]");
+        paginationElements = paginationElements.select("li");
+        int countOfPaginationElements = paginationElements.size();
+        if (countOfPaginationElements == 0) {
+            return 0;
+        } else {
+            String elementText = paginationElements.get(countOfPaginationElements - 2).text();
+            return Integer.parseInt(elementText);
+        }
     }
 
     @Override
     public String parseTitle(Element adInJsoupHtml) {
-        return adInJsoupHtml.select("p[class=product-tile__description]").text();
+        Element titleElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
+        return titleElement.text();
     }
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
-        Element skuElement = adInJsoupHtml.selectFirst("meta");
-        return "EJ_" + skuElement.attr("content");
+        String urlString = parseUrl(adInJsoupHtml);
+        String[] urlSplit = urlString.split("/p/");
+        return "SD_" + urlSplit[1];
     }
 
     @Override
     public Double parsePrice(Element adInJsoupHtml) {
-        String priceString = adInJsoupHtml.select("p[class*=current-price]").text();
+        String priceString = adInJsoupHtml.selectFirst("span[class*=item__price--now]").text();
         priceString = priceString.replaceAll("[^\\d.]", "");
         return Double.parseDouble(priceString);
     }
 
     @Override
     public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("img[class^=product-tile__image]");
-        return imgElement.attr("data-src");
+        Element imgElement = adInJsoupHtml.selectFirst("img");
+        String urlBase = "https://www.superdrug.com/";
+        if (!imgElement.attr("src").equals("")) {
+            return urlBase + imgElement.attr("src");
+        } else {
+            return urlBase + imgElement.attr("data-src");
+        }
     }
 
     @Override
     public String parseUrl(Element adInJsoupHtml) {
-        Element element = adInJsoupHtml.select("a").first();
-        String urlBase = "https://www.ernestjones.co.uk";
-        return urlBase + element.attr("href");
+        Element titleElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
+        String urlBase = "https://www.superdrug.com/";
+        return urlBase + titleElement.attr("href");
     }
 
     @Override

@@ -1,34 +1,36 @@
 package martin.dev.pricer.scraper.parser.superdrug;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
-import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
-import martin.dev.pricer.scraper.parser.ParserProcessorImpl;
-import org.jsoup.nodes.Document;
+import martin.dev.pricer.scraper.parser.Scraper;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
-public class SuperDrugParserProcessor extends ParserProcessorImpl<SuperDrugFactory> {
+@Service
+public class SuperDrugScraper extends Scraper {
 
-    public SuperDrugParserProcessor(ItemPriceProcessor itemPriceProcessor) {
-        super(itemPriceProcessor);
-    }
+    @Autowired
+    private SuperDrugParser superDrugParser;
 
     @Override
     public void scrapePages(StoreUrl storeUrl) {
-        this.setStoreUrl(storeUrl);
+        setStoreUrl(storeUrl);
         initFactory(storeUrl.getUrlLink());
-        int maxPageNum = getFactory().getMaxPageNumber();
+        int maxPageNum = superDrugParser.parseMaxPageNum(getPageContentInJsoupHtml());
 
         int currentRotation = 0;
 
         while (currentRotation < maxPageNum){
             log.info("Parsing page: " + makeNextPageUrl(currentRotation));
 
-            List<ParsedItemDto> parsedItemDtos = getFactory().getParsedAds();
+            Elements parsedItemElements = superDrugParser.parseListOfAdElements(getPageContentInJsoupHtml());
+            List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> superDrugParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
 
             getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
 
@@ -42,11 +44,5 @@ public class SuperDrugParserProcessor extends ParserProcessorImpl<SuperDrugFacto
         String full = getStoreUrl().getUrlLink();
         String[] x = full.split("&page=0");
         return x[0] + "&page=0" + pageNum + "&resultsForPage=60&sort=bestBiz";
-    }
-
-    @Override
-    public void initFactory(String targetUrl) {
-        Document document = HttpClient.readContentInJsoupDocument(targetUrl);
-        setFactory(new SuperDrugFactory(document));
     }
 }
