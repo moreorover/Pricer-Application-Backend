@@ -21,13 +21,10 @@ public class Item extends BaseEntity {
     private String url;
     private String img;
 
-    @OneToOne
-    private Statistics statistics;
-
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private Set<Price> prices = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = {@JoinColumn(name = "item_id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id")}

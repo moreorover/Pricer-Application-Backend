@@ -33,7 +33,7 @@ public class ErnestJonesParserProcessor extends ParserProcessorImpl<ErnestJonesF
 
         for (int i = 1; i < maxPageNum + 1; i++) {
             String nexUrlToScrape = makeNextPageUrl(i);
-            log.info(nexUrlToScrape);
+            log.info("Parsing page: " + nexUrlToScrape);
 
             List<ParsedItemDto> parsedItemDtos = getFactory().getParsedAds();
 

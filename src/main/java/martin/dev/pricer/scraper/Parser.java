@@ -3,6 +3,7 @@ package martin.dev.pricer.scraper;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
+import martin.dev.pricer.scraper.parser.argos.ArgosParserProcessor;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesParserProcessor;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelParserProcessor;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugParserProcessor;
@@ -15,12 +16,14 @@ public class Parser {
     private HSamuelParserProcessor hSamuelParserProcessor;
     private ErnestJonesParserProcessor ernestJonesParserProcessor;
     private SuperDrugParserProcessor superDrugParserProcessor;
+    private ArgosParserProcessor argosParserProcessor;
 
-    public Parser(StoreUrlHandler storeUrlHandler, HSamuelParserProcessor hSamuelParserProcessor, ErnestJonesParserProcessor ernestJonesParserProcessor, SuperDrugParserProcessor superDrugParserProcessor) {
+    public Parser(StoreUrlHandler storeUrlHandler, HSamuelParserProcessor hSamuelParserProcessor, ErnestJonesParserProcessor ernestJonesParserProcessor, SuperDrugParserProcessor superDrugParserProcessor, ArgosParserProcessor argosParserProcessor) {
         this.storeUrlHandler = storeUrlHandler;
         this.hSamuelParserProcessor = hSamuelParserProcessor;
         this.ernestJonesParserProcessor = ernestJonesParserProcessor;
         this.superDrugParserProcessor = superDrugParserProcessor;
+        this.argosParserProcessor = argosParserProcessor;
     }
 
     @Scheduled(fixedRate = 60000, initialDelay = 5000)
@@ -44,6 +47,10 @@ public class Parser {
                 case "Superdrug":
                     storeUrlHandler.setStatusScraping(storeUrl);
                     superDrugParserProcessor.scrapePages(storeUrl);
+                    break;
+                case "Argos":
+                    storeUrlHandler.setStatusScraping(storeUrl);
+                    argosParserProcessor.scrapePages(storeUrl);
                     break;
             }
 

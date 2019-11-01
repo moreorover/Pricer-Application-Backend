@@ -1,9 +1,16 @@
 package martin.dev.pricer.scraper.parser.argos;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
+import martin.dev.pricer.scraper.client.HttpClient;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.scraper.parser.ParserProcessorImpl;
+import org.jsoup.nodes.Document;
 
+import java.util.List;
+
+@Slf4j
 public class ArgosParserProcessor extends ParserProcessorImpl<ArgosFactory> {
 
     public ArgosParserProcessor(ItemPriceProcessor itemPriceProcessor) {
@@ -12,16 +19,32 @@ public class ArgosParserProcessor extends ParserProcessorImpl<ArgosFactory> {
 
     @Override
     public void scrapePages(StoreUrl storeUrl) {
-        super.scrapePages(storeUrl);
+        setStoreUrl(storeUrl);
+        initFactory(storeUrl.getUrlLink());
+        int maxPageNum = getFactory().getMaxPageNumber();
+
+        for (int i = 1; i < maxPageNum + 1; i++) {
+            String nexUrlToScrape = makeNextPageUrl(i);
+            log.info("Parsing page: " + nexUrlToScrape);
+
+            List<ParsedItemDto> parsedItemDtos = getFactory().getParsedAds();
+
+            getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
+
+            initFactory(nexUrlToScrape);
+        }
     }
 
     @Override
     public String makeNextPageUrl(int pageNum) {
-        return super.makeNextPageUrl(pageNum);
+        String full = getStoreUrl().getUrlLink();
+        String[] x = full.split("/page:");
+        return x[0] + "/page:" + pageNum;
     }
 
     @Override
     public void initFactory(String targetUrl) {
-        super.initFactory(targetUrl);
+        Document document = HttpClient.readContentInJsoupDocument(targetUrl);
+        setFactory(new ArgosFactory(document));
     }
 }
