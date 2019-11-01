@@ -6,11 +6,11 @@ import martin.dev.pricer.data.model.product.Price;
 
 import java.time.LocalDateTime;
 
-public class PriceHandler {
+public class PriceService {
 
     private PriceRepository priceRepository;
 
-    public PriceHandler(PriceRepository priceRepository) {
+    public PriceService(PriceRepository priceRepository) {
         this.priceRepository = priceRepository;
     }
 

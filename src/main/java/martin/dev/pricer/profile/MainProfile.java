@@ -3,7 +3,7 @@ package martin.dev.pricer.profile;
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.services.product.ItemService;
 import martin.dev.pricer.data.services.product.ItemRepository;
-import martin.dev.pricer.data.services.product.PriceHandler;
+import martin.dev.pricer.data.services.product.PriceService;
 import martin.dev.pricer.data.services.product.PriceRepository;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
@@ -40,8 +40,8 @@ public class MainProfile {
     }
 
     @Bean
-    public PriceHandler getPriceHandler() {
-        return new PriceHandler(priceRepository);
+    public PriceService getPriceHandler() {
+        return new PriceService(priceRepository);
     }
 
     @Bean
