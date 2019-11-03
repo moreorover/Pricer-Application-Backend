@@ -35,29 +35,26 @@ public class ParseLauncher {
             return;
         }
         try {
+            storeUrlHandler.setStatusScraping(storeUrl);
             switch (storeUrl.getStore().getName()) {
                 case "H. Samuel":
-                    storeUrlHandler.setStatusScraping(storeUrl);
                     hSamuelScraper.scrapePages(storeUrl);
                     break;
                 case "Ernest Jones":
-                    storeUrlHandler.setStatusScraping(storeUrl);
                     ernestJonesScraper.scrapePages(storeUrl);
                     break;
                 case "Superdrug":
-                    storeUrlHandler.setStatusScraping(storeUrl);
                     superDrugScraper.scrapePages(storeUrl);
                     break;
                 case "Argos":
-                    storeUrlHandler.setStatusScraping(storeUrl);
                     argosScraper.scrapePages(storeUrl);
                     break;
             }
-
-            storeUrlHandler.setStatusReady(storeUrl);
-            storeUrlHandler.setLastCheckedTimeToNow(storeUrl);
         } catch (Exception e) {
             log.error(e.getMessage());
+        } finally {
+            storeUrlHandler.setStatusReady(storeUrl);
+            storeUrlHandler.setLastCheckedTimeToNow(storeUrl);
         }
     }
 }
