@@ -8,6 +8,8 @@ import martin.dev.pricer.data.services.product.PriceService;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.ParseLauncher;
+import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyParser;
+import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyScraper;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
@@ -61,9 +63,7 @@ public class MainProfile {
     }
 
     @Bean
-    public SuperDrugScraper getSuperDrugScraper() {
-        return new SuperDrugScraper();
-    }
+    public SuperDrugScraper getSuperDrugScraper() { return new SuperDrugScraper(); }
 
     @Bean
     public ArgosScraper getArgosScraper() {
@@ -71,7 +71,10 @@ public class MainProfile {
     }
 
     @Bean
+    public AllBeautyScraper getAllBeautyScraper() { return new AllBeautyScraper(); }
+
+    @Bean
     public ParseLauncher getParser() {
-        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper());
+        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper());
     }
 }

@@ -29,6 +29,10 @@ public abstract class Scraper {
         return pageContentInJsoupHtml;
     }
 
+    public void setPageContentInJsoupHtml(Document pageContentInJsoupHtml) {
+        this.pageContentInJsoupHtml = pageContentInJsoupHtml;
+    }
+
     public abstract void scrapePages(StoreUrl storeUrl);
 
     public abstract String makeNextPageUrl(int pageNum);
