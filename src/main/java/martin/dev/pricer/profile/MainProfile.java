@@ -9,7 +9,7 @@ import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.ParseLauncher;
 import martin.dev.pricer.scraper.parser.debenhams.DebenhamsScraper;
-import martin.dev.pricer.scraper.parser.unactive.allbeauty.AllBeautyScraper;
+import martin.dev.pricer.scraper.parser.inactive.allbeauty.AllBeautyScraper;
 import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
