@@ -35,4 +35,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    @OneToOne
+    private Statistics statistics;
+
 }

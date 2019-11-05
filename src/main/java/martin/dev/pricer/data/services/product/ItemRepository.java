@@ -13,4 +13,6 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Item findItemByUpc(String upc);
+
+    List<Item> findAllByStatistics_Deal(boolean statistics_deal);
 }
