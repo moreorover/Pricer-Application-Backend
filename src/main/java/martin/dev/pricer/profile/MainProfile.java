@@ -8,8 +8,8 @@ import martin.dev.pricer.data.services.product.PriceService;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.ParseLauncher;
-import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyParser;
-import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyScraper;
+import martin.dev.pricer.scraper.parser.debenhams.DebenhamsScraper;
+import martin.dev.pricer.scraper.parser.unactive.allbeauty.AllBeautyScraper;
 import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
@@ -78,7 +78,10 @@ public class MainProfile {
     public AMJWatchesScraper getAMJWatchesScraper() { return new AMJWatchesScraper(); }
 
     @Bean
+    public DebenhamsScraper getDebenhamsScraper() { return new DebenhamsScraper(); }
+
+    @Bean
     public ParseLauncher getParser() {
-        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper(), getAMJWatchesScraper());
+        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper(), getAMJWatchesScraper(), getDebenhamsScraper());
     }
 }

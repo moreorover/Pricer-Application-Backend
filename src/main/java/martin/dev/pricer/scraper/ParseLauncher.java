@@ -3,7 +3,8 @@ package martin.dev.pricer.scraper;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
-import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyScraper;
+import martin.dev.pricer.scraper.parser.debenhams.DebenhamsScraper;
+import martin.dev.pricer.scraper.parser.unactive.allbeauty.AllBeautyScraper;
 import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
@@ -23,8 +24,9 @@ public class ParseLauncher {
     private ArgosScraper argosScraper;
     private AllBeautyScraper allBeautyScraper;
     private AMJWatchesScraper amjWatchesScraper;
+    private DebenhamsScraper debenhamsScraper;
 
-    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper, AllBeautyScraper allBeautyScraper, AMJWatchesScraper amjWatchesScraper) {
+    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper, AllBeautyScraper allBeautyScraper, AMJWatchesScraper amjWatchesScraper, DebenhamsScraper debenhamsScraper) {
         this.storeUrlHandler = storeUrlHandler;
         this.hSamuelScraper = hSamuelScraper;
         this.ernestJonesScraper = ernestJonesScraper;
@@ -32,6 +34,7 @@ public class ParseLauncher {
         this.argosScraper = argosScraper;
         this.allBeautyScraper = allBeautyScraper;
         this.amjWatchesScraper = amjWatchesScraper;
+        this.debenhamsScraper = debenhamsScraper;
     }
 
     @Scheduled(fixedRate = 60000, initialDelay = 5000)
@@ -62,6 +65,9 @@ public class ParseLauncher {
                     break;
                 case "AMJ Watches":
                     amjWatchesScraper.scrapePages(storeUrl);
+                    break;
+                case "Debenhams":
+                    debenhamsScraper.scrapePages(storeUrl);
                     break;
             }
         } catch (Exception e) {
