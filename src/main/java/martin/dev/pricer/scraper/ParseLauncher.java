@@ -4,11 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyScraper;
+import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugScraper;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.Arrays;
 
 @Slf4j
 public class ParseLauncher {
@@ -19,14 +22,16 @@ public class ParseLauncher {
     private SuperDrugScraper superDrugScraper;
     private ArgosScraper argosScraper;
     private AllBeautyScraper allBeautyScraper;
+    private AMJWatchesScraper amjWatchesScraper;
 
-    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper, AllBeautyScraper allBeautyScraper) {
+    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper, AllBeautyScraper allBeautyScraper, AMJWatchesScraper amjWatchesScraper) {
         this.storeUrlHandler = storeUrlHandler;
         this.hSamuelScraper = hSamuelScraper;
         this.ernestJonesScraper = ernestJonesScraper;
         this.superDrugScraper = superDrugScraper;
         this.argosScraper = argosScraper;
         this.allBeautyScraper = allBeautyScraper;
+        this.amjWatchesScraper = amjWatchesScraper;
     }
 
     @Scheduled(fixedRate = 60000, initialDelay = 5000)
@@ -55,9 +60,12 @@ public class ParseLauncher {
                 case "All Beauty":
                     allBeautyScraper.scrapePages(storeUrl);
                     break;
+                case "AMJ Watches":
+                    amjWatchesScraper.scrapePages(storeUrl);
+                    break;
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
         } finally {
             storeUrlHandler.setStatusReady(storeUrl);
             storeUrlHandler.setLastCheckedTimeToNow(storeUrl);

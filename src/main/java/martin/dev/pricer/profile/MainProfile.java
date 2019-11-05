@@ -10,6 +10,7 @@ import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.ParseLauncher;
 import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyParser;
 import martin.dev.pricer.scraper.parser.allbeauty.AllBeautyScraper;
+import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
 import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
@@ -74,7 +75,10 @@ public class MainProfile {
     public AllBeautyScraper getAllBeautyScraper() { return new AllBeautyScraper(); }
 
     @Bean
+    public AMJWatchesScraper getAMJWatchesScraper() { return new AMJWatchesScraper(); }
+
+    @Bean
     public ParseLauncher getParser() {
-        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper());
+        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper(), getAMJWatchesScraper());
     }
 }

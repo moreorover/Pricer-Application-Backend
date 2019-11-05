@@ -6,7 +6,8 @@ INSERT INTO `store` (`id`, `name`, `url`, `logo`) VALUES
 (5, 'Debenhams Watches', 'https://www.debenhams.com/', 'https://www.stickpng.com/assets/images/5a1ac8e0f65d84088faf1376.png'),
 (6, 'Ernest Jones', 'https://www.ernestjones.co.uk', 'https://d2r6ga9xnxj9b6.cloudfront.net/logos/logo.svg'),
 (7, 'Watch Shop', 'https://www.watchshop.com', 'http://www.watchshop.com/time-of-your-life/img/watchshop-logo.png'),
-(8, 'All Beauty', 'https://www.allbeauty.com/gb/en', null);
+(8, 'All Beauty', 'https://www.allbeauty.com/gb/en', null),
+(9, 'AMJ Watches', 'https://amjwatches.co.uk', null);
 
 INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`) VALUES
 (316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'DISABLED'),
@@ -34,8 +35,10 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (340, 7, 'https://www.watchshop.com/mens-watches.html?show=200&page=1', TIMESTAMP '2020-09-03 21:13:00.02315', 'DISABLED'),
 (341, 7, 'https://www.watchshop.com/ladies-watches.html?show=200&page=1', TIMESTAMP '2020-09-03 21:12:00.02315', 'DISABLED'),
-(342, 8, 'https://www.allbeauty.com/gb/en/catalogue/fragrance/-/-/-/-/her?page=0', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(343, 8, 'https://www.allbeauty.com/gb/en/catalogue/fragrance/-/-/-/-/him?page=0', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY');
+(342, 8, 'https://www.allbeauty.com/gb/en/catalogue/fragrance/-/-/-/-/her?page=0', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(343, 8, 'https://www.allbeauty.com/gb/en/catalogue/fragrance/-/-/-/-/him?page=0', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(344, 9, 'https://amjwatches.co.uk/ladies.html?page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
+(345, 9, 'https://amjwatches.co.uk/mens.html?page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY');
 
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Men'),(2, 'Women'),
@@ -69,4 +72,6 @@ INSERT INTO `store_url_categories` (`store_url_id`, `category_id`) VALUES
 (327, 2), (327, 5),
 (328, 1), (328, 5),
 (342, 2), (342, 5),
-(343, 1), (343, 5);
+(343, 1), (343, 5),
+(344, 2), (344, 3),
+(345, 1), (345, 3);
