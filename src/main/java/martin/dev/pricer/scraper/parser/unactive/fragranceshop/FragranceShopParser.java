@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.parser.johnlewis;
+package martin.dev.pricer.scraper.parser.unactive.fragranceshop;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
@@ -8,18 +8,23 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
-public class JohnLewisParser implements Parser {
+@Service
+public class FragranceShopParser implements Parser {
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        return null;
+        return pageContentInJsoupHtml.select("div[class=product-container-panel]");
     }
 
     @Override
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
-        return 0;
+        Element productCountElement = pageContentInJsoupHtml.selectFirst("div[class=product-count]");
+        String textOfElement = productCountElement.text();
+        String productCountString = textOfElement.split("of")[1];
+        productCountString = productCountString.replaceAll("[^\\d.]", "");
+        int productCount = Integer.parseInt(productCountString);
+        return (productCount + 20 - 1) / 30;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.parser.allbeauty;
+package martin.dev.pricer.scraper.parser.unactive.allbeauty;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
