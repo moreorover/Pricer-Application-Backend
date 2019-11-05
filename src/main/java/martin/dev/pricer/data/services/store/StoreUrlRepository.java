@@ -16,5 +16,5 @@ public interface StoreUrlRepository extends JpaRepository<StoreUrl, Long> {
 
     List<StoreUrl> findAllByStore(Store store);
 
-    StoreUrl findFirstByLastCheckedBeforeAndStatus(LocalDateTime lastChecked, Status status);
+    StoreUrl findFirstByLastCheckedBeforeAndStatusOrderByLastCheckedAsc(LocalDateTime lastChecked, Status status);
 }

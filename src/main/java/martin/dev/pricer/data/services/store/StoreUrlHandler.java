@@ -15,7 +15,7 @@ public class StoreUrlHandler {
 
     public StoreUrl fetchUrlToScrape(long days, long hours, long minutes){
         LocalDateTime timePast = LocalDateTime.now().minusDays(days).minusHours(hours).minusMinutes(minutes);
-        return storeUrlRepository.findFirstByLastCheckedBeforeAndStatus(timePast, Status.READY);
+        return storeUrlRepository.findFirstByLastCheckedBeforeAndStatusOrderByLastCheckedAsc(timePast, Status.READY);
     }
 
     public void setStatusScraping(StoreUrl storeUrl){
