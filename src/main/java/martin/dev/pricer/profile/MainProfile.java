@@ -8,6 +8,7 @@ import martin.dev.pricer.data.services.product.PriceService;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.ParseLauncher;
+import martin.dev.pricer.scraper.parser.creationwatches.CreationWatchesScraper;
 import martin.dev.pricer.scraper.parser.debenhams.DebenhamsScraper;
 import martin.dev.pricer.scraper.parser.inactive.allbeauty.AllBeautyScraper;
 import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
@@ -81,7 +82,10 @@ public class MainProfile {
     public DebenhamsScraper getDebenhamsScraper() { return new DebenhamsScraper(); }
 
     @Bean
+    public CreationWatchesScraper getCreationWatchesScraper() { return new CreationWatchesScraper(); }
+
+    @Bean
     public ParseLauncher getParser() {
-        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper(), getAMJWatchesScraper(), getDebenhamsScraper());
+        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper(), getAMJWatchesScraper(), getDebenhamsScraper(), getCreationWatchesScraper());
     }
 }

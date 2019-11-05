@@ -3,6 +3,7 @@ package martin.dev.pricer.scraper;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
+import martin.dev.pricer.scraper.parser.creationwatches.CreationWatchesScraper;
 import martin.dev.pricer.scraper.parser.debenhams.DebenhamsScraper;
 import martin.dev.pricer.scraper.parser.inactive.allbeauty.AllBeautyScraper;
 import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
@@ -25,8 +26,9 @@ public class ParseLauncher {
     private AllBeautyScraper allBeautyScraper;
     private AMJWatchesScraper amjWatchesScraper;
     private DebenhamsScraper debenhamsScraper;
+    private CreationWatchesScraper creationWatchesScraper;
 
-    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper, AllBeautyScraper allBeautyScraper, AMJWatchesScraper amjWatchesScraper, DebenhamsScraper debenhamsScraper) {
+    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper, AllBeautyScraper allBeautyScraper, AMJWatchesScraper amjWatchesScraper, DebenhamsScraper debenhamsScraper, CreationWatchesScraper creationWatchesScraper) {
         this.storeUrlHandler = storeUrlHandler;
         this.hSamuelScraper = hSamuelScraper;
         this.ernestJonesScraper = ernestJonesScraper;
@@ -35,6 +37,7 @@ public class ParseLauncher {
         this.allBeautyScraper = allBeautyScraper;
         this.amjWatchesScraper = amjWatchesScraper;
         this.debenhamsScraper = debenhamsScraper;
+        this.creationWatchesScraper = creationWatchesScraper;
     }
 
     @Scheduled(fixedRate = 60000, initialDelay = 5000)
@@ -68,6 +71,9 @@ public class ParseLauncher {
                     break;
                 case "Debenhams":
                     debenhamsScraper.scrapePages(storeUrl);
+                    break;
+                case "Creation Watches":
+                    creationWatchesScraper.scrapePages(storeUrl);
                     break;
             }
         } catch (Exception e) {
