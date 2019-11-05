@@ -18,7 +18,7 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (320, 1, 'https://www.argos.co.uk/browse/technology/video-games-and-consoles/nintendo-switch/nintendo-switch-games/c:30292/opt/page:1/', TIMESTAMP '2019-10-24 12:09:00.02315', 'DISABLED'),
 (321, 1, 'https://www.argos.co.uk/browse/technology/ipod-mp3-and-headphones/headphones-and-earphones/c:30128/opt/page:1/', TIMESTAMP '2019-10-24 12:19:00.02315', 'DISABLED'),
 (322, 1, 'https://www.argos.co.uk/browse/technology/smart-technology/smart-lighting/c:30285/opt/page:1/', TIMESTAMP '2019-10-24 12:17:00.02315', 'DISABLED'),
-(323, 1, 'https://www.argos.co.uk/browse/technology/smart-technology/smart-plugs/c:30287/', TIMESTAMP '2019-10-24 10:09:00.02315', 'DISABLED'),
+(323, 1, 'https://www.argos.co.uk/browse/technology/smart-technology/smart-plugs/c:30287/', TIMESTAMP '2019-10-24 10:09:00.02315', 'READY'),
 (324, 1, 'https://www.argos.co.uk/browse/technology/smart-technology/smart-home-monitoring/c:30288/opt/page:1/', TIMESTAMP '2019-10-24 10:08:00.02315', 'DISABLED'),
 (325, 1, 'https://www.argos.co.uk/browse/technology/smart-technology/smart-speakers/c:658417/opt/page:1/', TIMESTAMP '2019-10-24 12:18:00.02315', 'DISABLED'),
 (326, 1, 'https://www.argos.co.uk/browse/technology/smart-technology/smart-heating/c:30286/', TIMESTAMP '2019-10-24 10:08:00.02315', 'DISABLED'),
@@ -40,14 +40,14 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (343, 8, 'https://www.allbeauty.com/gb/en/catalogue/fragrance/-/-/-/-/him?page=0', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (344, 9, 'https://amjwatches.co.uk/ladies.html?page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (345, 9, 'https://amjwatches.co.uk/mens.html?page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
-(346, 10, 'https://www.creationwatches.com/products/seiko-75/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(347, 10, 'https://www.creationwatches.com/products/tissot-247/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(348, 10, 'https://www.creationwatches.com/products/bulova-watches-271/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(349, 10, 'https://www.creationwatches.com/products/casio-watches-73/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(350, 10, 'https://www.creationwatches.com/products/citizen-74/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(351, 10, 'https://www.creationwatches.com/products/orient-watches-252/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(352, 10, 'https://www.creationwatches.com/products/hamilton-watches-250/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(353, 10, 'https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY');
+(346, 10, 'https://www.creationwatches.com/products/seiko-75/index-1-5d.html?currency=GBP', TIMESTAMP '2015-10-24 12:31:00.02315', 'READY'),
+(347, 10, 'https://www.creationwatches.com/products/tissot-247/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(348, 10, 'https://www.creationwatches.com/products/bulova-watches-271/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(349, 10, 'https://www.creationwatches.com/products/casio-watches-73/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(350, 10, 'https://www.creationwatches.com/products/citizen-74/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(351, 10, 'https://www.creationwatches.com/products/orient-watches-252/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(352, 10, 'https://www.creationwatches.com/products/hamilton-watches-250/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(353, 10, 'https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED');
 
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Men'),(2, 'Women'),
