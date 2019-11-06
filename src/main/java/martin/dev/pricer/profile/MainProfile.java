@@ -1,10 +1,8 @@
 package martin.dev.pricer.profile;
 
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
-import martin.dev.pricer.data.services.product.ItemRepository;
-import martin.dev.pricer.data.services.product.ItemService;
-import martin.dev.pricer.data.services.product.PriceRepository;
-import martin.dev.pricer.data.services.product.PriceService;
+import martin.dev.pricer.data.fabric.product.StatisticsProcessor;
+import martin.dev.pricer.data.services.product.*;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.data.services.store.StoreUrlRepository;
 import martin.dev.pricer.scraper.ParseLauncher;
@@ -24,34 +22,44 @@ public class MainProfile {
 
     private ItemRepository itemRepository;
     private PriceRepository priceRepository;
+    private StatisticsRepository statisticsRepository;
 
     private StoreUrlRepository storeUrlRepository;
 
 
-    public MainProfile(ItemRepository itemRepository, PriceRepository priceRepository, StoreUrlRepository storeUrlRepository) {
+    public MainProfile(ItemRepository itemRepository, PriceRepository priceRepository, StatisticsRepository statisticsRepository, StoreUrlRepository storeUrlRepository) {
         this.itemRepository = itemRepository;
         this.priceRepository = priceRepository;
+        this.statisticsRepository = statisticsRepository;
         this.storeUrlRepository = storeUrlRepository;
     }
 
     @Bean
-    public StoreUrlHandler getStoreUrlHandler() {
+    public StoreUrlHandler getStoreUrlService() {
         return new StoreUrlHandler(storeUrlRepository);
     }
 
     @Bean
-    public ItemService getItemHandler() {
+    public ItemService getItemService() {
         return new ItemService(itemRepository);
     }
 
     @Bean
-    public PriceService getPriceHandler() {
+    public PriceService getPriceService() {
         return new PriceService(priceRepository);
     }
 
     @Bean
+    public StatisticsService getStatisticsService() { return new StatisticsService(statisticsRepository); }
+
+    @Bean
     public ItemPriceProcessor getItemPriceProcessor() {
-        return new ItemPriceProcessor(getItemHandler(), getPriceHandler());
+        return new ItemPriceProcessor(getItemService(), getPriceService(), getStatisticsService());
+    }
+
+    @Bean
+    public StatisticsProcessor getStatisticsProcessor() {
+        return new StatisticsProcessor(getItemService(), getPriceService(), getStatisticsService());
     }
 
     @Bean
@@ -86,6 +94,6 @@ public class MainProfile {
 
     @Bean
     public ParseLauncher getParser() {
-        return new ParseLauncher(getStoreUrlHandler(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper(), getAMJWatchesScraper(), getDebenhamsScraper(), getCreationWatchesScraper());
+        return new ParseLauncher(getStoreUrlService(), getHSamuelScraper(), getErnestJonesScraper(), getSuperDrugScraper(), getArgosScraper(), getAllBeautyScraper(), getAMJWatchesScraper(), getDebenhamsScraper(), getCreationWatchesScraper());
     }
 }

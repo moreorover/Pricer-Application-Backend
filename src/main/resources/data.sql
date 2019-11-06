@@ -11,7 +11,7 @@ INSERT INTO `store` (`id`, `name`, `url`, `logo`) VALUES
 (10, 'Creation Watches', 'https://www.creationwatches.com', null);
 
 INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`) VALUES
-(316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'DISABLED'),
+(316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'READY'),
 (317, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/ladies-watches/c:29306/opt/page:1/', TIMESTAMP '2019-10-24 12:32:00.02315', 'DISABLED'),
 (318, 1, 'https://www.argos.co.uk/browse/technology/video-games-and-consoles/ps4/ps4-games/c:30037/opt/page:1/', TIMESTAMP '2019-10-24 12:26:00.02315', 'DISABLED'),
 (319, 1, 'https://www.argos.co.uk/browse/technology/video-games-and-consoles/xbox-one/xbox-one-games/c:30031/opt/page:1/', TIMESTAMP '2019-10-24 10:06:00.02315', 'DISABLED'),

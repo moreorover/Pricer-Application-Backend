@@ -35,7 +35,15 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToOne
+    @OneToOne(mappedBy = "item")
     private Statistics statistics;
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id='" + getId() + '\'' +
+                "upc='" + upc + '\'' +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

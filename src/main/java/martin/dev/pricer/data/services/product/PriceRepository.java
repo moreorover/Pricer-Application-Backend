@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 @Service
@@ -14,4 +15,9 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
 
     Price findFirstByItemOrderByFoundAtDesc(Item item);
 
+    List<Price> findAllByItem(Item item);
+
+    Price findFirstByItemOrderByPriceDesc(Item item);
+
+    Price findFirstByItemOrderByPriceAsc(Item item);
 }

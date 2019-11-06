@@ -6,6 +6,8 @@ import lombok.Setter;
 import martin.dev.pricer.data.model.BaseEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Setter
@@ -18,11 +20,15 @@ public class Statistics extends BaseEntity {
     private double minPrice;
     private double maxPrice;
     private double avgPrice;
+    private double avgDelta;
 
     private double lastDelta;
-    private double avgDelta;
 
     private LocalDateTime lastFound;
 
     private boolean deal;
+
+    @OneToOne
+    @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
+    private Item item;
 }
