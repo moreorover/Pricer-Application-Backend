@@ -40,7 +40,7 @@ public class ParseLauncher {
         this.creationWatchesScraper = creationWatchesScraper;
     }
 
-//    @Scheduled(fixedRate = 60000, initialDelay = 5000)
+    @Scheduled(fixedRate = 60000, initialDelay = 5000)
     public void parse() {
         StoreUrl storeUrl = storeUrlHandler.fetchUrlToScrape(0, 2, 0);
 
