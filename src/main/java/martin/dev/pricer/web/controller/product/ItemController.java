@@ -27,4 +27,10 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
 
     }
+
+    @GetMapping("/deals")
+    public ResponseEntity<List<Item>> getDeals(){
+        List<Item> items = itemRepository.findAllByStatistics_Deal(true);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
 }

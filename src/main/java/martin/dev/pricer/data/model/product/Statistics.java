@@ -1,5 +1,6 @@
 package martin.dev.pricer.data.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Statistics extends BaseEntity {
 
     private boolean deal;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
     private Item item;

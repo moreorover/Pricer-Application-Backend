@@ -1,5 +1,6 @@
 package martin.dev.pricer.data.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,9 +22,11 @@ public class Category extends BaseEntity {
 
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Item> items = new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<StoreUrl> storeUrls = new HashSet<>();
 
