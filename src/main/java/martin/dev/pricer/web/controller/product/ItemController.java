@@ -2,16 +2,18 @@ package martin.dev.pricer.web.controller.product;
 
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.services.product.ItemRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/item")
+@CrossOrigin
 public class ItemController {
 
     private ItemRepository itemRepository;
@@ -29,8 +31,15 @@ public class ItemController {
     }
 
     @GetMapping("/deals")
-    public ResponseEntity<List<Item>> getDeals(){
+    public ResponseEntity<List<Item>> getDeals() {
         List<Item> items = itemRepository.findAllByStatistics_Deal(true);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @GetMapping("/deals/paged")
+    public ResponseEntity<Page<Item>> getDealsPaged(@RequestParam(required = false, defaultValue = "1") int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum - 1, 20);
+        Page<Item> items = itemRepository.findAllByStatistics_DealOrderByStatistics_lastFoundDesc(true, pageable);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 }
