@@ -53,7 +53,7 @@ public class DebenhamsParser implements Parser {
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         Element aElement = adInJsoupHtml.selectFirst("a");
-        String urlBase = "https://www.debenhams.com/";
+        String urlBase = "https://www.debenhams.com";
         return urlBase + aElement.attr("href");
     }
 
