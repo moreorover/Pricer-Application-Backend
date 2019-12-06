@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -44,10 +45,10 @@ public class StatisticsProcessor {
             stats.setLastFound(priceService.fetchLastPriceForItem(item).getFoundAt());
 
             List<Price> prices = priceService.fetchPrices(item);
-            double avgPrice = priceService.fetchAvgPrice(prices);
+            double avgPrice = priceService.fetchAvgPrice((Set<Price>) prices);
             stats.setAvgPrice(avgPrice);
 
-            double avgDelta = priceService.fetchAvgDelta(prices);
+            double avgDelta = priceService.fetchAvgDelta((Set<Price>) prices);
             stats.setAvgDelta(avgDelta);
 
             double maxPrice = priceService.fetchMaxPrice(item).getPrice();

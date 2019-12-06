@@ -25,4 +25,13 @@ public class Price extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "price=" + price +
+                ", delta=" + delta +
+                ", foundAt=" + foundAt +
+                '}';
+    }
 }

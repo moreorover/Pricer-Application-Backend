@@ -32,7 +32,7 @@ public class ArgosScraper extends Scraper {
             Elements parsedItemElements = argosParser.parseListOfAdElements(getPageContentInJsoupHtml());
             List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> argosParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
 
-            getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
+            parsedItemDtos.forEach(parsedItemDto -> this.getDealProcessor().workOnData(parsedItemDto, storeUrl));
 
             String nexUrlToScrape = makeNextPageUrl(++currentRotation);
             initFactory(nexUrlToScrape);

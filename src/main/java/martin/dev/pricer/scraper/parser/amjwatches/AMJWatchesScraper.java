@@ -36,7 +36,7 @@ public class AMJWatchesScraper extends Scraper {
                     .filter(c -> c.getUpc() != null)
                     .collect(Collectors.toList());
 
-            getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
+            parsedItemDtos.forEach(parsedItemDto -> this.getDealProcessor().workOnData(parsedItemDto, storeUrl));
 
             String nexUrlToScrape = makeNextPageUrl(++currentRotation);
             initFactory(nexUrlToScrape);

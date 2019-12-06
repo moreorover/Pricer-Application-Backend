@@ -1,5 +1,6 @@
 package martin.dev.pricer.data.services.product;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.fabric.EntityFactory;
 import martin.dev.pricer.data.model.product.Statistics;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class ItemService {
 
@@ -32,7 +34,8 @@ public class ItemService {
         Item item = EntityFactory.createItem(parsedItemDto, storeUrl);
 
         Price price = EntityFactory.createPrice(item, parsedItemDto, 0.0, localDateTime);
-        save(item);
+        Item savedItem = save(item);
+        log.info("Created Item: " + savedItem.toString());
 
         Statistics statistics = EntityFactory.createStatistics(item, parsedItemDto, localDateTime);
 
@@ -43,11 +46,14 @@ public class ItemService {
         return itemRepository.findItemByUpc(parsedItemDto.getUpc());
     }
 
+    public Item findItemByUpc(String parsedItemDtoUpc){
+        return itemRepository.findItemByUpc(parsedItemDtoUpc);
+    }
+
     public void updateItemCategories(Item item, Set<Category> categories) {
         if (!item.getCategories().equals(categories)) {
             item.getCategories().clear();
             item.getCategories().addAll(categories);
-            itemRepository.save(item);
         }
     }
 
@@ -59,11 +65,12 @@ public class ItemService {
         itemRepository.saveAll(items);
     }
 
-    public void save(Item item){
-        itemRepository.save(item);
+    public Item save(Item item){
+        return itemRepository.save(item);
     }
 
     public Item fetchItemStatNull(){
         return itemRepository.findFirstByStatisticsNull();
     }
+
 }

@@ -22,8 +22,9 @@ public class DealsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Item>> getDeals(@RequestParam(required = false, defaultValue = "1") int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum - 1, 20);
+    public ResponseEntity<List<Item>> getDeals(@RequestParam(required = false, defaultValue = "1") int pageNum,
+                                               @RequestParam(required = false, defaultValue = "50") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         List<Item> items = dealRepository.findAllByStatistics_DealOrderByStatistics_lastFoundDesc(true, pageable);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }

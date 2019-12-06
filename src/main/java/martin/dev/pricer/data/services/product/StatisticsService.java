@@ -22,22 +22,19 @@ public class StatisticsService {
     }
 
     public void updateStatistics(Item item, double lastPrice, double lastDelta, double minPrice, double maxPrice, double avgPrice, double avgDelta, LocalDateTime localDateTime) {
-        Statistics statistics = findByItem(item);
 
-        statistics.setLastPrice(lastPrice);
-        statistics.setLastDelta(lastDelta);
-        statistics.setMinPrice(minPrice);
-        statistics.setMaxPrice(maxPrice);
-        statistics.setAvgPrice(avgPrice);
-        statistics.setAvgDelta(avgDelta);
-        statistics.setLastFound(localDateTime);
+        item.getStatistics().setLastPrice(lastPrice);
+        item.getStatistics().setLastDelta(lastDelta);
+        item.getStatistics().setMinPrice(minPrice);
+        item.getStatistics().setMaxPrice(maxPrice);
+        item.getStatistics().setAvgPrice(avgPrice);
+        item.getStatistics().setAvgDelta(avgDelta);
+        item.getStatistics().setLastFound(localDateTime);
 
         if (lastPrice <= minPrice){
-            statistics.setDeal(true);
+            item.getStatistics().setDeal(true);
         } else {
-            statistics.setDeal(false);
+            item.getStatistics().setDeal(false);
         }
-
-        statisticsRepository.save(statistics);
     }
 }

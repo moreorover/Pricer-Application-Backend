@@ -32,7 +32,9 @@ public class HSamuelScraper extends Scraper {
             Elements parsedItemElements = hSamuelParser.parseListOfAdElements(getPageContentInJsoupHtml());
             List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> hSamuelParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
 
-            getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
+            parsedItemDtos.forEach(parsedItemDto -> this.getDealProcessor().workOnData(parsedItemDto, storeUrl));
+
+            //getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
 
             String nexUrlToScrape = makeNextPageUrl(++currentRotation);
             initFactory(nexUrlToScrape);

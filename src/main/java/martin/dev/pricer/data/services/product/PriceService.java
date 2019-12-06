@@ -1,14 +1,17 @@
 package martin.dev.pricer.data.services.product;
 
 import martin.dev.pricer.data.fabric.EntityFactory;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
 import martin.dev.pricer.data.model.product.Item;
 import martin.dev.pricer.data.model.product.Price;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PriceService {
@@ -21,42 +24,50 @@ public class PriceService {
         this.priceRepository = priceRepository;
     }
 
-    public void changedPriceForItem(ParsedItemDto parsedItemDto, Item item, double delta, LocalDateTime localDateTime){
+    public void changedPriceForItem(ParsedItemDto parsedItemDto, Item item, double delta, LocalDateTime localDateTime) {
         Price price = EntityFactory.createPrice(item, parsedItemDto, delta, localDateTime);
         priceRepository.save(price);
     }
 
-    public Price fetchLastPriceForItem(Item item){
+    public Price fetchLastPriceForItem(Item item) {
         return priceRepository.findFirstByItemOrderByFoundAtDesc(item);
+    }
+
+    public double fetchLastPriceForItem(Set<Price> itemPrices) {
+        List<Price> sorted = itemPrices.stream()
+                .sorted(Comparator.comparing(Price::getFoundAt))
+                .collect(Collectors.toList());
+
+        return sorted.get(sorted.size() - 1).getPrice();
     }
 
     public List<Price> fetchPrices(Item item) {
         return priceRepository.findAllByItem(item);
     }
 
-    public Price fetchMinPrice(Item item){
+    public Price fetchMinPrice(Item item) {
         return priceRepository.findFirstByItemOrderByPriceAsc(item);
     }
 
-    public double fetchMinPrice(List<Price> prices){
+    public double fetchMinPrice(Set<Price> prices) {
         return prices.stream()
                 .mapToDouble(Price::getPrice)
                 .min()
                 .orElse(Double.NaN);
     }
 
-    public Price fetchMaxPrice(Item item){
+    public Price fetchMaxPrice(Item item) {
         return priceRepository.findFirstByItemOrderByPriceDesc(item);
     }
 
-    public double fetchMaxPrice(List<Price> prices){
+    public double fetchMaxPrice(Set<Price> prices) {
         return prices.stream()
                 .mapToDouble(Price::getPrice)
                 .max()
                 .orElse(Double.NaN);
     }
 
-    public double fetchAvgPrice(Item item){
+    public double fetchAvgPrice(Item item) {
         List<Price> prices = fetchPrices(item);
         double avgPrice = prices.stream()
                 .mapToDouble(Price::getPrice)
@@ -65,7 +76,7 @@ public class PriceService {
         return Double.parseDouble(df.format(avgPrice));
     }
 
-    public double fetchAvgPrice(List<Price> prices){
+    public double fetchAvgPrice(Set<Price> prices) {
         double avgPrice = prices.stream()
                 .mapToDouble(Price::getPrice)
                 .average()
@@ -73,7 +84,7 @@ public class PriceService {
         return Double.parseDouble(df.format(avgPrice));
     }
 
-    public double fetchAvgDelta(Item item){
+    public double fetchAvgDelta(Item item) {
         List<Price> prices = fetchPrices(item);
         double avgDelta = prices.stream()
                 .mapToDouble(Price::getDelta)
@@ -82,10 +93,10 @@ public class PriceService {
         return Double.parseDouble(df.format(avgDelta));
     }
 
-    public double fetchAvgDelta(List<Price> prices){
+    public double fetchAvgDelta(Set<Price> prices) {
         double avgDelta = prices.stream()
                 .mapToDouble(Price::getDelta)
-                .filter(x -> x!=0)
+                .filter(x -> x != 0)
                 .average()
                 .orElse(0.0);
         return Double.parseDouble(df.format(avgDelta));

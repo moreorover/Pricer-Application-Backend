@@ -11,6 +11,7 @@ import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
 import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
 import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
 import martin.dev.pricer.scraper.parser.superdrug.SuperDrugScraper;
+import martin.dev.pricer.scraper.parser.watcho.WatchoScraper;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Arrays;
@@ -27,8 +28,17 @@ public class ParseLauncher {
     private AMJWatchesScraper amjWatchesScraper;
     private DebenhamsScraper debenhamsScraper;
     private CreationWatchesScraper creationWatchesScraper;
+    private WatchoScraper watchoScraper;
 
-    public ParseLauncher(StoreUrlHandler storeUrlHandler, HSamuelScraper hSamuelScraper, ErnestJonesScraper ernestJonesScraper, SuperDrugScraper superDrugScraper, ArgosScraper argosScraper, AllBeautyScraper allBeautyScraper, AMJWatchesScraper amjWatchesScraper, DebenhamsScraper debenhamsScraper, CreationWatchesScraper creationWatchesScraper) {
+    public ParseLauncher(StoreUrlHandler storeUrlHandler,
+                         HSamuelScraper hSamuelScraper,
+                         ErnestJonesScraper ernestJonesScraper,
+                         SuperDrugScraper superDrugScraper,
+                         ArgosScraper argosScraper,
+                         AllBeautyScraper allBeautyScraper,
+                         AMJWatchesScraper amjWatchesScraper,
+                         DebenhamsScraper debenhamsScraper,
+                         CreationWatchesScraper creationWatchesScraper, WatchoScraper watchoScraper) {
         this.storeUrlHandler = storeUrlHandler;
         this.hSamuelScraper = hSamuelScraper;
         this.ernestJonesScraper = ernestJonesScraper;
@@ -38,6 +48,7 @@ public class ParseLauncher {
         this.amjWatchesScraper = amjWatchesScraper;
         this.debenhamsScraper = debenhamsScraper;
         this.creationWatchesScraper = creationWatchesScraper;
+        this.watchoScraper = watchoScraper;
     }
 
     @Scheduled(fixedRate = 60000, initialDelay = 5000)
@@ -74,6 +85,9 @@ public class ParseLauncher {
                     break;
                 case "Creation Watches":
                     creationWatchesScraper.scrapePages(storeUrl);
+                    break;
+                case "Watcho":
+                    watchoScraper.scrapePages(storeUrl);
                     break;
             }
         } catch (Exception e) {

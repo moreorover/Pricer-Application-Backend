@@ -1,5 +1,6 @@
 package martin.dev.pricer.scraper.parser;
 
+import martin.dev.pricer.data.fabric.product.DealProcessor;
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.scraper.client.HttpClient;
@@ -9,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class Scraper {
 
     @Autowired
-    private ItemPriceProcessor itemPriceProcessor;
+    private DealProcessor dealProcessor;
     private StoreUrl storeUrl;
     private Document pageContentInJsoupHtml;
 
-    public ItemPriceProcessor getItemPriceProcessor() {
-        return itemPriceProcessor;
+    public DealProcessor getDealProcessor() {
+        return dealProcessor;
     }
 
     public StoreUrl getStoreUrl() {

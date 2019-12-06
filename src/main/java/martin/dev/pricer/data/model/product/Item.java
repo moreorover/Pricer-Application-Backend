@@ -21,7 +21,7 @@ public class Item extends BaseEntity {
     private String url;
     private String img;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Price> prices = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -35,7 +35,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToOne(mappedBy = "item")
+    @OneToOne(mappedBy = "item", fetch = FetchType.EAGER)
     private Statistics statistics;
 
     @Override

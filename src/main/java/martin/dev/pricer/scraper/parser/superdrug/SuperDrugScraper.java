@@ -32,7 +32,7 @@ public class SuperDrugScraper extends Scraper {
             Elements parsedItemElements = superDrugParser.parseListOfAdElements(getPageContentInJsoupHtml());
             List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> superDrugParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
 
-            getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
+            parsedItemDtos.forEach(parsedItemDto -> this.getDealProcessor().workOnData(parsedItemDto, storeUrl));
 
             String nexUrlToScrape = makeNextPageUrl(++currentRotation);
             initFactory(nexUrlToScrape);
