@@ -28,6 +28,7 @@ public class StoreUrl extends BaseEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = {@JoinColumn(name = "storeUrl_id")},
