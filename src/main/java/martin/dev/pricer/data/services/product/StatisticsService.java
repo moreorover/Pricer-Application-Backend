@@ -22,7 +22,6 @@ public class StatisticsService {
     }
 
     public void updateStatistics(Item item, double lastPrice, double lastDelta, double minPrice, double maxPrice, double avgPrice, double avgDelta, LocalDateTime localDateTime) {
-
         item.getStatistics().setLastPrice(lastPrice);
         item.getStatistics().setLastDelta(lastDelta);
         item.getStatistics().setMinPrice(minPrice);

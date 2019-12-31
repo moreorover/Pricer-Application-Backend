@@ -27,7 +27,6 @@ public class EntityFactory {
         price.setItem(item);
         price.setDelta(delta);
         price.setFoundAt(localDateTime);
-//        item.getPrices().add(price);
         return price;
     }
 

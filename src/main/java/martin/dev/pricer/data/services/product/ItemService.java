@@ -31,7 +31,7 @@ public class ItemService {
     public void createNewItem(ParsedItemDto parsedItemDto, StoreUrl storeUrl){
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        Item item = EntityFactory.createItem(parsedItemDto, storeUrl);
+        Item item = createItem(parsedItemDto, storeUrl);
 
         Price price = EntityFactory.createPrice(item, parsedItemDto, 0.0, localDateTime);
         Item savedItem = save(item);
@@ -71,6 +71,17 @@ public class ItemService {
 
     public Item fetchItemStatNull(){
         return itemRepository.findFirstByStatisticsNull();
+    }
+
+    private Item createItem(ParsedItemDto parsedItemDto, StoreUrl storeUrl){
+        Item item = new Item();
+        item.setUrl(parsedItemDto.getUrl());
+        item.setUpc(parsedItemDto.getUpc());
+        item.setTitle(parsedItemDto.getTitle());
+        item.setImg(parsedItemDto.getImg());
+        item.setStore(storeUrl.getStore());
+        item.getCategories().addAll(storeUrl.getCategories());
+        return item;
     }
 
 }
