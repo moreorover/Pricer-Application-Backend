@@ -34,8 +34,6 @@ public class HSamuelScraper extends Scraper {
 
             parsedItemDtos.forEach(parsedItemDto -> this.getDealProcessor().workOnData(parsedItemDto, storeUrl));
 
-            //getItemPriceProcessor().checkAgainstDatabase(parsedItemDtos, storeUrl);
-
             String nexUrlToScrape = makeNextPageUrl(++currentRotation);
             initFactory(nexUrlToScrape);
         }

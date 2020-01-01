@@ -31,7 +31,17 @@ public class WatchoScraper extends Scraper {
             log.info("Parsing page: " + makeNextPageUrl(currentRotation));
 
             Elements parsedItemElements = watchoParser.parseListOfAdElements(getPageContentInJsoupHtml());
-            List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> watchoParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
+//            List<ParsedItemDto> parsedItemDtos = parsedItemElements.stream().map(element -> watchoParser.fetchItemDtoFromHtml(element)).collect(Collectors.toList());
+            List<ParsedItemDto> parsedItemDtos = parsedItemElements
+                    .stream()
+                    .map(element -> new ParsedItemDto(
+                            watchoParser.parseTitle(element),
+                            watchoParser.parseUrl(element),
+                            watchoParser.parseImage(element),
+                            watchoParser.parseUpc(element),
+                            watchoParser.parsePrice(element)
+                    ))
+                    .collect(Collectors.toList());
 
             parsedItemDtos.forEach(parsedItemDto -> this.getDealProcessor().workOnData(parsedItemDto, storeUrl));
 

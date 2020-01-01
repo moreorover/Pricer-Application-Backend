@@ -42,6 +42,7 @@ public class ItemService {
         statisticsService.save(statistics);
     }
 
+
     public Item findItemByUpc(ParsedItemDto parsedItemDto){
         return itemRepository.findItemByUpc(parsedItemDto.getUpc());
     }
@@ -53,7 +54,7 @@ public class ItemService {
     public void updateItemCategories(Item item, Set<Category> categories) {
         if (!item.getCategories().equals(categories)) {
             item.getCategories().clear();
-            item.getCategories().addAll(categories);
+            item.setCategories(categories);
         }
     }
 
