@@ -21,6 +21,8 @@ public class ItemService {
 
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private PriceService priceService;
 
     private ItemRepository itemRepository;
 
@@ -32,10 +34,11 @@ public class ItemService {
         LocalDateTime localDateTime = LocalDateTime.now();
 
         Item item = createItem(parsedItemDto, storeUrl);
-
-        Price price = EntityFactory.createPrice(item, parsedItemDto, 0.0, localDateTime);
         Item savedItem = save(item);
-        log.info("Created Item: " + savedItem.toString());
+        Price price = EntityFactory.createPrice(savedItem, parsedItemDto, 0.0, localDateTime);
+        priceService.save(price);
+
+//        log.info("Created Item: " + savedItem.toString());
 
         Statistics statistics = EntityFactory.createStatistics(item, parsedItemDto, localDateTime);
 

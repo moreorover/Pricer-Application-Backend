@@ -1,6 +1,5 @@
 package martin.dev.pricer.scraper.parser;
 
-import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -21,5 +20,4 @@ public interface Parser {
 
     String parseUrl(Element adInJsoupHtml);
 
-    ParsedItemDto fetchItemDtoFromHtml(Element adInJsoupHtml);
 }

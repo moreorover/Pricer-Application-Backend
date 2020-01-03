@@ -1,17 +1,12 @@
 package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.data.fabric.product.DealProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
-import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
-import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
-import martin.dev.pricer.scraper.parser.creationwatches.CreationWatchesScraper;
-import martin.dev.pricer.scraper.parser.debenhams.DebenhamsScraper;
-import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
-import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
-import martin.dev.pricer.scraper.parser.inactive.allbeauty.AllBeautyScraper;
-import martin.dev.pricer.scraper.parser.superdrug.SuperDrugScraper;
-import martin.dev.pricer.scraper.parser.watcho.WatchoScraper;
+import martin.dev.pricer.scraper.parser.ArgosScraper;
+import martin.dev.pricer.scraper.parser.HSamuelScraper;
+import martin.dev.pricer.scraper.parser.Scraper;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Arrays;
@@ -20,38 +15,15 @@ import java.util.Arrays;
 public class ParseLauncher {
 
     private StoreUrlHandler storeUrlHandler;
-    private HSamuelScraper hSamuelScraper;
-    private ErnestJonesScraper ernestJonesScraper;
-    private SuperDrugScraper superDrugScraper;
-    private ArgosScraper argosScraper;
-    private AllBeautyScraper allBeautyScraper;
-    private AMJWatchesScraper amjWatchesScraper;
-    private DebenhamsScraper debenhamsScraper;
-    private CreationWatchesScraper creationWatchesScraper;
-    private WatchoScraper watchoScraper;
+    private DealProcessor dealProcessor;
+    //    private ScraperImplementation scraperImplementation = new ScraperImplementation();
 
-    public ParseLauncher(StoreUrlHandler storeUrlHandler,
-                         HSamuelScraper hSamuelScraper,
-                         ErnestJonesScraper ernestJonesScraper,
-                         SuperDrugScraper superDrugScraper,
-                         ArgosScraper argosScraper,
-                         AllBeautyScraper allBeautyScraper,
-                         AMJWatchesScraper amjWatchesScraper,
-                         DebenhamsScraper debenhamsScraper,
-                         CreationWatchesScraper creationWatchesScraper, WatchoScraper watchoScraper) {
+    public ParseLauncher(StoreUrlHandler storeUrlHandler, DealProcessor dealProcessor) {
         this.storeUrlHandler = storeUrlHandler;
-        this.hSamuelScraper = hSamuelScraper;
-        this.ernestJonesScraper = ernestJonesScraper;
-        this.superDrugScraper = superDrugScraper;
-        this.argosScraper = argosScraper;
-        this.allBeautyScraper = allBeautyScraper;
-        this.amjWatchesScraper = amjWatchesScraper;
-        this.debenhamsScraper = debenhamsScraper;
-        this.creationWatchesScraper = creationWatchesScraper;
-        this.watchoScraper = watchoScraper;
+        this.dealProcessor = dealProcessor;
     }
 
-    @Scheduled(fixedRate = 60000, initialDelay = 5000)
+    @Scheduled(fixedRate = 5000, initialDelay = 5)
     public void parse() {
         StoreUrl storeUrl = storeUrlHandler.fetchUrlToScrape(0, 2, 0);
 
@@ -63,32 +35,38 @@ public class ParseLauncher {
             storeUrlHandler.setStatusScraping(storeUrl);
             switch (storeUrl.getStore().getName()) {
                 case "H. Samuel":
-                    hSamuelScraper.scrapePages(storeUrl);
-                    break;
                 case "Ernest Jones":
-                    ernestJonesScraper.scrapePages(storeUrl);
+                    Scraper HSamuelScraper = new HSamuelScraper(storeUrl, this.dealProcessor);
+                    HSamuelScraper.scrapePages(storeUrl);
                     break;
-                case "Superdrug":
-                    superDrugScraper.scrapePages(storeUrl);
-                    break;
+//                case "Superdrug":
+//                    Scraper SuperDrugScraper = new SuperDrugScraper();
+//                    SuperDrugScraper.scrapePages(storeUrl);
+//                    break;
                 case "Argos":
-                    argosScraper.scrapePages(storeUrl);
+                    Scraper ArgosScraper = new ArgosScraper(storeUrl, this.dealProcessor);
+                    ArgosScraper.scrapePages(storeUrl);
                     break;
-                case "All Beauty":
-                    allBeautyScraper.scrapePages(storeUrl);
-                    break;
-                case "AMJ Watches":
-                    amjWatchesScraper.scrapePages(storeUrl);
-                    break;
-                case "Debenhams":
-                    debenhamsScraper.scrapePages(storeUrl);
-                    break;
-                case "Creation Watches":
-                    creationWatchesScraper.scrapePages(storeUrl);
-                    break;
-                case "Watcho":
-                    watchoScraper.scrapePages(storeUrl);
-                    break;
+//                case "All Beauty":
+//                    Scraper AllBeautyScraper = new AllBeautyScraper();
+//                    AllBeautyScraper.scrapePages(storeUrl);
+//                    break;
+//                case "AMJ Watches":
+//                    Scraper AMJWatchesScraper = new AMJWatchesScraper();
+//                    AMJWatchesScraper.scrapePages(storeUrl);
+//                    break;
+//                case "Debenhams":
+//                    Scraper DebenhamsScraper = new DebenhamsScraper();
+//                    DebenhamsScraper.scrapePages(storeUrl);
+//                    break;
+//                case "Creation Watches":
+//                    Scraper CreationWatchesScraper = new CreationWatchesScraper();
+//                    CreationWatchesScraper.scrapePages(storeUrl);
+//                    break;
+//                case "Watcho":
+//                    Scraper WatchoScraper = new WatchoScraper();
+//                    WatchoScraper.scrapePages(storeUrl);
+//                    break;
             }
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()));
