@@ -45,6 +45,9 @@ public class ItemService {
         statisticsService.save(statistics);
     }
 
+    public void delete(Item item) {
+        itemRepository.delete(item);
+    }
 
     public Item findItemByUpc(ParsedItemDto parsedItemDto){
         return itemRepository.findItemByUpc(parsedItemDto.getUpc());

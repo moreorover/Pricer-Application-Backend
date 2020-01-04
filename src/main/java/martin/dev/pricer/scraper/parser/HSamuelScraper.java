@@ -18,19 +18,18 @@ public class HSamuelScraper extends Scraper {
     }
 
     @Override
-    public void scrapePages(StoreUrl storeUrl) {
-
+    public void scrapePages() {
         int maxPageNum = parseMaxPageNum(super.getPageContentInJsoupHtml());
 
         int currentRotation = 1;
 
-        while (currentRotation <= maxPageNum){
+        while (currentRotation <= maxPageNum) {
             log.info("Parsing page: " + makeNextPageUrl(currentRotation));
 
-            Elements parsedItemElements = parseListOfAdElements(getPageContentInJsoupHtml());
+            Elements parsedItemElements = parseListOfAdElements(super.getPageContentInJsoupHtml());
             super.htmlToParsedDtos(parsedItemElements);
 
-            super.getParsedItemDtos().forEach(parsedItemDto -> this.dealProcessor.workOnData(parsedItemDto, storeUrl));
+            super.getParsedItemDtos().forEach(parsedItemDto -> this.dealProcessor.workOnData(parsedItemDto, super.getStoreUrl()));
 
             String nexUrlToScrape = makeNextPageUrl(++currentRotation);
             super.fetchUrlContents(nexUrlToScrape);
@@ -69,7 +68,7 @@ public class HSamuelScraper extends Scraper {
     @Override
     public String parseUpc(Element adInJsoupHtml) {
 //        Element upcElement = adInJsoupHtml.selectFirst("meta");
-        String url = this.parseUrl(adInJsoupHtml);
+        String url = parseUrl(adInJsoupHtml);
         String[] strings = url.split("/d/");
         strings = strings[1].split("/");
         return "HS_" + strings[0];

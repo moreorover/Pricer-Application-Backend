@@ -33,6 +33,11 @@ public class DealProcessor {
         Item itemInDb = itemService.findItemByUpc(parsedItemDto.getUpc());
 
         if (itemInDb != null) {
+            if (itemInDb.getPrices().isEmpty() || itemInDb.getPrices() == null){
+                itemService.delete(itemInDb);
+                log.error("Deleted item!");
+                return;
+            }
 //            log.info("Item found in db: " + itemInDb.toString());
 
             this.updateItemCategories(itemInDb, storeUrl.getCategories());

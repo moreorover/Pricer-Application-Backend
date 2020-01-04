@@ -8,11 +8,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class ArgosScraper extends Scraper {
+public class DebenhamsScraper extends Scraper {
 
     private DealProcessor dealProcessor;
 
-    public ArgosScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
+    public DebenhamsScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
         super(storeUrl);
         this.dealProcessor = dealProcessor;
     }
@@ -39,55 +39,52 @@ public class ArgosScraper extends Scraper {
     @Override
     public String makeNextPageUrl(int pageNum) {
         String full = getStoreUrl().getUrlLink();
-        String[] x = full.split("/page:");
-        return x[0] + "/page:" + pageNum;
+        String[] x = full.split("pn=");
+        return x[0] + "pn=" + pageNum + "&?shipToCntry=GB";
     }
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        Elements elements = pageContentInJsoupHtml.select("div[class^=ProductCardstyles__Wrapper-]");
-        super.validateElements(elements);
-        return elements;
+        return pageContentInJsoupHtml.select("article[class^=c-product-item]");
     }
 
     @Override
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
-        Element searchResultsCount = pageContentInJsoupHtml.selectFirst("div[class*=search-results-count]");
-        String countString = searchResultsCount.attr("data-search-results");
-        int count = Integer.parseInt(countString);
-        return (count + 30 - 1) / 30;
+        String countString = pageContentInJsoupHtml.selectFirst("div[class*=dbh-count]").text();
+        countString = countString.replaceAll("[^\\d.]", "");
+        int adsCount = Integer.parseInt(countString);
+        return (adsCount + 60 - 1) / 60;
     }
 
     @Override
     public String parseTitle(Element adInJsoupHtml) {
-        Element titleElement = adInJsoupHtml.selectFirst("a[class*=Title]");
+        Element titleElement = adInJsoupHtml.selectFirst("div[class^=c-product-item-title]");
         return titleElement.text();
     }
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
-        return "A_" + adInJsoupHtml.attr("data-product-id");
+        Element aElement = adInJsoupHtml.selectFirst("a");
+        return "DBH_" + aElement.attr("href").split("prod_")[1];
     }
 
     @Override
     public Double parsePrice(Element adInJsoupHtml) {
-        String priceString = adInJsoupHtml.selectFirst("div[class*=PriceText]").text();
-        priceString = priceString.replaceAll("[^\\d.]", "");
+        Element priceElement = adInJsoupHtml.selectFirst("span[itemprop=price]");
+        String priceString = priceElement.text().replaceAll("[^\\d.]", "");
         return Double.parseDouble(priceString);
     }
 
     @Override
     public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]");
-        imgElement = imgElement.selectFirst("picture");
-        imgElement = imgElement.selectFirst("img");
+        Element imgElement = adInJsoupHtml.selectFirst("img");
         return imgElement.attr("src");
     }
 
     @Override
     public String parseUrl(Element adInJsoupHtml) {
-        Element urlElement = adInJsoupHtml.selectFirst("a");
-        String urlBase = "https://www.argos.co.uk";
-        return urlBase + urlElement.attr("href");
+        Element aElement = adInJsoupHtml.selectFirst("a");
+        String urlBase = "https://www.debenhams.com";
+        return urlBase + aElement.attr("href");
     }
 }

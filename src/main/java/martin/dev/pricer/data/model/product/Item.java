@@ -40,7 +40,7 @@ public class Item extends BaseEntity {
     private Store store;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "item", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Statistics statistics;
 
     @Override

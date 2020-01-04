@@ -8,11 +8,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class ArgosScraper extends Scraper {
+public class AMJWatchesScraper extends Scraper {
 
     private DealProcessor dealProcessor;
 
-    public ArgosScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
+    public AMJWatchesScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
         super(storeUrl);
         this.dealProcessor = dealProcessor;
     }
@@ -39,55 +39,64 @@ public class ArgosScraper extends Scraper {
     @Override
     public String makeNextPageUrl(int pageNum) {
         String full = getStoreUrl().getUrlLink();
-        String[] x = full.split("/page:");
-        return x[0] + "/page:" + pageNum;
+        String[] x = full.split("page=");
+        return x[0] + "page=" + pageNum;
     }
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        Elements elements = pageContentInJsoupHtml.select("div[class^=ProductCardstyles__Wrapper-]");
-        super.validateElements(elements);
-        return elements;
+        return pageContentInJsoupHtml.select("div[class=watch-sec]");
     }
 
     @Override
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
-        Element searchResultsCount = pageContentInJsoupHtml.selectFirst("div[class*=search-results-count]");
-        String countString = searchResultsCount.attr("data-search-results");
-        int count = Integer.parseInt(countString);
-        return (count + 30 - 1) / 30;
+        Element productsCountElement = pageContentInJsoupHtml.selectFirst("div[class=items-on-page]");
+        String countText = productsCountElement.children().last().text();
+        countText = countText.replaceAll("[^\\d.]", "");
+        int adsCount = Integer.parseInt(countText);
+        return (adsCount + 40 - 1) / 40;
     }
 
     @Override
     public String parseTitle(Element adInJsoupHtml) {
-        Element titleElement = adInJsoupHtml.selectFirst("a[class*=Title]");
-        return titleElement.text();
+        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
+        imgElement = imgElement.selectFirst("a");
+        return imgElement.attr("title");
     }
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
-        return "A_" + adInJsoupHtml.attr("data-product-id");
+        try {
+            Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
+            imgElement = imgElement.selectFirst("a");
+            String url = imgElement.attr("href");
+            url = url.split(".uk/")[1];
+            return "AMJW_" + url;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     @Override
     public Double parsePrice(Element adInJsoupHtml) {
-        String priceString = adInJsoupHtml.selectFirst("div[class*=PriceText]").text();
-        priceString = priceString.replaceAll("[^\\d.]", "");
+        Element detailsElement = adInJsoupHtml.selectFirst("div[class=watch-details]");
+
+        String priceString = detailsElement.children().last().text().replaceAll("[^\\d.]", "");
         return Double.parseDouble(priceString);
     }
 
     @Override
     public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]");
-        imgElement = imgElement.selectFirst("picture");
+        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
+        imgElement = imgElement.selectFirst("a");
         imgElement = imgElement.selectFirst("img");
-        return imgElement.attr("src");
+        return imgElement.attr("data-src");
     }
 
     @Override
     public String parseUrl(Element adInJsoupHtml) {
-        Element urlElement = adInJsoupHtml.selectFirst("a");
-        String urlBase = "https://www.argos.co.uk";
-        return urlBase + urlElement.attr("href");
+        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
+        imgElement = imgElement.selectFirst("a");
+        return imgElement.attr("href");
     }
 }

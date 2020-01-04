@@ -4,9 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.fabric.product.DealProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
-import martin.dev.pricer.scraper.parser.ArgosScraper;
-import martin.dev.pricer.scraper.parser.HSamuelScraper;
-import martin.dev.pricer.scraper.parser.Scraper;
+import martin.dev.pricer.scraper.parser.*;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Arrays;
@@ -23,7 +21,7 @@ public class ParseLauncher {
         this.dealProcessor = dealProcessor;
     }
 
-    @Scheduled(fixedRate = 5000, initialDelay = 5)
+    @Scheduled(fixedRate = 60000, initialDelay = 1000)
     public void parse() {
         StoreUrl storeUrl = storeUrlHandler.fetchUrlToScrape(0, 2, 0);
 
@@ -37,36 +35,36 @@ public class ParseLauncher {
                 case "H. Samuel":
                 case "Ernest Jones":
                     Scraper HSamuelScraper = new HSamuelScraper(storeUrl, this.dealProcessor);
-                    HSamuelScraper.scrapePages(storeUrl);
+                    HSamuelScraper.scrapePages();
                     break;
-//                case "Superdrug":
-//                    Scraper SuperDrugScraper = new SuperDrugScraper();
-//                    SuperDrugScraper.scrapePages(storeUrl);
-//                    break;
+                case "Superdrug":
+                    Scraper SuperDrugScraper = new SuperDrugScraper(storeUrl, this.dealProcessor);
+                    SuperDrugScraper.scrapePages();
+                    break;
                 case "Argos":
                     Scraper ArgosScraper = new ArgosScraper(storeUrl, this.dealProcessor);
-                    ArgosScraper.scrapePages(storeUrl);
+                    ArgosScraper.scrapePages();
                     break;
 //                case "All Beauty":
 //                    Scraper AllBeautyScraper = new AllBeautyScraper();
 //                    AllBeautyScraper.scrapePages(storeUrl);
 //                    break;
-//                case "AMJ Watches":
-//                    Scraper AMJWatchesScraper = new AMJWatchesScraper();
-//                    AMJWatchesScraper.scrapePages(storeUrl);
-//                    break;
-//                case "Debenhams":
-//                    Scraper DebenhamsScraper = new DebenhamsScraper();
-//                    DebenhamsScraper.scrapePages(storeUrl);
-//                    break;
-//                case "Creation Watches":
-//                    Scraper CreationWatchesScraper = new CreationWatchesScraper();
-//                    CreationWatchesScraper.scrapePages(storeUrl);
-//                    break;
-//                case "Watcho":
-//                    Scraper WatchoScraper = new WatchoScraper();
-//                    WatchoScraper.scrapePages(storeUrl);
-//                    break;
+                case "AMJ Watches":
+                    Scraper AMJWatchesScraper = new AMJWatchesScraper(storeUrl, this.dealProcessor);
+                    AMJWatchesScraper.scrapePages();
+                    break;
+                case "Debenhams":
+                    Scraper DebenhamsScraper = new DebenhamsScraper(storeUrl, this.dealProcessor);
+                    DebenhamsScraper.scrapePages();
+                    break;
+                case "Creation Watches":
+                    Scraper CreationWatchesScraper = new CreationWatchesScraper(storeUrl, this.dealProcessor);
+                    CreationWatchesScraper.scrapePages();
+                    break;
+                case "Watcho":
+                    Scraper WatchoScraper = new WatchoScraper(storeUrl, this.dealProcessor);
+                    WatchoScraper.scrapePages();
+                    break;
             }
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()));

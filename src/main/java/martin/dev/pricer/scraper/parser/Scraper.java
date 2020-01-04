@@ -30,7 +30,7 @@ public abstract class Scraper implements Parser {
         return pageContentInJsoupHtml;
     }
 
-    public abstract void scrapePages(StoreUrl storeUrl);
+    public abstract void scrapePages();
 
     public abstract String makeNextPageUrl(int pageNum);
 
@@ -52,8 +52,12 @@ public abstract class Scraper implements Parser {
                 ))
                 .filter(ParsedItemDto::isValid)
                 .collect(Collectors.toList());
+        if (this.parsedItemDtos.size() == parsedItemElements.size()) {
+            log.info("Successfully parsed " + this.parsedItemDtos.size() + " Ads");
+        } else {
+            log.error("Parsed only " + this.parsedItemDtos.size() + "Ads. Out of total: " + parsedItemElements.size());
+        }
 
-        log.info("Successfully parsed " + this.parsedItemDtos.size() + " Ads");
     }
 
     public List<ParsedItemDto> getParsedItemDtos() {
@@ -61,7 +65,7 @@ public abstract class Scraper implements Parser {
     }
 
     public void validateElements(Elements elements) {
-        if (elements.size() > 0){
+        if (elements.size() > 0) {
             log.info("Found " + elements.size() + " Ad elements");
             return;
         }

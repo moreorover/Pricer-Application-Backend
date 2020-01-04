@@ -8,11 +8,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class ArgosScraper extends Scraper {
-
+public class CreationWatchesScraper extends Scraper {
     private DealProcessor dealProcessor;
 
-    public ArgosScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
+    public CreationWatchesScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
         super(storeUrl);
         this.dealProcessor = dealProcessor;
     }
@@ -38,56 +37,56 @@ public class ArgosScraper extends Scraper {
 
     @Override
     public String makeNextPageUrl(int pageNum) {
+//        https://www.creationwatches.com/products/seiko-75/index-1-5d.html?currency=GBP
+//        https://www.creationwatches.com/products/tissot-247/index-1-5d.html?currency=GBP
+//        tissot-watches-209
         String full = getStoreUrl().getUrlLink();
-        String[] x = full.split("/page:");
-        return x[0] + "/page:" + pageNum;
+        String[] x = full.split("/index-");
+        return x[0] + "/index-" + pageNum + "-5d.html?currency=GBP";
     }
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        Elements elements = pageContentInJsoupHtml.select("div[class^=ProductCardstyles__Wrapper-]");
-        super.validateElements(elements);
-        return elements;
+        return pageContentInJsoupHtml.select("div[class=product-box]");
     }
 
     @Override
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
-        Element searchResultsCount = pageContentInJsoupHtml.selectFirst("div[class*=search-results-count]");
-        String countString = searchResultsCount.attr("data-search-results");
-        int count = Integer.parseInt(countString);
-        return (count + 30 - 1) / 30;
+        Element countBox = pageContentInJsoupHtml.selectFirst("div[class=display-heading-box]").selectFirst("strong");
+        String countString = countBox.text().split("of")[1];
+        countString = countString.replaceAll("[^\\d.]", "");
+        int adsCount = Integer.parseInt(countString);
+        return (adsCount + 60 - 1) / 60;
     }
 
     @Override
     public String parseTitle(Element adInJsoupHtml) {
-        Element titleElement = adInJsoupHtml.selectFirst("a[class*=Title]");
+        Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
         return titleElement.text();
     }
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
-        return "A_" + adInJsoupHtml.attr("data-product-id");
+        Element modelElement = adInJsoupHtml.selectFirst("p[class=product-model-no]");
+        return "CW_" + modelElement.text().split(": ")[1];
     }
 
     @Override
     public Double parsePrice(Element adInJsoupHtml) {
-        String priceString = adInJsoupHtml.selectFirst("div[class*=PriceText]").text();
-        priceString = priceString.replaceAll("[^\\d.]", "");
+        Element titleElement = adInJsoupHtml.selectFirst("p[class=product-price]").selectFirst("span");
+        String priceString = titleElement.text().replaceAll("[^\\d.]", "");
         return Double.parseDouble(priceString);
     }
 
     @Override
     public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]");
-        imgElement = imgElement.selectFirst("picture");
-        imgElement = imgElement.selectFirst("img");
-        return imgElement.attr("src");
+        Element titleElement = adInJsoupHtml.selectFirst("div[class=product-img-box]").selectFirst("img");
+        return titleElement.attr("src");
     }
 
     @Override
     public String parseUrl(Element adInJsoupHtml) {
-        Element urlElement = adInJsoupHtml.selectFirst("a");
-        String urlBase = "https://www.argos.co.uk";
-        return urlBase + urlElement.attr("href");
+        Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
+        return titleElement.attr("href");
     }
 }
