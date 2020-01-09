@@ -77,8 +77,9 @@ public class DebenhamsScraper extends Scraper {
 
     @Override
     public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("img");
-        return imgElement.attr("src");
+//        Element imgElement = adInJsoupHtml.selectFirst("img");
+//        return imgElement.attr("src");
+        return "";
     }
 
     @Override
