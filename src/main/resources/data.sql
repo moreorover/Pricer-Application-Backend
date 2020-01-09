@@ -2,14 +2,15 @@ INSERT INTO `store` (`id`, `name`, `url`, `logo`) VALUES
 (1, 'Argos', 'https://www.argos.co.uk', 'https://media.4rgos.it/i/Argos/Argos_Pride_Logo_2?w=120&fmt=png'),
 (2, 'Superdrug', 'https://www.superdrug.com', 'https://www.superdrug.com/_ui/common/images/sd-logo.png'),
 (3, 'The Fragrance Shop', 'https://www.thefragranceshop.co.uk', 'https://www.thelexiconbracknell.com/getmedia/2c8e4346-d1c7-4c62-a535-86aaafc57aae/the-fragrance-shop-logo?width=378&height=284&ext=.png'),
-(4, 'H. Samuel', 'https://www.hsamuel.co.uk/', 'https://d113iaclfvkn13.cloudfront.net/logos/logo.svg'),
-(5, 'Debenhams', 'https://www.debenhams.com/', 'https://www.stickpng.com/assets/images/5a1ac8e0f65d84088faf1376.png'),
+(4, 'H. Samuel', 'https://www.hsamuel.co.uk', 'https://d113iaclfvkn13.cloudfront.net/logos/logo.svg'),
+(5, 'Debenhams', 'https://www.debenhams.com', 'https://www.stickpng.com/assets/images/5a1ac8e0f65d84088faf1376.png'),
 (6, 'Ernest Jones', 'https://www.ernestjones.co.uk', 'https://d2r6ga9xnxj9b6.cloudfront.net/logos/logo.svg'),
 (7, 'Watch Shop', 'https://www.watchshop.com', 'http://www.watchshop.com/time-of-your-life/img/watchshop-logo.png'),
 (8, 'All Beauty', 'https://www.allbeauty.com/gb/en', null),
 (9, 'AMJ Watches', 'https://amjwatches.co.uk', 'https://s3-eu-west-1.amazonaws.com/tpd/logos/52dfcaca0000640005780190/0x0.png'),
 (10, 'Creation Watches', 'https://www.creationwatches.com', 'https://www.complaintsboard.com/img/business/116976/182x300/creation-watches.jpg'),
-(11, 'First Class Watches', 'https://www.firstclasswatches.co.uk/', 'https://pbs.twimg.com/profile_images/1080753708953157633/sv90SvHJ.jpg');
+(11, 'First Class Watches', 'https://www.firstclasswatches.co.uk', 'https://pbs.twimg.com/profile_images/1080753708953157633/sv90SvHJ.jpg'),
+(12, 'Gold Smiths', 'https://www.goldsmiths.co.uk', 'https://lh3.googleusercontent.com/-Ck01XdjIITQ/AAAAAAAAAAI/AAAAAAAAA9o/iz6zLZRdIZ0/s250-c/photo.jpg');
 
 INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`) VALUES
 (316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'DISABLED'),
@@ -49,8 +50,10 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (351, 10, 'https://www.creationwatches.com/products/orient-watches-252/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (352, 10, 'https://www.creationwatches.com/products/hamilton-watches-250/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (353, 10, 'https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
-(354, 11, 'https://www.firstclasswatches.co.uk/mens-watches/?show_stock=y&f50=Mens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(355, 11, 'https://www.firstclasswatches.co.uk/womens-watches/?show_stock=y&f50=Womens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY');
+(354, 11, 'https://www.firstclasswatches.co.uk/mens-watches/?show_stock=y&f50=Mens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(355, 11, 'https://www.firstclasswatches.co.uk/womens-watches/?show_stock=y&f50=Womens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(356, 12, 'https://www.goldsmiths.co.uk/c/Watches/Mens-Watches/filter/Page_1/Psize_96/Show_Page/', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
+(357, 12, 'https://www.goldsmiths.co.uk/c/Watches/Ladies-Watches/filter/Page_1/Psize_96/Show_Page/', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY');
 
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Men'),(2, 'Women'),
@@ -92,4 +95,6 @@ INSERT INTO `store_url_categories` (`store_url_id`, `category_id`) VALUES
 (340, 1), (340, 3),
 (341, 2), (341, 3),
 (354, 1), (354, 3),
-(355, 2), (355, 3);
+(355, 2), (355, 3),
+(356, 1), (356, 3),
+(357, 2), (357, 3);
