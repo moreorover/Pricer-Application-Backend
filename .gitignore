@@ -32,3 +32,4 @@ build/
 .mvn/
 
 /src/main/resources/application-devremote.properties
+/logs/
