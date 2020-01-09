@@ -11,7 +11,7 @@ INSERT INTO `store` (`id`, `name`, `url`, `logo`) VALUES
 (10, 'Creation Watches', 'https://www.creationwatches.com', null);
 
 INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`) VALUES
-(316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'READY'),
+(316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'DISABLED'),
 (317, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/ladies-watches/c:29306/opt/page:1/', TIMESTAMP '2019-10-24 12:32:00.02315', 'DISABLED'),
 (318, 1, 'https://www.argos.co.uk/browse/technology/video-games-and-consoles/ps4/ps4-games/c:30037/opt/page:1/', TIMESTAMP '2019-10-24 12:26:00.02315', 'DISABLED'),
 (319, 1, 'https://www.argos.co.uk/browse/technology/video-games-and-consoles/xbox-one/xbox-one-games/c:30031/opt/page:1/', TIMESTAMP '2019-10-24 10:06:00.02315', 'DISABLED'),
@@ -34,8 +34,8 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (337, 5, 'https://www.debenhams.com/men/accessories/watches?pn=1&?shipToCntry=GB', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
 (338, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:36:00.02315', 'DISABLED'),
 (339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
-(340, 7, 'https://www.watchshop.com/mens-watches.html?show=200&page=1', TIMESTAMP '2020-09-03 21:13:00.02315', 'DISABLED'),
-(341, 7, 'https://www.watchshop.com/ladies-watches.html?show=200&page=1', TIMESTAMP '2020-09-03 21:12:00.02315', 'DISABLED'),
+(340, 7, 'https://www.watchshop.com/mens-watches.html?show=192&page=1', TIMESTAMP '2018-09-03 21:13:00.02315', 'READY'),
+(341, 7, 'https://www.watchshop.com/ladies-watches.html?show=192&page=1', TIMESTAMP '2018-09-03 21:12:00.02315', 'READY'),
 (342, 8, 'https://www.allbeauty.com/gb/en/catalogue/fragrance/-/-/-/-/her?page=0', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (343, 8, 'https://www.allbeauty.com/gb/en/catalogue/fragrance/-/-/-/-/him?page=0', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (344, 9, 'https://amjwatches.co.uk/ladies.html?page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
@@ -85,4 +85,6 @@ INSERT INTO `store_url_categories` (`store_url_id`, `category_id`) VALUES
 (345, 1), (345, 3),
 (336, 2), (336, 3),
 (337, 1), (337, 3),
-(346, 3), (347, 3), (348, 3), (349, 3), (350, 3), (351, 3), (352, 3), (353, 3);
+(346, 3), (347, 3), (348, 3), (349, 3), (350, 3), (351, 3), (352, 3), (353, 3),
+(340, 1), (340, 3),
+(341, 2), (341, 3);
