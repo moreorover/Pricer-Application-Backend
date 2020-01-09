@@ -69,6 +69,10 @@ public class ParseLauncher {
                     Scraper WatchShopScraper = new WatchShopScraper(storeUrl, this.dealProcessor);
                     WatchShopScraper.scrapePages();
                     break;
+                case "First Class Watches":
+                    Scraper FirstClassWatchesScraper = new FirstClassWatchesScraper(storeUrl, this.dealProcessor);
+                    FirstClassWatchesScraper.scrapePages();
+                    break;
             }
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()));

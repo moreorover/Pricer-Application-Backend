@@ -7,8 +7,9 @@ INSERT INTO `store` (`id`, `name`, `url`, `logo`) VALUES
 (6, 'Ernest Jones', 'https://www.ernestjones.co.uk', 'https://d2r6ga9xnxj9b6.cloudfront.net/logos/logo.svg'),
 (7, 'Watch Shop', 'https://www.watchshop.com', 'http://www.watchshop.com/time-of-your-life/img/watchshop-logo.png'),
 (8, 'All Beauty', 'https://www.allbeauty.com/gb/en', null),
-(9, 'AMJ Watches', 'https://amjwatches.co.uk', null),
-(10, 'Creation Watches', 'https://www.creationwatches.com', null);
+(9, 'AMJ Watches', 'https://amjwatches.co.uk', 'https://s3-eu-west-1.amazonaws.com/tpd/logos/52dfcaca0000640005780190/0x0.png'),
+(10, 'Creation Watches', 'https://www.creationwatches.com', 'https://www.complaintsboard.com/img/business/116976/182x300/creation-watches.jpg'),
+(11, 'First Class Watches', 'https://www.firstclasswatches.co.uk/', 'https://pbs.twimg.com/profile_images/1080753708953157633/sv90SvHJ.jpg');
 
 INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`) VALUES
 (316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'DISABLED'),
@@ -47,7 +48,9 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (350, 10, 'https://www.creationwatches.com/products/citizen-74/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (351, 10, 'https://www.creationwatches.com/products/orient-watches-252/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (352, 10, 'https://www.creationwatches.com/products/hamilton-watches-250/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
-(353, 10, 'https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED');
+(353, 10, 'https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(354, 11, 'https://www.firstclasswatches.co.uk/mens-watches/?show_stock=y&f50=Mens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
+(355, 11, 'https://www.firstclasswatches.co.uk/womens-watches/?show_stock=y&f50=Womens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY');
 
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Men'),(2, 'Women'),
@@ -87,4 +90,6 @@ INSERT INTO `store_url_categories` (`store_url_id`, `category_id`) VALUES
 (337, 1), (337, 3),
 (346, 3), (347, 3), (348, 3), (349, 3), (350, 3), (351, 3), (352, 3), (353, 3),
 (340, 1), (340, 3),
-(341, 2), (341, 3);
+(341, 2), (341, 3),
+(354, 1), (354, 3),
+(355, 2), (355, 3);
