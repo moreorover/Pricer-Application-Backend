@@ -37,9 +37,18 @@ public class ItemController {
     }
 
     @GetMapping("/deals/paged")
-    public ResponseEntity<Page<Item>> getDealsPaged(@RequestParam(required = false, defaultValue = "1") int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum - 1, 20);
+    public ResponseEntity<Page<Item>> getDealsPaged(@RequestParam(required = false, defaultValue = "1") int pageNum,
+                                                    @RequestParam(required = false, defaultValue = "250") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<Item> items = itemRepository.findAllByStatistics_DealOrderByStatistics_lastFoundDesc(true, pageable);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @GetMapping("/deals/less")
+    public ResponseEntity<Page<Item>> getDealsLess(@RequestParam(required = false, defaultValue = "1") int pageNum,
+                                                   @RequestParam(required = false, defaultValue = "250") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        Page<Item> items = itemRepository.findAllByStatistics_LastDeltaIsLessThanAndStatistics_DealOrderByStatistics_lastFoundDesc(-9.0, true, pageable);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 }

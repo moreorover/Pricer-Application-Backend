@@ -10,7 +10,8 @@ INSERT INTO `store` (`id`, `name`, `url`, `logo`) VALUES
 (9, 'AMJ Watches', 'https://amjwatches.co.uk', 'https://s3-eu-west-1.amazonaws.com/tpd/logos/52dfcaca0000640005780190/0x0.png'),
 (10, 'Creation Watches', 'https://www.creationwatches.com', 'https://www.complaintsboard.com/img/business/116976/182x300/creation-watches.jpg'),
 (11, 'First Class Watches', 'https://www.firstclasswatches.co.uk', 'https://pbs.twimg.com/profile_images/1080753708953157633/sv90SvHJ.jpg'),
-(12, 'Gold Smiths', 'https://www.goldsmiths.co.uk', 'https://lh3.googleusercontent.com/-Ck01XdjIITQ/AAAAAAAAAAI/AAAAAAAAA9o/iz6zLZRdIZ0/s250-c/photo.jpg');
+(12, 'Gold Smiths', 'https://www.goldsmiths.co.uk', 'https://lh3.googleusercontent.com/-Ck01XdjIITQ/AAAAAAAAAAI/AAAAAAAAA9o/iz6zLZRdIZ0/s250-c/photo.jpg'),
+(13, 'Tic Watches', 'https://www.ticwatches.co.uk', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLIgyF31a8Za8B6FUkYaDC9xdPMEjmYDtL6kHDttwmvKDLLzBgfA&s');
 
 INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`) VALUES
 (316, 1, 'https://www.argos.co.uk/browse/jewellery-and-watches/watches/mens-watches/c:29307/opt/page:1/', TIMESTAMP '2019-10-24 12:13:00.02315', 'DISABLED'),
@@ -32,8 +33,8 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (333, 3, 'https://www.thefragranceshop.co.uk/mens-aftershaves-and-fragrances.aspx', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
 (334, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:18:00.02315', 'DISABLED'),
 (335, 4, 'https://www.hsamuel.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-20 10:09:00.02315', 'DISABLED'),
-(336, 5, 'https://www.debenhams.com/women/accessories/watches?pn=1&?shipToCntry=GB', TIMESTAMP '2019-10-24 12:37:00.02315', 'READY'),
-(337, 5, 'https://www.debenhams.com/men/accessories/watches?pn=1&?shipToCntry=GB', TIMESTAMP '2019-10-24 12:57:00.02315', 'READY'),
+(336, 5, 'https://www.debenhams.com/women/accessories/watches?pn=1&?shipToCntry=GB', TIMESTAMP '2019-10-24 12:37:00.02315', 'DISABLED'),
+(337, 5, 'https://www.debenhams.com/men/accessories/watches?pn=1&?shipToCntry=GB', TIMESTAMP '2019-10-24 12:57:00.02315', 'DISABLED'),
 (338, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Cher/?Pg=1', TIMESTAMP '2019-10-24 12:36:00.02315', 'DISABLED'),
 (339, 6, 'https://www.ernestjones.co.uk/webstore/l/watches/recipient%7Chim/?Pg=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (340, 7, 'https://www.watchshop.com/mens-watches.html?show=192&page=1', TIMESTAMP '2018-09-03 21:13:00.02315', 'DISABLED'),
@@ -52,8 +53,10 @@ INSERT INTO `store_url` (`id`, `store_id`, `url_link`, `last_checked`, `status`)
 (353, 10, 'https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (354, 11, 'https://www.firstclasswatches.co.uk/mens-watches/?show_stock=y&f50=Mens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
 (355, 11, 'https://www.firstclasswatches.co.uk/womens-watches/?show_stock=y&f50=Womens+Watches&per_page=180&page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
-(356, 12, 'https://www.goldsmiths.co.uk/c/Watches/Mens-Watches/filter/Page_1/Psize_96/Show_Page/', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY'),
-(357, 12, 'https://www.goldsmiths.co.uk/c/Watches/Ladies-Watches/filter/Page_1/Psize_96/Show_Page/', TIMESTAMP '2019-10-24 12:31:00.02315', 'READY');
+(356, 12, 'https://www.goldsmiths.co.uk/c/Watches/Mens-Watches/filter/Page_1/Psize_96/Show_Page/', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(357, 12, 'https://www.goldsmiths.co.uk/c/Watches/Ladies-Watches/filter/Page_1/Psize_96/Show_Page/', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(358, 13, 'https://www.ticwatches.co.uk/mens-watches-c1?page=1', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED'),
+(359, 13, 'https://www.ticwatches.co.uk/womens-watches-c1?page=2', TIMESTAMP '2019-10-24 12:31:00.02315', 'DISABLED');
 
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Men'),(2, 'Women'),
@@ -97,4 +100,6 @@ INSERT INTO `store_url_categories` (`store_url_id`, `category_id`) VALUES
 (354, 1), (354, 3),
 (355, 2), (355, 3),
 (356, 1), (356, 3),
-(357, 2), (357, 3);
+(357, 2), (357, 3),
+(358, 1), (358, 3),
+(359, 2), (359, 3);

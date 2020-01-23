@@ -57,7 +57,7 @@ public class StatisticsProcessor {
             stats.setMaxPrice(maxPrice);
             stats.setMinPrice(minPrice);
 
-            if (lastPrice <= minPrice && lastDelta < 0){
+            if (lastPrice <= minPrice && lastDelta < 0 && lastDelta < -9){
                 stats.setDeal(true);
             } else {
                 stats.setDeal(false);

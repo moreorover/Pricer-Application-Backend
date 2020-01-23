@@ -21,4 +21,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Item findFirstByStatisticsNull();
 
     Page<Item> findAllByStatistics_DealOrderByStatistics_lastFoundDesc(boolean statistics_deal, Pageable pageable);
+
+    Page<Item> findAllByStatistics_LastDeltaIsLessThanOrderByStatistics_lastFoundDesc(double statistics_lastDelta, Pageable pageable);
+
+    Page<Item> findAllByStatistics_LastDeltaIsLessThanAndStatistics_DealOrderByStatistics_lastFoundDesc(double statistics_lastDelta, boolean statistics_deal, Pageable pageable);
 }

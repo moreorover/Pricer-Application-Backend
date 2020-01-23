@@ -77,6 +77,10 @@ public class ParseLauncher {
                     Scraper GoldSmithsScraper = new GoldSmithsScraper(storeUrl, this.dealProcessor);
                     GoldSmithsScraper.scrapePages();
                     break;
+                case "Tic Watches":
+                    Scraper TicWatchesScraper = new TicWatchesScraper(storeUrl, this.dealProcessor);
+                    TicWatchesScraper.scrapePages();
+                    break;
             }
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()));

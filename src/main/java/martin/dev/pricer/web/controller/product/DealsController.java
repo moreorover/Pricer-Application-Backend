@@ -28,4 +28,12 @@ public class DealsController {
         List<Item> items = dealRepository.findAllByStatistics_DealOrderByStatistics_lastFoundDesc(true, pageable);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
+
+    @GetMapping("less")
+    public ResponseEntity<List<Item>> getDealsLess(@RequestParam(required = false, defaultValue = "1") int pageNum,
+                                               @RequestParam(required = false, defaultValue = "50") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        List<Item> items = dealRepository.findAllByStatistics_LastDeltaIsLessThanOrderByStatistics_lastFoundDesc(-9.0, pageable);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
 }
