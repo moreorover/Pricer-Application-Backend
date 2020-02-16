@@ -29,11 +29,16 @@ public class DealProcessor {
     }
 
     public void workOnData(ParsedItemDto parsedItemDto, StoreUrl storeUrl) {
-        log.info("Checking for: " + parsedItemDto.toString());
+//        log.info("Checking for: " + parsedItemDto.toString());
         Item itemInDb = itemService.findItemByUpc(parsedItemDto.getUpc());
 
         if (itemInDb != null) {
-            log.info("Item found in db: " + itemInDb.toString());
+            if (itemInDb.getPrices().isEmpty() || itemInDb.getPrices() == null){
+                itemService.delete(itemInDb);
+                log.error("Deleted item!");
+                return;
+            }
+//            log.info("Item found in db: " + itemInDb.toString());
 
             this.updateItemCategories(itemInDb, storeUrl.getCategories());
 
@@ -50,7 +55,7 @@ public class DealProcessor {
                 statisticsService.save(itemInDb.getStatistics());
             }
         } else {
-            log.info("Not found, creating new Item");
+//            log.info("Not found, creating new Item");
             itemService.createNewItem(parsedItemDto, storeUrl);
         }
     }
@@ -78,8 +83,8 @@ public class DealProcessor {
 
     private void updateItemCategories(Item item, Set<Category> categories) {
         if (!item.getCategories().equals(categories)) {
-            item.getCategories().clear();
-            item.getCategories().addAll(categories);
+//            item.getCategories().clear();
+            item.setCategories(categories);
         }
     }
 
@@ -94,7 +99,7 @@ public class DealProcessor {
     }
 
     private void addNewPrice(Item item, ParsedItemDto parsedItemDto, LocalDateTime localDateTime) {
-        log.info("Adding new price to an Item");
+//        log.info("Adding new price to an Item");
         double delta = this.calculateDelta(item, parsedItemDto);
         Price newPrice = EntityFactory.createPrice(item, parsedItemDto, delta, localDateTime);
         log.info(newPrice.toString());

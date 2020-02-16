@@ -1,16 +1,49 @@
-package martin.dev.pricer.scraper.parser.creationwatches;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
-import martin.dev.pricer.scraper.parser.Parser;
+import martin.dev.pricer.data.fabric.product.DealProcessor;
+import martin.dev.pricer.data.model.store.StoreUrl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
-public class CreationWatchesParser implements Parser {
+public class CreationWatchesScraper extends Scraper {
+    private DealProcessor dealProcessor;
+
+    public CreationWatchesScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
+        super(storeUrl);
+        this.dealProcessor = dealProcessor;
+    }
+
+    @Override
+    public void scrapePages() {
+        int maxPageNum = parseMaxPageNum(super.getPageContentInJsoupHtml());
+
+        int currentRotation = 1;
+
+        while (currentRotation <= maxPageNum) {
+            log.info("Parsing page: " + makeNextPageUrl(currentRotation));
+
+            Elements parsedItemElements = parseListOfAdElements(super.getPageContentInJsoupHtml());
+            super.htmlToParsedDtos(parsedItemElements);
+
+            super.getParsedItemDtos().forEach(parsedItemDto -> this.dealProcessor.workOnData(parsedItemDto, super.getStoreUrl()));
+
+            String nexUrlToScrape = makeNextPageUrl(++currentRotation);
+            super.fetchUrlContents(nexUrlToScrape);
+        }
+    }
+
+    @Override
+    public String makeNextPageUrl(int pageNum) {
+//        https://www.creationwatches.com/products/seiko-75/index-1-5d.html?currency=GBP
+//        https://www.creationwatches.com/products/tissot-247/index-1-5d.html?currency=GBP
+//        tissot-watches-209
+        String full = getStoreUrl().getUrlLink();
+        String[] x = full.split("/index-");
+        return x[0] + "/index-" + pageNum + "-5d.html?currency=GBP";
+    }
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
@@ -55,20 +88,5 @@ public class CreationWatchesParser implements Parser {
     public String parseUrl(Element adInJsoupHtml) {
         Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
         return titleElement.attr("href");
-    }
-
-    @Override
-    public ParsedItemDto fetchItemDtoFromHtml(Element adInJsoupHtml) {
-        log.info(adInJsoupHtml.outerHtml());
-        String title = parseTitle(adInJsoupHtml);
-        Double price = parsePrice(adInJsoupHtml);
-        String img = parseImage(adInJsoupHtml);
-        String upc = parseUpc(adInJsoupHtml);
-        String url = parseUrl(adInJsoupHtml);
-
-        ParsedItemDto parsedItemDto = new ParsedItemDto(title, url, img, upc, price);
-
-        log.info(parsedItemDto.toString());
-        return new ParsedItemDto(title, url, img, upc, price);
     }
 }

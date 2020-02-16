@@ -24,6 +24,10 @@ public class PriceService {
         this.priceRepository = priceRepository;
     }
 
+    public Price save(Price price) {
+        return priceRepository.save(price);
+    }
+
     public void changedPriceForItem(ParsedItemDto parsedItemDto, Item item, double delta, LocalDateTime localDateTime) {
         Price price = EntityFactory.createPrice(item, parsedItemDto, delta, localDateTime);
         priceRepository.save(price);

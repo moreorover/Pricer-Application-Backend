@@ -1,16 +1,47 @@
-package martin.dev.pricer.scraper.parser.debenhams;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
-import martin.dev.pricer.scraper.parser.Parser;
+import martin.dev.pricer.data.fabric.product.DealProcessor;
+import martin.dev.pricer.data.model.store.StoreUrl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
-public class DebenhamsParser implements Parser {
+public class DebenhamsScraper extends Scraper {
+
+    private DealProcessor dealProcessor;
+
+    public DebenhamsScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
+        super(storeUrl);
+        this.dealProcessor = dealProcessor;
+    }
+
+    @Override
+    public void scrapePages() {
+        int maxPageNum = parseMaxPageNum(super.getPageContentInJsoupHtml());
+
+        int currentRotation = 1;
+
+        while (currentRotation <= maxPageNum) {
+            log.info("Parsing page: " + makeNextPageUrl(currentRotation));
+
+            Elements parsedItemElements = parseListOfAdElements(super.getPageContentInJsoupHtml());
+            super.htmlToParsedDtos(parsedItemElements);
+
+            super.getParsedItemDtos().forEach(parsedItemDto -> this.dealProcessor.workOnData(parsedItemDto, super.getStoreUrl()));
+
+            String nexUrlToScrape = makeNextPageUrl(++currentRotation);
+            super.fetchUrlContents(nexUrlToScrape);
+        }
+    }
+
+    @Override
+    public String makeNextPageUrl(int pageNum) {
+        String full = getStoreUrl().getUrlLink();
+        String[] x = full.split("pn=");
+        return x[0] + "pn=" + pageNum + "&?shipToCntry=GB";
+    }
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
@@ -46,8 +77,9 @@ public class DebenhamsParser implements Parser {
 
     @Override
     public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("img");
-        return imgElement.attr("src");
+//        Element imgElement = adInJsoupHtml.selectFirst("img");
+//        return imgElement.attr("src");
+        return "";
     }
 
     @Override
@@ -55,20 +87,5 @@ public class DebenhamsParser implements Parser {
         Element aElement = adInJsoupHtml.selectFirst("a");
         String urlBase = "https://www.debenhams.com";
         return urlBase + aElement.attr("href");
-    }
-
-    @Override
-    public ParsedItemDto fetchItemDtoFromHtml(Element adInJsoupHtml) {
-        log.info(adInJsoupHtml.outerHtml());
-        String title = parseTitle(adInJsoupHtml);
-        Double price = parsePrice(adInJsoupHtml);
-//        String img = parseImage(adInJsoupHtml);
-        String upc = parseUpc(adInJsoupHtml);
-        String url = parseUrl(adInJsoupHtml);
-
-        ParsedItemDto parsedItemDto = new ParsedItemDto(title, url, null, upc, price);
-
-        log.info(parsedItemDto.toString());
-        return parsedItemDto;
     }
 }

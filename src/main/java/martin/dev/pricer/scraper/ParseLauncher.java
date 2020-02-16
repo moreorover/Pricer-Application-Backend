@@ -1,17 +1,10 @@
 package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.data.fabric.product.DealProcessor;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
-import martin.dev.pricer.scraper.parser.amjwatches.AMJWatchesScraper;
-import martin.dev.pricer.scraper.parser.argos.ArgosScraper;
-import martin.dev.pricer.scraper.parser.creationwatches.CreationWatchesScraper;
-import martin.dev.pricer.scraper.parser.debenhams.DebenhamsScraper;
-import martin.dev.pricer.scraper.parser.ernestjones.ErnestJonesScraper;
-import martin.dev.pricer.scraper.parser.hsamuel.HSamuelScraper;
-import martin.dev.pricer.scraper.parser.inactive.allbeauty.AllBeautyScraper;
-import martin.dev.pricer.scraper.parser.superdrug.SuperDrugScraper;
-import martin.dev.pricer.scraper.parser.watcho.WatchoScraper;
+import martin.dev.pricer.scraper.parser.*;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Arrays;
@@ -20,38 +13,15 @@ import java.util.Arrays;
 public class ParseLauncher {
 
     private StoreUrlHandler storeUrlHandler;
-    private HSamuelScraper hSamuelScraper;
-    private ErnestJonesScraper ernestJonesScraper;
-    private SuperDrugScraper superDrugScraper;
-    private ArgosScraper argosScraper;
-    private AllBeautyScraper allBeautyScraper;
-    private AMJWatchesScraper amjWatchesScraper;
-    private DebenhamsScraper debenhamsScraper;
-    private CreationWatchesScraper creationWatchesScraper;
-    private WatchoScraper watchoScraper;
+    private DealProcessor dealProcessor;
+    //    private ScraperImplementation scraperImplementation = new ScraperImplementation();
 
-    public ParseLauncher(StoreUrlHandler storeUrlHandler,
-                         HSamuelScraper hSamuelScraper,
-                         ErnestJonesScraper ernestJonesScraper,
-                         SuperDrugScraper superDrugScraper,
-                         ArgosScraper argosScraper,
-                         AllBeautyScraper allBeautyScraper,
-                         AMJWatchesScraper amjWatchesScraper,
-                         DebenhamsScraper debenhamsScraper,
-                         CreationWatchesScraper creationWatchesScraper, WatchoScraper watchoScraper) {
+    public ParseLauncher(StoreUrlHandler storeUrlHandler, DealProcessor dealProcessor) {
         this.storeUrlHandler = storeUrlHandler;
-        this.hSamuelScraper = hSamuelScraper;
-        this.ernestJonesScraper = ernestJonesScraper;
-        this.superDrugScraper = superDrugScraper;
-        this.argosScraper = argosScraper;
-        this.allBeautyScraper = allBeautyScraper;
-        this.amjWatchesScraper = amjWatchesScraper;
-        this.debenhamsScraper = debenhamsScraper;
-        this.creationWatchesScraper = creationWatchesScraper;
-        this.watchoScraper = watchoScraper;
+        this.dealProcessor = dealProcessor;
     }
 
-    @Scheduled(fixedRate = 60000, initialDelay = 5000)
+    @Scheduled(fixedRate = 60000, initialDelay = 1000)
     public void parse() {
         StoreUrl storeUrl = storeUrlHandler.fetchUrlToScrape(0, 2, 0);
 
@@ -63,31 +33,53 @@ public class ParseLauncher {
             storeUrlHandler.setStatusScraping(storeUrl);
             switch (storeUrl.getStore().getName()) {
                 case "H. Samuel":
-                    hSamuelScraper.scrapePages(storeUrl);
-                    break;
                 case "Ernest Jones":
-                    ernestJonesScraper.scrapePages(storeUrl);
+                    Scraper HSamuelScraper = new HSamuelScraper(storeUrl, this.dealProcessor);
+                    HSamuelScraper.scrapePages();
                     break;
                 case "Superdrug":
-                    superDrugScraper.scrapePages(storeUrl);
+                    Scraper SuperDrugScraper = new SuperDrugScraper(storeUrl, this.dealProcessor);
+                    SuperDrugScraper.scrapePages();
                     break;
                 case "Argos":
-                    argosScraper.scrapePages(storeUrl);
+                    Scraper ArgosScraper = new ArgosScraper(storeUrl, this.dealProcessor);
+                    ArgosScraper.scrapePages();
                     break;
-                case "All Beauty":
-                    allBeautyScraper.scrapePages(storeUrl);
-                    break;
+//                case "All Beauty":
+//                    Scraper AllBeautyScraper = new AllBeautyScraper();
+//                    AllBeautyScraper.scrapePages(storeUrl);
+//                    break;
                 case "AMJ Watches":
-                    amjWatchesScraper.scrapePages(storeUrl);
+                    Scraper AMJWatchesScraper = new AMJWatchesScraper(storeUrl, this.dealProcessor);
+                    AMJWatchesScraper.scrapePages();
                     break;
                 case "Debenhams":
-                    debenhamsScraper.scrapePages(storeUrl);
+                    Scraper DebenhamsScraper = new DebenhamsScraper(storeUrl, this.dealProcessor);
+                    DebenhamsScraper.scrapePages();
                     break;
                 case "Creation Watches":
-                    creationWatchesScraper.scrapePages(storeUrl);
+                    Scraper CreationWatchesScraper = new CreationWatchesScraper(storeUrl, this.dealProcessor);
+                    CreationWatchesScraper.scrapePages();
                     break;
                 case "Watcho":
-                    watchoScraper.scrapePages(storeUrl);
+                    Scraper WatchoScraper = new WatchoScraper(storeUrl, this.dealProcessor);
+                    WatchoScraper.scrapePages();
+                    break;
+                case "Watch Shop":
+                    Scraper WatchShopScraper = new WatchShopScraper(storeUrl, this.dealProcessor);
+                    WatchShopScraper.scrapePages();
+                    break;
+                case "First Class Watches":
+                    Scraper FirstClassWatchesScraper = new FirstClassWatchesScraper(storeUrl, this.dealProcessor);
+                    FirstClassWatchesScraper.scrapePages();
+                    break;
+                case "Gold Smiths":
+                    Scraper GoldSmithsScraper = new GoldSmithsScraper(storeUrl, this.dealProcessor);
+                    GoldSmithsScraper.scrapePages();
+                    break;
+                case "Tic Watches":
+                    Scraper TicWatchesScraper = new TicWatchesScraper(storeUrl, this.dealProcessor);
+                    TicWatchesScraper.scrapePages();
                     break;
             }
         } catch (Exception e) {

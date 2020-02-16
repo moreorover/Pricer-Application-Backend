@@ -20,4 +20,6 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
     Price findFirstByItemOrderByPriceDesc(Item item);
 
     Price findFirstByItemOrderByPriceAsc(Item item);
+
+    List<Price> findAllByDeltaIsLessThan(Double delta);
 }
