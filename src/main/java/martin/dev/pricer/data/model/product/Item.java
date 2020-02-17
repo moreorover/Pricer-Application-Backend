@@ -1,5 +1,6 @@
 package martin.dev.pricer.data.model.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import martin.dev.pricer.data.model.BaseEntity;
 import martin.dev.pricer.data.model.store.Store;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,5 +47,29 @@ public class Item extends BaseEntity {
                 "upc='" + upc + '\'' +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    public double getMaxPrice(){
+        return this.prices.stream()
+                .mapToDouble(Price::getPrice)
+                .max()
+                .orElse(Double.NaN);
+    }
+
+    public double getMinPrice(){
+        return this.prices.stream()
+                .mapToDouble(Price::getPrice)
+                .min()
+                .orElse(Double.NaN);
+    }
+
+    public double getAvgPrice() {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+        double avgPrice = prices.stream()
+                .mapToDouble(Price::getPrice)
+                .average()
+                .orElse(0.0);
+        return Double.parseDouble(decimalFormat.format(avgPrice));
     }
 }
