@@ -9,6 +9,7 @@ import martin.dev.pricer.data.model.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Setter
@@ -21,6 +22,7 @@ public class Price extends BaseEntity {
     private Double delta;
     private LocalDateTime foundAt;
 
+//    @NotNull
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "item_id")
