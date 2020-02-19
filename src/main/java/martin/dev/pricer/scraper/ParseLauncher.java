@@ -2,26 +2,38 @@ package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.fabric.product.DealProcessor;
+import martin.dev.pricer.data.model.mongo.model.Category;
+import martin.dev.pricer.data.model.mongo.model.Store;
+import martin.dev.pricer.data.model.mongo.model.Url;
+import martin.dev.pricer.data.model.mongo.repository.MongoStoreRepository;
+
+import martin.dev.pricer.data.model.store.Status;
 import martin.dev.pricer.data.model.store.StoreUrl;
 import martin.dev.pricer.data.services.store.StoreUrlHandler;
 import martin.dev.pricer.scraper.parser.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 public class ParseLauncher {
 
     private StoreUrlHandler storeUrlHandler;
     private DealProcessor dealProcessor;
-    //    private ScraperImplementation scraperImplementation = new ScraperImplementation();
+
+    @Autowired
+    private MongoStoreRepository mongoStoreRepository;
 
     public ParseLauncher(StoreUrlHandler storeUrlHandler, DealProcessor dealProcessor) {
         this.storeUrlHandler = storeUrlHandler;
         this.dealProcessor = dealProcessor;
     }
 
-    @Scheduled(fixedRate = 60000, initialDelay = 1000)
+    //    @Scheduled(fixedRate = 60000, initialDelay = 1000)
     public void parse() {
         StoreUrl storeUrl = storeUrlHandler.fetchUrlToScrape(0, 2, 0);
 
