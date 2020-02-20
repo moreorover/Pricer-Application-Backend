@@ -3,7 +3,7 @@ package martin.dev.pricer.scraper.parser;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.mongo.model.Store;
 import martin.dev.pricer.data.model.mongo.model.Url;
-import martin.dev.pricer.data.model.mongo.repository.MongoItemRepository;
+import martin.dev.pricer.data.model.mongo.service.ItemService;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
@@ -13,23 +13,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public abstract class MongoScraper implements Parser {
+public abstract class MongoScraper<T extends ItemService> implements Parser {
 
-    private MongoItemRepository mongoItemRepository;
+    private T itemService;
     private List<ParsedItemDto> parsedItemDtos;
     private Store store;
     private Url url;
     private Document pageContentInJsoupHtml;
 
-    public MongoScraper(MongoItemRepository mongoItemRepository, Store store, Url url) {
-        this.mongoItemRepository = mongoItemRepository;
+    public MongoScraper(T itemService, Store store, Url url) {
+        this.itemService = itemService;
         this.store = store;
         this.url = url;
         this.fetchUrlContents(url.getUrl());
     }
 
-    public MongoItemRepository getMongoItemRepository() {
-        return mongoItemRepository;
+    public T getItemService() {
+        return itemService;
     }
 
     public Store getStore() {

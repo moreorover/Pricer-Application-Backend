@@ -12,4 +12,8 @@ public class Price {
     private Double price;
     private Double delta;
     private LocalDateTime foundAt;
+
+    public double compareTo(Price otherPrice) {
+        return otherPrice.price - this.price;
+    }
 }

@@ -18,7 +18,7 @@ public class Url extends BaseEntity {
     private LocalDateTime lastChecked;
     private Status status;
 
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
 
     public void updateLastCheckedToNow() {
         this.setLastChecked(LocalDateTime.now());

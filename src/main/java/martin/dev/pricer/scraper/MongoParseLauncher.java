@@ -1,19 +1,16 @@
 package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.model.mongo.model.Category;
-import martin.dev.pricer.data.model.mongo.model.Status;
-import martin.dev.pricer.data.model.mongo.model.Store;
-import martin.dev.pricer.data.model.mongo.model.Url;
-import martin.dev.pricer.data.model.mongo.repository.MongoItemRepository;
+import martin.dev.pricer.data.model.mongo.model.*;
+import martin.dev.pricer.data.model.mongo.service.MongoItemService;
 import martin.dev.pricer.data.model.mongo.service.MongoStoreService;
 import martin.dev.pricer.scraper.parser.MongoCreationWatchesScraper;
 import martin.dev.pricer.scraper.parser.MongoFirstClassWatchesScraper;
-import martin.dev.pricer.scraper.parser.MongoScraper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +22,7 @@ public class MongoParseLauncher {
 
     private MongoStoreService mongoStoreService;
     @Autowired
-    private MongoItemRepository mongoItemRepository;
+    private MongoItemService itemService;
 
     public MongoParseLauncher(MongoStoreService mongoStoreService) {
         this.mongoStoreService = mongoStoreService;
@@ -70,49 +67,60 @@ public class MongoParseLauncher {
                 Status.READY,
                 categories));
 
-        Store store = new Store("Creation Watches", "https://www.creationwatches.com", "https://www.complaintsboard.com/img/business/116976/182x300/creation-watches.jpg", urls);
+//        Store store = new Store("Creation Watches", "https://www.creationwatches.com", "https://www.complaintsboard.com/img/business/116976/182x300/creation-watches.jpg", urls);
 
 //        mongoStoreRepository.save(store);
-        this.mongoStoreService.getMongoStoreRepository().save(store);
+//        this.mongoStoreService.getMongoStoreRepository().save(store);
 
         System.out.println("finished");
 
     }
 
+//    @Scheduled(fixedRate = 60000, initialDelay = 1)
+    public void testFindLastPrice(){
+        Price p1 = new Price(4.0, 0.0, LocalDateTime.now().minusHours(4));
+        Price p2 = new Price(2.0, 0.0, LocalDateTime.now().minusHours(2));
+        Price p3 = new Price(-99.0, 0.0, LocalDateTime.now().minusHours(0));
+        Price p4 = new Price(1.0, 0.0, LocalDateTime.now().minusHours(1));
+        Price p5 = new Price(5.0, 0.0, LocalDateTime.now().minusHours(5));
+
+        List<Price> prices = new ArrayList<>();
+        prices.add(p1);
+        prices.add(p2);
+        prices.add(p3);
+        prices.add(p4);
+        prices.add(p5);
+
+        double lastPrice = prices.stream()
+                .max((price, t1) -> price.getFoundAt().compareTo(t1.getFoundAt()))
+                .get().getPrice();
+
+        System.out.println(lastPrice);
+    }
+
     @Scheduled(fixedRate = 60000, initialDelay = 1)
     public void parse() {
-        List<Store> storeList = this.mongoStoreService.fetchUrlsToScrapeOld();
+        List<Store> storeList = this.mongoStoreService.fetchStoresToScrape();
 
-        System.out.println(storeList);
+        assertTrue(storeList.size() > 0, "No Stores found!");
 
-        System.out.println("Store count:" + storeList.size());
+        storeList.forEach(store -> {
+            store.getUrlsToScrape().forEach(url -> {
+                this.mongoStoreService.updateUrlStatus(store, url, Status.SCRAPING);
 
-        System.out.println("1st store url count:" + storeList.get(0).getUrls().size());
-        System.out.println("2st store url count:" + storeList.get(1).getUrls().size());
+                switch (store.getName()) {
+                    case "Creation Watches":
+                        new MongoCreationWatchesScraper<>(this.itemService, store, url).scrapePages();
+                        break;
+                    case "First Class Watches":
+                        new MongoFirstClassWatchesScraper<>(this.itemService, store, url).scrapePages();
+                        break;
+                }
 
-//        List<Store> storeList = this.mongoStoreService.fetchUrlsToScrape();
-//
-//        assertTrue(storeList.size() > 0, "No Stores found!");
-//
-//        storeList.forEach(store -> {
-//            store.getUrls().forEach(url -> {
-//                if (url.isReadyToScrape()) {
-//                    this.mongoStoreService.updateUrlStatus(store, url, Status.SCRAPING);
-//
-//                    switch (store.getName()){
-//                        case "Creation Watches":
-//                            new MongoCreationWatchesScraper(this.mongoItemRepository, store, url).scrapePages();
-//                            break;
-//                        case "First Class Watches":
-//                            new MongoFirstClassWatchesScraper(this.mongoItemRepository, store, url).scrapePages();
-//                            break;
-//                    }
-//
-//                    this.mongoStoreService.updateUrlLastTimeChecked(store, url);
-//                    this.mongoStoreService.updateUrlStatus(store, url, Status.READY);
-//                }
-//            });
-//        });
+                this.mongoStoreService.updateUrlLastTimeChecked(store, url);
+                this.mongoStoreService.updateUrlStatus(store, url, Status.READY);
+            });
+        });
 
 //        storeUrl.forEach(store -> {
 //            store.getUrls().forEach(url -> {

@@ -1,25 +1,25 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.fabric.product.DealProcessor;
 import martin.dev.pricer.data.model.mongo.model.Item;
 import martin.dev.pricer.data.model.mongo.model.Price;
 import martin.dev.pricer.data.model.mongo.model.Store;
 import martin.dev.pricer.data.model.mongo.model.Url;
 import martin.dev.pricer.data.model.mongo.repository.MongoItemRepository;
-import martin.dev.pricer.data.model.store.StoreUrl;
+import martin.dev.pricer.data.model.mongo.service.ItemService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
-public class MongoFirstClassWatchesScraper extends MongoScraper {
+public class MongoFirstClassWatchesScraper<T extends ItemService> extends MongoScraper<ItemService>  {
 
-    public MongoFirstClassWatchesScraper(MongoItemRepository mongoItemRepository, Store store, Url url) {
+    public MongoFirstClassWatchesScraper(T mongoItemRepository, Store store, Url url) {
         super(mongoItemRepository, store, url);
     }
 
@@ -39,7 +39,7 @@ public class MongoFirstClassWatchesScraper extends MongoScraper {
 
             super.getParsedItemDtos().forEach(parsedItemDto -> {
 
-                Item dbItem = getMongoItemRepository().findByUpc(parsedItemDto.getUpc());
+                Item dbItem = getItemService().findByUpc(parsedItemDto.getUpc());
 
                 if (dbItem == null){
                     Set<Price> prices = new HashSet<>();
@@ -53,10 +53,21 @@ public class MongoFirstClassWatchesScraper extends MongoScraper {
                             parsedItemDto.getImg(),
                             prices,
                             getUrl().getCategories(),
-                            getStore());
+                            getStore(),
+                            // TODO ParsedItemDTO need to contain field of url where it has been found on
+                            getUrl());
 
-                    getMongoItemRepository().save(newItem);
+                    getItemService().save(newItem);
+                } else if (dbItem.getLastPrice() != parsedItemDto.getPrice()) {
+                    double delta = 100 * ((parsedItemDto.getPrice() - dbItem.getLastPrice()) / dbItem.getLastPrice());
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    double newDelta = Double.parseDouble(df.format(delta));
+
+                    Price newPrice = new Price(parsedItemDto.getPrice(), newDelta, LocalDateTime.now());
+                    dbItem.getPrices().add(newPrice);
+                    getItemService().save(dbItem);
                 }
+
             });
 
             String nexUrlToScrape = makeNextPageUrl(++currentRotation);

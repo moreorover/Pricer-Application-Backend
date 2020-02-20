@@ -8,9 +8,7 @@ import martin.dev.pricer.data.model.mongo.model.Url;
 import martin.dev.pricer.data.model.mongo.repository.MongoStoreRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,31 +41,9 @@ public class MongoStoreService {
         this.getMongoStoreRepository().save(store);
     }
 
-    public List<Store> fetchUrlsToScrape(){
-        return this.getMongoStoreRepository().findAll();
-    }
-
-    public List<Store> fetchUrlsToScrapeOld() {
-
-        List<Store> stores = this.getMongoStoreRepository().findAll().stream()
-                .filter(store -> store.getUrls().stream().anyMatch(Url::isReadyToScrape))
+    public List<Store> fetchStoresToScrape() {
+        return this.getMongoStoreRepository().findAll().stream()
+                .filter(Store::filterUrlsToScrape)
                 .collect(Collectors.toList());
-
-        return stores;
-
-//        HashMap<Store, List<Url>> urlsToScrape = new HashMap<>();
-//
-//        this.getMongoStoreRepository().findAll().forEach(store -> {
-//
-//            List<Url> tempUrlList = store.getUrls().stream()
-//                    .filter(Url::isReadyToScrape)
-//                    .collect(Collectors
-//                            .toCollection(ArrayList::new));
-//
-//            if (tempUrlList.size() != 0) {
-//                urlsToScrape.put(store, tempUrlList);
-//            }
-//        });
-//        return urlsToScrape;
     }
 }
