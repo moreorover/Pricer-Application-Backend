@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@EqualsAndHashCode(callSuper = true)
 @Document
 @Data
 @AllArgsConstructor
-public class Category extends BaseEntity {
+public class Category {
 
     private String name;
 }

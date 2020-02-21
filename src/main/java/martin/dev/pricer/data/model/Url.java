@@ -7,10 +7,9 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-public class Url extends BaseEntity {
+public class Url {
 
     private String url;
     private LocalDateTime lastChecked;
