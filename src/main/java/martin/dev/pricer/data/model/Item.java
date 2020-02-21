@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.text.DecimalFormat;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,9 +26,6 @@ public class Item extends BaseEntity {
     private Store store;
 
     private String urlFound;
-
-    public Item() {
-    }
 
     public Item(String upc, String title, String url, String img, Set<Price> prices, Set<Category> categories, Store store, String urlFound) {
         this.upc = upc;
@@ -64,9 +62,39 @@ public class Item extends BaseEntity {
         return Double.parseDouble(decimalFormat.format(avgPrice));
     }
 
+    public double getMaxDelta() {
+        return this.prices.stream()
+                .mapToDouble(Price::getDelta)
+                .max()
+                .orElse(Double.NaN);
+    }
+
+    public double getMinDelta() {
+        return this.prices.stream()
+                .mapToDouble(Price::getDelta)
+                .min()
+                .orElse(Double.NaN);
+    }
+
+    public double getAvgDelta() {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+        double avgPrice = prices.stream()
+                .mapToDouble(Price::getDelta)
+                .average()
+                .orElse(0.0);
+        return Double.parseDouble(decimalFormat.format(avgPrice));
+    }
+
     public double getLastPrice() {
         return prices.stream()
-                .max((price, t1) -> price.getFoundAt().compareTo(t1.getFoundAt()))
+                .max(Comparator.comparing(Price::getFoundAt))
                 .get().getPrice();
+    }
+
+    public double getLastDelta() {
+        return prices.stream()
+                .max(Comparator.comparing(Price::getFoundAt))
+                .get().getDelta();
     }
 }
