@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MongoDealRepository extends PagingAndSortingRepository<Deal, String> {
+public interface DealRepository extends PagingAndSortingRepository<Deal, String> {
 
     List<Deal> findByOrderByDealFoundDesc();
 

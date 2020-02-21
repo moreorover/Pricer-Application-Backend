@@ -5,8 +5,8 @@ import martin.dev.pricer.data.model.Category;
 import martin.dev.pricer.data.model.Status;
 import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;
-import martin.dev.pricer.data.service.MongoItemService;
-import martin.dev.pricer.data.service.MongoStoreService;
+import martin.dev.pricer.data.service.ItemServiceI;
+import martin.dev.pricer.data.service.StoreService;
 import martin.dev.pricer.scraper.parser.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,12 +22,12 @@ import java.util.stream.Stream;
 @Slf4j
 public class ParseLauncher {
 
-    private MongoStoreService mongoStoreService;
+    private StoreService storeService;
     @Autowired
-    private MongoItemService itemService;
+    private ItemServiceI itemService;
 
-    public ParseLauncher(MongoStoreService mongoStoreService) {
-        this.mongoStoreService = mongoStoreService;
+    public ParseLauncher(StoreService storeService) {
+        this.storeService = storeService;
     }
 
     //    @Scheduled(fixedRate = 600000000, initialDelay = 1)
@@ -51,13 +51,11 @@ public class ParseLauncher {
 
         Set<Url> urlList = new HashSet<>();
 
-        data.keySet().forEach(urlKey -> {
-            urlList.add(new Url(urlKey, LocalDateTime.now(), Status.READY, data.get(urlKey)));
-        });
+        data.keySet().forEach(urlKey -> urlList.add(new Url(urlKey, LocalDateTime.now(), Status.READY, data.get(urlKey))));
 
         Store store = new Store("Gold Smiths", "https://www.goldsmiths.co.uk", "https://lh3.googleusercontent.com/-Ck01XdjIITQ/AAAAAAAAAAI/AAAAAAAAA9o/iz6zLZRdIZ0/s250-c/photo.jpg", urlList);
 
-        this.mongoStoreService.getMongoStoreRepository().save(store);
+        this.storeService.getStoreRepository().save(store);
 
         System.out.println("finished");
 
@@ -65,7 +63,7 @@ public class ParseLauncher {
 
     @Scheduled(fixedRate = 60000, initialDelay = 1)
     public void parse() {
-        List<Store> storeList = this.mongoStoreService.fetchStoresToScrape();
+        List<Store> storeList = this.storeService.fetchStoresToScrape();
 
 //        assertTrue(storeList.size() > 0, "No Stores found!");
 
@@ -73,44 +71,42 @@ public class ParseLauncher {
             log.info("Nothing to scrape.");
         }
 
-        storeList.forEach(store -> {
-            store.getUrlsToScrape().forEach(url -> {
-                this.mongoStoreService.updateUrlStatus(store, url, Status.SCRAPING);
+        storeList.forEach(store -> store.getUrlsToScrape().forEach(url -> {
+            this.storeService.updateUrlStatus(store, url, Status.SCRAPING);
 
-                switch (store.getName()) {
-                    case "Creation Watches":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
-                        break;
-                    case "First Class Watches":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
-                        break;
-                    case "AMJ Watches":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
-                        break;
-                    case "Argos":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
-                        break;
-                    case "Superdrug":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
-                        break;
-                    case "H. Samuel":
-                    case "Ernest Jones":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
-                        break;
-                    case "Debenhams":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
-                        break;
-                    case "Watch Shop":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
-                        break;
-                    case "Gold Smiths":
-                        new Scraper<MongoItemService, Parser>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
-                        break;
-                }
+            switch (store.getName()) {
+                case "Creation Watches":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "First Class Watches":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "AMJ Watches":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "Argos":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "Superdrug":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
+                    break;
+                case "H. Samuel":
+                case "Ernest Jones":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "Debenhams":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "Watch Shop":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "Gold Smiths":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
+                    break;
+            }
 
-                this.mongoStoreService.updateUrlLastTimeChecked(store, url);
-                this.mongoStoreService.updateUrlStatus(store, url, Status.READY);
-            });
-        });
+            this.storeService.updateUrlLastTimeChecked(store, url);
+            this.storeService.updateUrlStatus(store, url, Status.READY);
+        }));
     }
 }

@@ -1,7 +1,7 @@
 package martin.dev.pricer.web.controller;
 
 import martin.dev.pricer.data.model.Deal;
-import martin.dev.pricer.data.repository.MongoDealRepository;
+import martin.dev.pricer.data.repository.DealRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,9 +15,9 @@ import java.util.List;
 @CrossOrigin
 public class DealController {
 
-    private MongoDealRepository dealRepository;
+    private DealRepository dealRepository;
 
-    public DealController(MongoDealRepository dealRepository) {
+    public DealController(DealRepository dealRepository) {
         this.dealRepository = dealRepository;
     }
 

@@ -1,7 +1,7 @@
 package martin.dev.pricer.profile;
 
-import martin.dev.pricer.data.repository.MongoStoreRepository;
-import martin.dev.pricer.data.service.MongoStoreService;
+import martin.dev.pricer.data.repository.StoreRepository;
+import martin.dev.pricer.data.service.StoreService;
 import martin.dev.pricer.scraper.ParseLauncher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,16 +9,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MainProfile {
 
-    private MongoStoreRepository mongoStoreRepository;
+    private StoreRepository storeRepository;
 
 
-    public MainProfile(MongoStoreRepository mongoStoreRepository) {
-        this.mongoStoreRepository = mongoStoreRepository;
+    public MainProfile(StoreRepository storeRepository) {
+        this.storeRepository = storeRepository;
     }
 
     @Bean
-    public MongoStoreService getMongoStoreService() {
-        return new MongoStoreService(mongoStoreRepository);
+    public StoreService getMongoStoreService() {
+        return new StoreService(storeRepository);
     }
 
     @Bean

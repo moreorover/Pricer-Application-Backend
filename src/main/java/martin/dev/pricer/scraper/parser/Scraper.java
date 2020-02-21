@@ -3,7 +3,7 @@ package martin.dev.pricer.scraper.parser;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;
-import martin.dev.pricer.data.service.ItemService;
+import martin.dev.pricer.data.service.ItemServiceI;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class Scraper<T extends ItemService, R extends Parser> {
+public class Scraper<T extends ItemServiceI, R extends Parser> {
 
     private T itemService;
     private R parser;
@@ -61,10 +61,7 @@ public class Scraper<T extends ItemService, R extends Parser> {
             Elements parsedItemElements = parser.parseListOfAdElements(getPageContentInJsoupHtml());
             htmlToParsedDtos(parsedItemElements, parser.makeNextPageUrl(url.getUrl(), currentRotation));
 
-            getParsedItemDtos().forEach(parsedItemDto -> {
-                getItemService().processParsedItem(parsedItemDto, getStore(), getUrl());
-
-            });
+            getParsedItemDtos().forEach(parsedItemDto -> getItemService().processParsedItem(parsedItemDto, getStore(), getUrl()));
 
             String nexUrlToScrape = parser.makeNextPageUrl(url.getUrl(), ++currentRotation);
             fetchUrlContents(nexUrlToScrape);
@@ -80,10 +77,7 @@ public class Scraper<T extends ItemService, R extends Parser> {
             Elements parsedItemElements = parser.parseListOfAdElements(getPageContentInJsoupHtml());
             htmlToParsedDtos(parsedItemElements, parser.makeNextPageUrl(url.getUrl(), currentRotation));
 
-            getParsedItemDtos().forEach(parsedItemDto -> {
-                getItemService().processParsedItem(parsedItemDto, getStore(), getUrl());
-
-            });
+            getParsedItemDtos().forEach(parsedItemDto -> getItemService().processParsedItem(parsedItemDto, getStore(), getUrl()));
 
             String nexUrlToScrape = parser.makeNextPageUrl(url.getUrl(), ++currentRotation);
             fetchUrlContents(nexUrlToScrape);

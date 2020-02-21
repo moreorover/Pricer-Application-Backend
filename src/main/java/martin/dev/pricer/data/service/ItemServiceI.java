@@ -5,7 +5,7 @@ import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 
-public interface ItemService {
+public interface ItemServiceI {
     Item findByUpc(String upc);
 
     Item save(Item newItem);

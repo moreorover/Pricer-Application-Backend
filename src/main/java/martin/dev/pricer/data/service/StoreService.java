@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.Status;
 import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;
-import martin.dev.pricer.data.repository.MongoStoreRepository;
+import martin.dev.pricer.data.repository.StoreRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Getter
-public class MongoStoreService {
+public class StoreService {
 
-    private MongoStoreRepository mongoStoreRepository;
+    private StoreRepository storeRepository;
 
-    public MongoStoreService(MongoStoreRepository mongoStoreRepository) {
-        this.mongoStoreRepository = mongoStoreRepository;
+    public StoreService(StoreRepository storeRepository) {
+        this.storeRepository = storeRepository;
     }
 
     public void updateUrlStatus(Store store, Url url, Status status) {
@@ -29,7 +29,7 @@ public class MongoStoreService {
                 storeUrl.updateStatusTo(status);
             }
         });
-        this.getMongoStoreRepository().save(store);
+        this.getStoreRepository().save(store);
     }
 
     public void updateUrlLastTimeChecked(Store store, Url url) {
@@ -38,11 +38,11 @@ public class MongoStoreService {
                 storeUrl.updateLastCheckedToNow();
             }
         });
-        this.getMongoStoreRepository().save(store);
+        this.getStoreRepository().save(store);
     }
 
     public List<Store> fetchStoresToScrape() {
-        return this.getMongoStoreRepository().findAll().stream()
+        return this.getStoreRepository().findAll().stream()
                 .filter(Store::filterUrlsToScrape)
                 .collect(Collectors.toList());
     }
