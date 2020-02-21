@@ -13,6 +13,7 @@ public class ParsedItemDto {
     private String img;
     private String upc;
     private double price;
+    private String urlFound;
 
     public boolean isValid() {
         return !this.title.isBlank() && !this.title.isEmpty() &&
