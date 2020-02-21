@@ -1,5 +1,6 @@
 package martin.dev.pricer.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +24,7 @@ public class Store extends BaseEntity {
     private Set<Url> urls;
 
     @Transient
+    @JsonIgnore
     private Set<Url> urlsToScrape;
 
     @PersistenceConstructor
