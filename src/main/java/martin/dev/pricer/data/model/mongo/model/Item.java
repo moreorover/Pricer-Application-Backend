@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.text.DecimalFormat;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,12 +24,12 @@ public class Item extends BaseEntity {
     @DBRef
     private Store store;
 
-    private Url storeUrl;
+    private String urlFound;
 
     public Item() {
     }
 
-    public Item(String upc, String title, String url, String img, Set<Price> prices, Set<Category> categories, Store store, Url urlObj) {
+    public Item(String upc, String title, String url, String img, Set<Price> prices, Set<Category> categories, Store store, String urlFound) {
         this.upc = upc;
         this.title = title;
         this.url = url;
@@ -38,7 +37,7 @@ public class Item extends BaseEntity {
         this.prices = prices;
         this.categories = categories;
         this.store = store;
-        this.storeUrl = urlObj;
+        this.urlFound = urlFound;
     }
 
     public double getMaxPrice() {
