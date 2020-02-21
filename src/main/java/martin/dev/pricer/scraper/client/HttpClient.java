@@ -1,8 +1,5 @@
 package martin.dev.pricer.scraper.client;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,17 +47,5 @@ public class HttpClient {
             e.printStackTrace();
         }
         return response;
-    }
-
-    public static Document fetchJSPageContent(String target) {
-        WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
-        webClient.getOptions().setThrowExceptionOnScriptError(false);
-        HtmlPage page = null;
-        try {
-            page = webClient.getPage(target);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-        return Jsoup.parse(page.asText());
     }
 }
