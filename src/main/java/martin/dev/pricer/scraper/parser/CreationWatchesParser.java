@@ -4,7 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class CreationWatchesParser implements ParserMongo {
+public class CreationWatchesParser implements Parser {
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {

@@ -1,4 +1,4 @@
-package martin.dev.pricer.data.model.mongo.model;
+package martin.dev.pricer.data.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

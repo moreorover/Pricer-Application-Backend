@@ -1,10 +1,10 @@
-package martin.dev.pricer.data.model.mongo.service;
+package martin.dev.pricer.data.service;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.model.mongo.model.*;
-import martin.dev.pricer.data.model.mongo.repository.MongoDealRepository;
-import martin.dev.pricer.data.model.mongo.repository.MongoItemRepository;
+import martin.dev.pricer.data.model.*;
+import martin.dev.pricer.data.repository.MongoDealRepository;
+import martin.dev.pricer.data.repository.MongoItemRepository;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.springframework.stereotype.Service;
 
@@ -80,11 +80,15 @@ public class MongoItemService implements ItemService {
             } else if (dbItem.getLastPrice() != parsedItemDto.getPrice() && dbItem.getLastPrice() > parsedItemDto.getPrice()) {
                 newPrice(dbItem, parsedItemDto.getPrice());
                 save(dbItem);
-                Deal newDeal = new Deal(dbItem, dbItem.getCategories(), store, LocalDateTime.now(),true);
+                Deal newDeal = new Deal(dbItem, dbItem.getCategories(), store, LocalDateTime.now(), true);
                 dealRepository.save(newDeal);
             } else if (dbItem.getLastPrice() != parsedItemDto.getPrice()) {
                 newPrice(dbItem, parsedItemDto.getPrice());
                 save(dbItem);
+
+                Deal expiredDeal = dealRepository.findByItemAndAvailable(dbItem, true);
+                expiredDeal.setAvailable(false);
+                dealRepository.save(expiredDeal);
             }
         }
     }

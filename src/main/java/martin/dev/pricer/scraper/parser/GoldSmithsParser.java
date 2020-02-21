@@ -1,14 +1,12 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.fabric.product.DealProcessor;
-import martin.dev.pricer.data.model.store.StoreUrl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class GoldSmithsParser implements ParserMongo {
+public class GoldSmithsParser implements Parser {
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -55,7 +53,7 @@ public class GoldSmithsParser implements ParserMongo {
     public String parseImage(Element adInJsoupHtml) {
         Element imgElement = adInJsoupHtml.selectFirst("img");
         String imgSrc = imgElement.attr("src");
-        if (imgSrc.endsWith(".jpg")){
+        if (imgSrc.endsWith(".jpg")) {
             return imgSrc;
         }
         return "";

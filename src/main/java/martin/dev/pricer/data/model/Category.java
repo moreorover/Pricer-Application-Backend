@@ -1,4 +1,4 @@
-package martin.dev.pricer.data.model.mongo.model;
+package martin.dev.pricer.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Data
 @AllArgsConstructor
-public class Category extends BaseEntity{
+public class Category extends BaseEntity {
 
     private String name;
 }

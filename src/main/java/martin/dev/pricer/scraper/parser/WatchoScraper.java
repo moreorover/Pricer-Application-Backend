@@ -1,44 +1,16 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.fabric.product.DealProcessor;
-import martin.dev.pricer.data.model.store.StoreUrl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class WatchoScraper extends Scraper {
-    private DealProcessor dealProcessor;
-
-    public WatchoScraper(StoreUrl storeUrl, DealProcessor dealProcessor) {
-        super(storeUrl);
-        this.dealProcessor = dealProcessor;
-    }
+public class WatchoScraper implements Parser {
 
     @Override
-    public void scrapePages() {
-        int maxPageNum = parseMaxPageNum(super.getPageContentInJsoupHtml());
-
-        int currentRotation = 1;
-
-        while (currentRotation <= maxPageNum) {
-            log.info("Parsing page: " + makeNextPageUrl(currentRotation));
-
-            Elements parsedItemElements = parseListOfAdElements(super.getPageContentInJsoupHtml());
-            super.htmlToParsedDtos(parsedItemElements);
-
-            super.getParsedItemDtos().forEach(parsedItemDto -> this.dealProcessor.workOnData(parsedItemDto, super.getStoreUrl()));
-
-            String nexUrlToScrape = makeNextPageUrl(++currentRotation);
-            super.fetchUrlContents(nexUrlToScrape);
-        }
-    }
-
-    @Override
-    public String makeNextPageUrl(int pageNum) {
-        String full = getStoreUrl().getUrlLink();
-        String[] x = full.split("&page=");
+    public String makeNextPageUrl(String url, int pageNum) {
+        String[] x = url.split("&page=");
         return x[0] + "&page=" + pageNum;
     }
 
@@ -50,7 +22,7 @@ public class WatchoScraper extends Scraper {
     @Override
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
         Elements paginationElements = pageContentInJsoupHtml.select("li[class^=pagination-item]");
-        if (paginationElements.size() == 0){
+        if (paginationElements.size() == 0) {
             return 1;
         }
         Element lastPaginationElement = paginationElements.get(paginationElements.size() - 2);
@@ -58,7 +30,7 @@ public class WatchoScraper extends Scraper {
     }
 
     @Override
-    public String parseTitle(Element adInJsoupHtml){
+    public String parseTitle(Element adInJsoupHtml) {
         Element titleElement = adInJsoupHtml.selectFirst("h4[class=card-title]");
         return titleElement.text();
     }

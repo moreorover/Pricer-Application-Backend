@@ -1,9 +1,8 @@
-package martin.dev.pricer.data.model.mongo.service;
+package martin.dev.pricer.data.service;
 
-import martin.dev.pricer.data.model.mongo.model.Item;
-import martin.dev.pricer.data.model.mongo.model.Price;
-import martin.dev.pricer.data.model.mongo.model.Store;
-import martin.dev.pricer.data.model.mongo.model.Url;
+import martin.dev.pricer.data.model.Item;
+import martin.dev.pricer.data.model.Store;
+import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 
 public interface ItemService {

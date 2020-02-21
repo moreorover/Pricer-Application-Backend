@@ -2,8 +2,6 @@ package martin.dev.pricer.scraper.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @Data

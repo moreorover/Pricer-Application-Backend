@@ -6,6 +6,8 @@ import org.jsoup.select.Elements;
 
 public interface Parser {
 
+    String makeNextPageUrl(String url, int pageNum);
+
     Elements parseListOfAdElements(Document pageContentInJsoupHtml);
 
     int parseMaxPageNum(Document pageContentInJsoupHtml);

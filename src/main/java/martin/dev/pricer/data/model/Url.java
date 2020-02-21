@@ -1,12 +1,10 @@
-package martin.dev.pricer.data.model.mongo.model;
+package martin.dev.pricer.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)

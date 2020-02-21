@@ -1,14 +1,12 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.fabric.product.DealProcessor;
-import martin.dev.pricer.data.model.store.StoreUrl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class WatchShopParser implements ParserMongo {
+public class WatchShopParser implements Parser {
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -31,7 +29,7 @@ public class WatchShopParser implements ParserMongo {
     }
 
     @Override
-    public String parseTitle(Element adInJsoupHtml){
+    public String parseTitle(Element adInJsoupHtml) {
         Element titleElement = adInJsoupHtml.selectFirst("meta[itemprop=name]");
         return titleElement.attr("content").trim();
     }
@@ -53,7 +51,7 @@ public class WatchShopParser implements ParserMongo {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
         imgElement = imgElement.selectFirst("img");
         String imgSrc = imgElement.attr("src");
-        if (imgSrc.endsWith("loader_border.gif")){
+        if (imgSrc.endsWith("loader_border.gif")) {
             return "";
         }
         return imgSrc;

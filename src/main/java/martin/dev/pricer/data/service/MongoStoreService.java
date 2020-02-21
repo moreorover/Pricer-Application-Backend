@@ -1,14 +1,14 @@
-package martin.dev.pricer.data.model.mongo.service;
+package martin.dev.pricer.data.service;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.model.mongo.model.Status;
-import martin.dev.pricer.data.model.mongo.model.Store;
-import martin.dev.pricer.data.model.mongo.model.Url;
-import martin.dev.pricer.data.model.mongo.repository.MongoStoreRepository;
+import martin.dev.pricer.data.model.Status;
+import martin.dev.pricer.data.model.Store;
+import martin.dev.pricer.data.model.Url;
+import martin.dev.pricer.data.repository.MongoStoreRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
