@@ -23,7 +23,7 @@ public class MongoFirstClassWatchesScraper<T extends ItemService> extends MongoS
         super(mongoItemRepository, store, url);
     }
 
-    @Override
+//    @Override
     public void scrapePages() {
         int maxPageNum = parseMaxPageNum(super.getPageContentInJsoupHtml());
 
@@ -54,8 +54,7 @@ public class MongoFirstClassWatchesScraper<T extends ItemService> extends MongoS
                             prices,
                             getUrl().getCategories(),
                             getStore(),
-                            // TODO ParsedItemDTO need to contain field of url where it has been found on
-                            getUrl());
+                            getUrl().getUrl());
 
                     getItemService().save(newItem);
                 } else if (dbItem.getLastPrice() != parsedItemDto.getPrice()) {

@@ -48,7 +48,8 @@ public abstract class Scraper implements Parser {
                         parseUrl(element),
                         parseImage(element),
                         parseUpc(element),
-                        parsePrice(element)
+                        parsePrice(element),
+                        getStoreUrl().getUrlLink()
                 ))
                 .filter(ParsedItemDto::isValid)
                 .collect(Collectors.toList());
