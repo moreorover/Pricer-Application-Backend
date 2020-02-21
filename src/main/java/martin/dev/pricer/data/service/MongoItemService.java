@@ -86,7 +86,7 @@ public class MongoItemService implements ItemService {
                 newPrice(dbItem, parsedItemDto.getPrice());
                 save(dbItem);
 
-                Deal expiredDeal = dealRepository.findByItemAndAvailable(dbItem, true);
+                Deal expiredDeal = dealRepository.findFirstByItem_IdAndAvailable(dbItem.getId(), true);
                 expiredDeal.setAvailable(false);
                 dealRepository.save(expiredDeal);
             }
