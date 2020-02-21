@@ -3,6 +3,7 @@ package martin.dev.pricer.profile;
 import martin.dev.pricer.data.fabric.product.DealProcessor;
 import martin.dev.pricer.data.fabric.product.ItemPriceProcessor;
 import martin.dev.pricer.data.fabric.product.StatisticsProcessor;
+import martin.dev.pricer.data.model.mongo.repository.MongoDealRepository;
 import martin.dev.pricer.data.model.mongo.repository.MongoStoreRepository;
 import martin.dev.pricer.data.model.mongo.service.MongoStoreService;
 import martin.dev.pricer.data.services.product.*;
