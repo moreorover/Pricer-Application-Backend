@@ -1,21 +1,24 @@
 package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.model.mongo.model.*;
+import martin.dev.pricer.data.model.mongo.model.Category;
+import martin.dev.pricer.data.model.mongo.model.Status;
+import martin.dev.pricer.data.model.mongo.model.Store;
+import martin.dev.pricer.data.model.mongo.model.Url;
 import martin.dev.pricer.data.model.mongo.service.MongoItemService;
 import martin.dev.pricer.data.model.mongo.service.MongoStoreService;
-import martin.dev.pricer.scraper.parser.MongoCreationWatchesScraper;
-import martin.dev.pricer.scraper.parser.MongoFirstClassWatchesScraper;
+import martin.dev.pricer.scraper.parser.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.hibernate.validator.internal.util.Contracts.assertTrue;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class MongoParseLauncher {
@@ -28,81 +31,48 @@ public class MongoParseLauncher {
         this.mongoStoreService = mongoStoreService;
     }
 
-    //    @Scheduled(fixedRate = 600000000, initialDelay = 1000)
+    //    @Scheduled(fixedRate = 600000000, initialDelay = 1)
     public void insertNewStore() {
-        Set<Category> categories = new HashSet<>();
-        categories.add(new Category("Watch"));
 
-        Set<Url> urls = new HashSet<>();
-        urls.add(new Url("https://www.creationwatches.com/products/seiko-75/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
-        urls.add(new Url("https://www.creationwatches.com/products/tissot-247/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
-        urls.add(new Url("https://www.creationwatches.com/products/bulova-watches-271/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
-        urls.add(new Url("https://www.creationwatches.com/products/casio-watches-73/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
-        urls.add(new Url("https://www.creationwatches.com/products/citizen-74/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
-        urls.add(new Url("https://www.creationwatches.com/products/orient-watches-252/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
-        urls.add(new Url("https://www.creationwatches.com/products/hamilton-watches-250/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
-        urls.add(new Url("https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP",
-                LocalDateTime.now(),
-                Status.READY,
-                categories));
+        HashMap<String, Set<Category>> data = new HashMap<>();
 
-//        Store store = new Store("Creation Watches", "https://www.creationwatches.com", "https://www.complaintsboard.com/img/business/116976/182x300/creation-watches.jpg", urls);
+        data.put("https://www.goldsmiths.co.uk/c/Watches/Ladies-Watches/filter/Page_1/Psize_96/Show_Page/", Stream.of("Women", "Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://www.goldsmiths.co.uk/c/Watches/Mens-Watches/filter/Page_1/Psize_96/Show_Page/", Stream.of("Men", "Watch").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Gaming", "Console", "PS4").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Gaming", "Console", "Xbox").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Gaming", "Console", "Nintendo").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Headphones").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Women", "Fragrance").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Men", "Fragrance").map(Category::new).collect(Collectors.toSet()));
 
-//        mongoStoreRepository.save(store);
-//        this.mongoStoreService.getMongoStoreRepository().save(store);
+        Set<Url> urlList = new HashSet<>();
+
+        data.keySet().forEach(urlKey -> {
+            urlList.add(new Url(urlKey, LocalDateTime.now(), Status.READY, data.get(urlKey)));
+        });
+
+        Store store = new Store("Gold Smiths", "https://www.goldsmiths.co.uk", "https://lh3.googleusercontent.com/-Ck01XdjIITQ/AAAAAAAAAAI/AAAAAAAAA9o/iz6zLZRdIZ0/s250-c/photo.jpg", urlList);
+
+        this.mongoStoreService.getMongoStoreRepository().save(store);
 
         System.out.println("finished");
 
-    }
-
-//    @Scheduled(fixedRate = 60000, initialDelay = 1)
-    public void testFindLastPrice(){
-        Price p1 = new Price(4.0, 0.0, LocalDateTime.now().minusHours(4));
-        Price p2 = new Price(2.0, 0.0, LocalDateTime.now().minusHours(2));
-        Price p3 = new Price(-99.0, 0.0, LocalDateTime.now().minusHours(0));
-        Price p4 = new Price(1.0, 0.0, LocalDateTime.now().minusHours(1));
-        Price p5 = new Price(5.0, 0.0, LocalDateTime.now().minusHours(5));
-
-        List<Price> prices = new ArrayList<>();
-        prices.add(p1);
-        prices.add(p2);
-        prices.add(p3);
-        prices.add(p4);
-        prices.add(p5);
-
-        double lastPrice = prices.stream()
-                .max((price, t1) -> price.getFoundAt().compareTo(t1.getFoundAt()))
-                .get().getPrice();
-
-        System.out.println(lastPrice);
     }
 
     @Scheduled(fixedRate = 60000, initialDelay = 1)
     public void parse() {
         List<Store> storeList = this.mongoStoreService.fetchStoresToScrape();
 
-        assertTrue(storeList.size() > 0, "No Stores found!");
+//        assertTrue(storeList.size() > 0, "No Stores found!");
+
+        if (storeList.size() == 0){
+            log.info("Nothing to scrape.");
+        }
 
         storeList.forEach(store -> {
             store.getUrlsToScrape().forEach(url -> {
@@ -110,10 +80,32 @@ public class MongoParseLauncher {
 
                 switch (store.getName()) {
                     case "Creation Watches":
-                        new MongoCreationWatchesScraper<>(this.itemService, store, url).scrapePages();
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
                         break;
                     case "First Class Watches":
-                        new MongoFirstClassWatchesScraper<>(this.itemService, store, url).scrapePages();
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
+                        break;
+                    case "AMJ Watches":
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
+                        break;
+                    case "Argos":
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
+                        break;
+                    case "Superdrug":
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
+                        break;
+                    case "H. Samuel":
+                    case "Ernest Jones":
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
+                        break;
+                    case "Debenhams":
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
+                        break;
+                    case "Watch Shop":
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
+                        break;
+                    case "Gold Smiths":
+                        new MongoScraperNEW<MongoItemService, ParserMongo>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
                         break;
                 }
 
@@ -121,80 +113,5 @@ public class MongoParseLauncher {
                 this.mongoStoreService.updateUrlStatus(store, url, Status.READY);
             });
         });
-
-//        storeUrl.forEach(store -> {
-//            store.getUrls().forEach(url -> {
-//                if (url.getLastChecked().isBefore(LocalDateTime.now().minusHours(2)) && url.getStatus().equals(Status.READY)) {
-//                    this.mongoStoreService.updateUrlStatus(store, url, martin.dev.pricer.data.model.mongo.model.Status.SCRAPING);
-//
-//                    MongoScraper CreationWatches = new MongoCreationWatchesScraper(store, url, this.mongoItemRepository);
-//                    CreationWatches.scrapePages();
-//
-//                    this.mongoStoreService.updateUrlLastTimeChecked(store, url);
-//                    this.mongoStoreService.updateUrlStatus(store, url, martin.dev.pricer.data.model.mongo.model.Status.READY);
-//                }
-//            });
-//        });
-
-
-//        try {
-//            storeUrlHandler.setStatusScraping(storeUrl);
-//            switch (storeUrl.getStore().getName()) {
-//                case "H. Samuel":
-//                case "Ernest Jones":
-//                    Scraper HSamuelScraper = new HSamuelScraper(storeUrl, this.dealProcessor);
-//                    HSamuelScraper.scrapePages();
-//                    break;
-//                case "Superdrug":
-//                    Scraper SuperDrugScraper = new SuperDrugScraper(storeUrl, this.dealProcessor);
-//                    SuperDrugScraper.scrapePages();
-//                    break;
-//                case "Argos":
-//                    Scraper ArgosScraper = new ArgosScraper(storeUrl, this.dealProcessor);
-//                    ArgosScraper.scrapePages();
-//                    break;
-////                case "All Beauty":
-////                    Scraper AllBeautyScraper = new AllBeautyScraper();
-////                    AllBeautyScraper.scrapePages(storeUrl);
-////                    break;
-//                case "AMJ Watches":
-//                    Scraper AMJWatchesScraper = new AMJWatchesScraper(storeUrl, this.dealProcessor);
-//                    AMJWatchesScraper.scrapePages();
-//                    break;
-//                case "Debenhams":
-//                    Scraper DebenhamsScraper = new DebenhamsScraper(storeUrl, this.dealProcessor);
-//                    DebenhamsScraper.scrapePages();
-//                    break;
-//                case "Creation Watches":
-//                    Scraper CreationWatchesScraper = new CreationWatchesScraper(storeUrl, this.dealProcessor);
-//                    CreationWatchesScraper.scrapePages();
-//                    break;
-//                case "Watcho":
-//                    Scraper WatchoScraper = new WatchoScraper(storeUrl, this.dealProcessor);
-//                    WatchoScraper.scrapePages();
-//                    break;
-//                case "Watch Shop":
-//                    Scraper WatchShopScraper = new WatchShopScraper(storeUrl, this.dealProcessor);
-//                    WatchShopScraper.scrapePages();
-//                    break;
-//                case "First Class Watches":
-//                    Scraper FirstClassWatchesScraper = new FirstClassWatchesScraper(storeUrl, this.dealProcessor);
-//                    FirstClassWatchesScraper.scrapePages();
-//                    break;
-//                case "Gold Smiths":
-//                    Scraper GoldSmithsScraper = new GoldSmithsScraper(storeUrl, this.dealProcessor);
-//                    GoldSmithsScraper.scrapePages();
-//                    break;
-//                case "Tic Watches":
-//                    Scraper TicWatchesScraper = new TicWatchesScraper(storeUrl, this.dealProcessor);
-//                    TicWatchesScraper.scrapePages();
-//                    break;
-//            }
-//        } catch (Exception e) {
-//            log.error(Arrays.toString(e.getStackTrace()));
-//        } finally {
-//            storeUrlHandler.setStatusReady(storeUrl);
-//            storeUrlHandler.setLastCheckedTimeToNow(storeUrl);
-//        }
     }
 }
