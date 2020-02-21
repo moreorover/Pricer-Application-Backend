@@ -1,19 +1,18 @@
 package martin.dev.pricer.data.repository;
 
 import martin.dev.pricer.data.model.Deal;
-import martin.dev.pricer.data.model.Item;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@RepositoryRestResource(collectionResourceRel = "deals", path = "deals")
-public interface MongoDealRepository extends MongoRepository<Deal, String> {
+@Repository
+public interface MongoDealRepository extends PagingAndSortingRepository<Deal, String> {
 
-    Deal findByItem(Item item);
+    List<Deal> findByOrderByDealFoundDesc();
 
-    List<Deal> findAllByAvailableExistsOrderByDealFoundDesc();
+    List<Deal> findByOrderByDealFoundDesc(Pageable pageable);
 
     Deal findFirstByItem_IdAndAvailable(String item_id, boolean available);
 }
