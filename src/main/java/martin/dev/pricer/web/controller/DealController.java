@@ -28,4 +28,10 @@ public class DealController {
         List<Deal> deals = this.dealRepository.findByOrderByDealFoundDesc(pageable);
         return new ResponseEntity<>(deals, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/find")
+    public ResponseEntity<Deal> findDeal(@RequestParam(required = true) String itemId) {
+        Deal deal = this.dealRepository.findFirstByItem_IdAndAvailable(itemId, true);
+        return new ResponseEntity<>(deal, HttpStatus.OK);
+    }
 }

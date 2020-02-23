@@ -77,17 +77,18 @@ public class ItemService implements ItemServiceI {
             if (dbItem == null) {
                 Item buildItem = buildItemOfParsedData(parsedItemDto, store, url);
                 save(buildItem);
-            } else if (dbItem.getLastPrice() != parsedItemDto.getPrice() && dbItem.getLastPrice() > parsedItemDto.getPrice()) {
+            } else if (dbItem.getLastPrice() > parsedItemDto.getPrice()) {
                 newPrice(dbItem, parsedItemDto.getPrice());
                 save(dbItem);
                 Deal newDeal = new Deal(dbItem, dbItem.getCategories(), store, LocalDateTime.now(), true);
                 dealRepository.save(newDeal);
-            } else if (dbItem.getLastPrice() != parsedItemDto.getPrice()) {
+            } else if (dbItem.getLastPrice() < parsedItemDto.getPrice()) {
                 newPrice(dbItem, parsedItemDto.getPrice());
                 save(dbItem);
 
                 Deal expiredDeal = dealRepository.findFirstByItem_IdAndAvailable(dbItem.getId(), true);
                 expiredDeal.setAvailable(false);
+                expiredDeal.setItem(dbItem);
                 dealRepository.save(expiredDeal);
             }
         }
