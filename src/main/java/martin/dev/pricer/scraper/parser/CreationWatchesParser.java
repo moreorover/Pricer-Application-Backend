@@ -1,9 +1,11 @@
 package martin.dev.pricer.scraper.parser;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+@Slf4j
 public class CreationWatchesParser implements Parser {
 
     @Override
@@ -23,7 +25,9 @@ public class CreationWatchesParser implements Parser {
         String countString = countBox.text().split("of")[1];
         countString = countString.replaceAll("[^\\d.]", "");
         int adsCount = Integer.parseInt(countString);
-        return (adsCount + 60 - 1) / 60;
+        int maxPageNum = (adsCount + 60 - 1) / 60;
+        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

@@ -25,7 +25,9 @@ public class HSamuelParser implements Parser {
         Elements paginationButtons = paginationBlockElement.select("li");
         Element lastPageElement = paginationButtons.get(5);
         String lastPageText = lastPageElement.text();
-        return Integer.parseInt(lastPageText);
+        int maxPageNum = Integer.parseInt(lastPageText);
+        log.info("Found " + "?" + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

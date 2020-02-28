@@ -24,7 +24,9 @@ public class DebenhamsParser implements Parser {
         String countString = pageContentInJsoupHtml.selectFirst("div[class*=dbh-count]").text();
         countString = countString.replaceAll("[^\\d.]", "");
         int adsCount = Integer.parseInt(countString);
-        return (adsCount + 60 - 1) / 60;
+        int maxPageNum = (adsCount + 60 - 1) / 60;
+        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

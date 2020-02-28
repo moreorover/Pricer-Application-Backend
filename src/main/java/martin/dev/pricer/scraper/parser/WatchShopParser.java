@@ -25,7 +25,9 @@ public class WatchShopParser implements Parser {
         Elements showResults = pageContentInJsoupHtml.select("div[class=show-results]");
         String text = showResults.text().split(" of ")[1].replaceAll("[^\\d.]", "");
         int adsCount = Integer.parseInt(text);
-        return (adsCount + 192 - 1) / 192;
+        int maxPageNum = (adsCount + 192 - 1) / 192;
+        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

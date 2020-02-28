@@ -23,8 +23,10 @@ public class ArgosParser implements Parser {
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
         Element searchResultsCount = pageContentInJsoupHtml.selectFirst("div[class*=search-results-count]");
         String countString = searchResultsCount.attr("data-search-results");
-        int count = Integer.parseInt(countString);
-        return (count + 30 - 1) / 30;
+        int adsCount = Integer.parseInt(countString);
+        int maxPageNum = (adsCount + 30 - 1) / 30;
+        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

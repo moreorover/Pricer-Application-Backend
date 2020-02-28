@@ -25,7 +25,9 @@ public class AMJWatchesParser implements Parser {
         String countText = productsCountElement.children().last().text();
         countText = countText.replaceAll("[^\\d.]", "");
         int adsCount = Integer.parseInt(countText);
-        return (adsCount + 40 - 1) / 40;
+        int maxPageNum = (adsCount + 40 - 1) / 40;
+        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

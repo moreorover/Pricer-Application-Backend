@@ -23,7 +23,9 @@ public class FirstClassWatchesParser implements Parser {
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
         Elements showResults = pageContentInJsoupHtml.select("span[class=tablet-inline]");
         String text = showResults.text().replaceAll("[^\\d.]", "");
-        return Integer.parseInt(text);
+        int maxPageNum = Integer.parseInt(text);
+        log.info("Found " + "?" + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

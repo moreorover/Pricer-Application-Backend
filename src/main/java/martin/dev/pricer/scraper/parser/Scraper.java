@@ -122,4 +122,8 @@ public class Scraper<T extends ItemServiceI, R extends Parser> {
         }
         log.info("Elements set found to be empty, check parsing logic");
     }
+
+    public void logItemCount(int totalItems, int totalPages) {
+        log.info("Found " + totalItems + "ads to scrape, a total of " + totalPages + " pages.");
+    }
 }

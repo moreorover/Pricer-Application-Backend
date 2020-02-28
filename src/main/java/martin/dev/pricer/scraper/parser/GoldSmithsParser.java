@@ -27,7 +27,9 @@ public class GoldSmithsParser implements Parser {
         String countString = resultsElement.text();
         countString = countString.replaceAll("[^\\d.]", "");
         int adsCount = Integer.parseInt(countString);
-        return (adsCount + 96 - 1) / 96;
+        int maxPageNum = (adsCount + 96 - 1) / 96;
+        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

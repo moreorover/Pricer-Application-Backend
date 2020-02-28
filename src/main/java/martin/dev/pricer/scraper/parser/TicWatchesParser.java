@@ -24,7 +24,9 @@ public class TicWatchesParser implements Parser {
         Element paginationBlockElement = pageContentInJsoupHtml.selectFirst("div[class=product-listings__top__view-all]");
         String totalResults = paginationBlockElement.text().replaceAll("[^\\d.]", "");
         int adsCount = Integer.parseInt(totalResults);
-        return (adsCount + 24 - 1) / 24;
+        int maxPageNum = (adsCount + 24 - 1) / 24;
+        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override

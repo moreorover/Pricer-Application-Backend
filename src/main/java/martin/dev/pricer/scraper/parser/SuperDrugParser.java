@@ -28,7 +28,9 @@ public class SuperDrugParser implements Parser {
             return 0;
         } else {
             String elementText = paginationElements.get(countOfPaginationElements - 2).text();
-            return Integer.parseInt(elementText);
+            int maxPageNum = Integer.parseInt(elementText);
+            log.info("Found " + "?" + "ads to scrape, a total of " + maxPageNum + " pages.");
+            return maxPageNum;
         }
     }
 

@@ -23,10 +23,13 @@ public class WatchoScraper implements Parser {
     public int parseMaxPageNum(Document pageContentInJsoupHtml) {
         Elements paginationElements = pageContentInJsoupHtml.select("li[class^=pagination-item]");
         if (paginationElements.size() == 0) {
+            log.info("Found " + "?" + "ads to scrape, a total of " + 1 + " pages.");
             return 1;
         }
         Element lastPaginationElement = paginationElements.get(paginationElements.size() - 2);
-        return Integer.parseInt(lastPaginationElement.text());
+        int maxPageNum = Integer.parseInt(lastPaginationElement.text());
+        log.info("Found " + "?" + "ads to scrape, a total of " + maxPageNum + " pages.");
+        return maxPageNum;
     }
 
     @Override
