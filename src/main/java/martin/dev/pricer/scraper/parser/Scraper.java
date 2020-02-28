@@ -106,7 +106,7 @@ public class Scraper<T extends ItemServiceI, R extends Parser> {
         if (this.parsedItemDtos.size() == parsedItemElements.size()) {
             log.info("Successfully parsed " + this.parsedItemDtos.size() + " Ads");
         } else {
-            log.error("Parsed only " + this.parsedItemDtos.size() + "Ads. Out of total: " + parsedItemElements.size());
+            log.warn("Parsed only " + this.parsedItemDtos.size() + "Ads. Out of total: " + parsedItemElements.size());
         }
 
     }
