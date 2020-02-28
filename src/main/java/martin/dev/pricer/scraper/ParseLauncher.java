@@ -91,8 +91,10 @@ public class ParseLauncher {
                     new Scraper<ItemServiceI, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
                     break;
                 case "H. Samuel":
-                case "Ernest Jones":
                     new Scraper<ItemServiceI, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
+                    break;
+                case "Ernest Jones":
+                    new Scraper<ItemServiceI, Parser>(this.itemService, new ErnestJonesParser(), store, url).scrapePagesFromOne();
                     break;
                 case "Debenhams":
                     new Scraper<ItemServiceI, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();

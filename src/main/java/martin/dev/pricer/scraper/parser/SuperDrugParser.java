@@ -51,7 +51,11 @@ public class SuperDrugParser implements Parser {
     public Double parsePrice(Element adInJsoupHtml) {
         String priceString = adInJsoupHtml.selectFirst("span[class*=item__price--now]").text();
         priceString = priceString.replaceAll("[^\\d.]", "");
-        return Double.parseDouble(priceString);
+        try {
+            return Double.parseDouble(priceString);
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
     }
 
     @Override
