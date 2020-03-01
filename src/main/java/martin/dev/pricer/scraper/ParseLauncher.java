@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,54 +60,51 @@ public class ParseLauncher {
 
     }
 
-    @Scheduled(fixedRate = 60000, initialDelay = 1)
+    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
     public void parse() {
-        List<Store> storeList = this.storeService.fetchStoresToScrape();
 
-//        assertTrue(storeList.size() > 0, "No Stores found!");
+        this.storeService.fetchAllStores().forEach(store -> {
+            store.getUrls().stream()
+                    .filter(Url::isReadyToScrape)
+                    .forEach(url -> {
+                        this.storeService.updateUrlStatus(store, url, Status.SCRAPING);
 
-        if (storeList.size() == 0) {
-            log.info("Nothing to scrape.");
-        }
+                        switch (store.getName()) {
+                            case "Creation Watches":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "First Class Watches":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "AMJ Watches":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Argos":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Superdrug":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
+                                break;
+                            case "H. Samuel":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Ernest Jones":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new ErnestJonesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Debenhams":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Watch Shop":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Gold Smiths":
+                                new Scraper<ItemServiceI, Parser>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
+                                break;
+                        }
 
-        storeList.forEach(store -> store.getUrlsToScrape().forEach(url -> {
-            this.storeService.updateUrlStatus(store, url, Status.SCRAPING);
-
-            switch (store.getName()) {
-                case "Creation Watches":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "First Class Watches":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "AMJ Watches":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "Argos":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "Superdrug":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
-                    break;
-                case "H. Samuel":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "Ernest Jones":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new ErnestJonesParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "Debenhams":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "Watch Shop":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
-                    break;
-                case "Gold Smiths":
-                    new Scraper<ItemServiceI, Parser>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
-                    break;
-            }
-
-            this.storeService.updateUrlLastTimeChecked(store, url);
-            this.storeService.updateUrlStatus(store, url, Status.READY);
-        }));
+                        this.storeService.updateUrlLastTimeChecked(store, url);
+                        this.storeService.updateUrlStatus(store, url, Status.READY);
+                    });
+        });
     }
 }

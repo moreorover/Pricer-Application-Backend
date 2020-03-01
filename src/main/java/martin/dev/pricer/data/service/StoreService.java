@@ -41,9 +41,7 @@ public class StoreService {
         this.getStoreRepository().save(store);
     }
 
-    public List<Store> fetchStoresToScrape() {
-        return this.getStoreRepository().findAll().stream()
-                .filter(Store::filterUrlsToScrape)
-                .collect(Collectors.toList());
+    public List<Store> fetchAllStores(){
+        return this.getStoreRepository().findAll();
     }
 }
