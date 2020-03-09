@@ -25,7 +25,7 @@ public class DealController {
     public ResponseEntity<List<Deal>> getDeals(@RequestParam(required = false, defaultValue = "1") int page,
                                                @RequestParam(required = false, defaultValue = "50") int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        List<Deal> deals = this.dealRepository.findByOrderByDealFoundDesc(pageable);
+        List<Deal> deals = this.dealRepository.findByAvailableOrderByDealFoundDesc(true, pageable);
         return new ResponseEntity<>(deals, HttpStatus.OK);
     }
 

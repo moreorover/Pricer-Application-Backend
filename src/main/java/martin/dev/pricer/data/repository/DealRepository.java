@@ -14,5 +14,7 @@ public interface DealRepository extends PagingAndSortingRepository<Deal, String>
 
     List<Deal> findByOrderByDealFoundDesc(Pageable pageable);
 
+    List<Deal> findByAvailableOrderByDealFoundDesc(boolean available ,Pageable pageable);
+
     Deal findFirstByItem_IdAndAvailable(String item_id, boolean available);
 }
