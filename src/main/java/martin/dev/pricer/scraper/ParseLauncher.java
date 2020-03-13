@@ -5,6 +5,7 @@ import martin.dev.pricer.data.model.Category;
 import martin.dev.pricer.data.model.Status;
 import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;
+import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.data.service.ItemServiceI;
 import martin.dev.pricer.data.service.StoreService;
 import martin.dev.pricer.scraper.parser.*;
@@ -23,7 +24,7 @@ public class ParseLauncher {
 
     private StoreService storeService;
     @Autowired
-    private ItemServiceI itemService;
+    private ItemService itemService;
 
     public ParseLauncher(StoreService storeService) {
         this.storeService = storeService;
