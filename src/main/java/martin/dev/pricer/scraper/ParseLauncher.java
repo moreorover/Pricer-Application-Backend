@@ -72,34 +72,34 @@ public class ParseLauncher {
 
                         switch (store.getName()) {
                             case "Creation Watches":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "First Class Watches":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "AMJ Watches":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "Argos":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "Superdrug":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
+                                new Scraper<ItemService, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
                                 break;
                             case "H. Samuel":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "Ernest Jones":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new ErnestJonesParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new ErnestJonesParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "Debenhams":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "Watch Shop":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
                                 break;
                             case "Gold Smiths":
-                                new Scraper<ItemServiceI, Parser>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
+                                new Scraper<ItemService, Parser>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
                                 break;
                         }
 
