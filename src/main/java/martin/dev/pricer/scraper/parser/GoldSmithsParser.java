@@ -35,7 +35,11 @@ public class GoldSmithsParser implements Parser {
     @Override
     public String parseTitle(Element adInJsoupHtml) {
         Element titleElement = adInJsoupHtml.selectFirst("div[class=product-title]");
-        return titleElement.text();
+        if (titleElement != null){
+            return titleElement.text();
+        } else {
+            return "";
+        }
     }
 
     @Override
