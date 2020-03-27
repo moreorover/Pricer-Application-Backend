@@ -1,92 +1,111 @@
 package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.fabric.product.DealProcessor;
-import martin.dev.pricer.data.model.store.StoreUrl;
-import martin.dev.pricer.data.services.store.StoreUrlHandler;
+import martin.dev.pricer.data.model.Category;
+import martin.dev.pricer.data.model.Status;
+import martin.dev.pricer.data.model.Store;
+import martin.dev.pricer.data.model.Url;
+import martin.dev.pricer.data.service.ItemService;
+import martin.dev.pricer.data.service.ItemServiceI;
+import martin.dev.pricer.data.service.StoreService;
 import martin.dev.pricer.scraper.parser.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class ParseLauncher {
 
-    private StoreUrlHandler storeUrlHandler;
-    private DealProcessor dealProcessor;
-    //    private ScraperImplementation scraperImplementation = new ScraperImplementation();
+    private StoreService storeService;
+    @Autowired
+    private ItemService itemService;
 
-    public ParseLauncher(StoreUrlHandler storeUrlHandler, DealProcessor dealProcessor) {
-        this.storeUrlHandler = storeUrlHandler;
-        this.dealProcessor = dealProcessor;
+    public ParseLauncher(StoreService storeService) {
+        this.storeService = storeService;
     }
 
-    @Scheduled(fixedRate = 60000, initialDelay = 1000)
-    public void parse() {
-        StoreUrl storeUrl = storeUrlHandler.fetchUrlToScrape(0, 2, 0);
+    //    @Scheduled(fixedRate = 600000000, initialDelay = 1)
+    public void insertNewStore() {
 
-        if (storeUrl == null) {
-            log.info("Nothing in database, will check again in 60 seconds.");
-            return;
-        }
-        try {
-            storeUrlHandler.setStatusScraping(storeUrl);
-            switch (storeUrl.getStore().getName()) {
-                case "H. Samuel":
-                case "Ernest Jones":
-                    Scraper HSamuelScraper = new HSamuelScraper(storeUrl, this.dealProcessor);
-                    HSamuelScraper.scrapePages();
-                    break;
-                case "Superdrug":
-                    Scraper SuperDrugScraper = new SuperDrugScraper(storeUrl, this.dealProcessor);
-                    SuperDrugScraper.scrapePages();
-                    break;
-                case "Argos":
-                    Scraper ArgosScraper = new ArgosScraper(storeUrl, this.dealProcessor);
-                    ArgosScraper.scrapePages();
-                    break;
-//                case "All Beauty":
-//                    Scraper AllBeautyScraper = new AllBeautyScraper();
-//                    AllBeautyScraper.scrapePages(storeUrl);
-//                    break;
-                case "AMJ Watches":
-                    Scraper AMJWatchesScraper = new AMJWatchesScraper(storeUrl, this.dealProcessor);
-                    AMJWatchesScraper.scrapePages();
-                    break;
-                case "Debenhams":
-                    Scraper DebenhamsScraper = new DebenhamsScraper(storeUrl, this.dealProcessor);
-                    DebenhamsScraper.scrapePages();
-                    break;
-                case "Creation Watches":
-                    Scraper CreationWatchesScraper = new CreationWatchesScraper(storeUrl, this.dealProcessor);
-                    CreationWatchesScraper.scrapePages();
-                    break;
-                case "Watcho":
-                    Scraper WatchoScraper = new WatchoScraper(storeUrl, this.dealProcessor);
-                    WatchoScraper.scrapePages();
-                    break;
-                case "Watch Shop":
-                    Scraper WatchShopScraper = new WatchShopScraper(storeUrl, this.dealProcessor);
-                    WatchShopScraper.scrapePages();
-                    break;
-                case "First Class Watches":
-                    Scraper FirstClassWatchesScraper = new FirstClassWatchesScraper(storeUrl, this.dealProcessor);
-                    FirstClassWatchesScraper.scrapePages();
-                    break;
-                case "Gold Smiths":
-                    Scraper GoldSmithsScraper = new GoldSmithsScraper(storeUrl, this.dealProcessor);
-                    GoldSmithsScraper.scrapePages();
-                    break;
-                case "Tic Watches":
-                    Scraper TicWatchesScraper = new TicWatchesScraper(storeUrl, this.dealProcessor);
-                    TicWatchesScraper.scrapePages();
-                    break;
-            }
-        } catch (Exception e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-        } finally {
-            storeUrlHandler.setStatusReady(storeUrl);
-            storeUrlHandler.setLastCheckedTimeToNow(storeUrl);
-        }
+        HashMap<String, Set<Category>> data = new HashMap<>();
+
+        data.put("https://www.goldsmiths.co.uk/c/Watches/Ladies-Watches/filter/Page_1/Psize_96/Show_Page/", Stream.of("Women", "Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://www.goldsmiths.co.uk/c/Watches/Mens-Watches/filter/Page_1/Psize_96/Show_Page/", Stream.of("Men", "Watch").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Gaming", "Console", "PS4").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Gaming", "Console", "Xbox").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Gaming", "Console", "Nintendo").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Headphones").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Technology", "Smart").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Women", "Fragrance").map(Category::new).collect(Collectors.toSet()));
+//        data.put("", Stream.of("Men", "Fragrance").map(Category::new).collect(Collectors.toSet()));
+
+        Set<Url> urlList = new HashSet<>();
+
+        data.keySet().forEach(urlKey -> urlList.add(new Url(urlKey, LocalDateTime.now(), Status.READY, data.get(urlKey))));
+
+        Store store = new Store("Gold Smiths", "https://www.goldsmiths.co.uk", "https://lh3.googleusercontent.com/-Ck01XdjIITQ/AAAAAAAAAAI/AAAAAAAAA9o/iz6zLZRdIZ0/s250-c/photo.jpg", urlList);
+
+        this.storeService.getStoreRepository().save(store);
+
+        System.out.println("finished");
+
+    }
+
+    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
+    public void parse() {
+
+        this.storeService.fetchAllStores().forEach(store -> {
+            store.getUrls().stream()
+                    .filter(Url::isReadyToScrape)
+                    .forEach(url -> {
+                        this.storeService.updateUrlStatus(store, url, Status.SCRAPING);
+
+                        switch (store.getName()) {
+                            case "Creation Watches":
+                                new Scraper<ItemService, Parser>(this.itemService, new CreationWatchesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "First Class Watches":
+                                new Scraper<ItemService, Parser>(this.itemService, new FirstClassWatchesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "AMJ Watches":
+                                new Scraper<ItemService, Parser>(this.itemService, new AMJWatchesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Argos":
+                                new Scraper<ItemService, Parser>(this.itemService, new ArgosParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Superdrug":
+                                new Scraper<ItemService, Parser>(this.itemService, new SuperDrugParser(), store, url).scrapePagesFromZero();
+                                break;
+                            case "H. Samuel":
+                                new Scraper<ItemService, Parser>(this.itemService, new HSamuelParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Ernest Jones":
+                                new Scraper<ItemService, Parser>(this.itemService, new ErnestJonesParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Debenhams":
+                                new Scraper<ItemService, Parser>(this.itemService, new DebenhamsParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Watch Shop":
+                                new Scraper<ItemService, Parser>(this.itemService, new WatchShopParser(), store, url).scrapePagesFromOne();
+                                break;
+                            case "Gold Smiths":
+                                new Scraper<ItemService, Parser>(this.itemService, new GoldSmithsParser(), store, url).scrapePagesFromOne();
+                                break;
+                        }
+
+                        this.storeService.updateUrlLastTimeChecked(store, url);
+                        this.storeService.updateUrlStatus(store, url, Status.READY);
+                    });
+        });
     }
 }
