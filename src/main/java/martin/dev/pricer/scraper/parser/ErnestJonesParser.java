@@ -60,7 +60,7 @@ public class ErnestJonesParser implements Parser {
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         Element element = adInJsoupHtml.select("a").first();
-        String urlBase = "https://www.hsamuel.co.uk";
+        String urlBase = "https://www.ernestjones.co.uk";
         return urlBase + element.attr("href");
     }
 }
