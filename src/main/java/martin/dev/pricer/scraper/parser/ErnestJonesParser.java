@@ -41,7 +41,7 @@ public class ErnestJonesParser implements Parser {
         String url = parseUrl(adInJsoupHtml);
         String[] strings = url.split("/d/");
         strings = strings[1].split("/");
-        return "HS_" + strings[0];
+        return "EJ_" + strings[0];
     }
 
     @Override
