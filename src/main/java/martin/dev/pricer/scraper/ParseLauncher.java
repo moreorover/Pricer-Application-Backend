@@ -61,7 +61,7 @@ public class ParseLauncher {
 
     }
 
-    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
+//    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
     public void parse() {
 
         this.storeService.fetchAllStores().forEach(store -> {
