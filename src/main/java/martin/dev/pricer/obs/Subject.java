@@ -24,7 +24,6 @@ public class Subject {
     public void setStoreAndUrl(Store store, Url url) {
         this.store = store;
         this.url = url;
-        notifyAllObservers();
     }
 
     public void attach(ParserObserver parserObserver) {
@@ -32,10 +31,10 @@ public class Subject {
     }
 
     public void notifyAllObservers() {
-        for (ParserObserver parserObserver : parserObservers) {
-            if (parserObserver.NAME.equals(this.store.getName())) {
+        parserObservers.forEach(parserObserver -> {
+            if (parserObserver.getNAME().equals(this.store.getName())) {
                 parserObserver.update();
             }
-        }
+        });
     }
 }

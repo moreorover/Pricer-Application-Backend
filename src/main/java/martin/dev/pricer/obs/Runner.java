@@ -1,18 +1,16 @@
 package martin.dev.pricer.obs;
 
-import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.service.StoreService;
 import org.springframework.scheduling.annotation.Scheduled;
 
 public class Runner {
 
     private StoreService storeService;
+    private Subject subject;
 
-    Subject subject = new Subject();
-    HSamuelObserver hSamuelObserver = new HSamuelObserver(subject);
-
-    public Runner(StoreService storeService) {
+    public Runner(StoreService storeService, Subject subject) {
         this.storeService = storeService;
+        this.subject = subject;
     }
 
     @Scheduled(fixedRate = 15 * 1000, initialDelay = 5 * 1000)
@@ -21,9 +19,9 @@ public class Runner {
 
         this.storeService.fetchAllStores().forEach(store -> {
             store.getUrls().stream()
-                    .filter(Url::isReadyToScrape)
                     .forEach(url -> {
                         subject.setStoreAndUrl(store, url);
+                        subject.notifyAllObservers();
                     });
         });
     }

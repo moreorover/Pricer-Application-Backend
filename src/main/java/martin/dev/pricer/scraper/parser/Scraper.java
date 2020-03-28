@@ -114,16 +114,4 @@ public class Scraper<T extends ItemServiceI, R extends Parser> {
     public List<ParsedItemDto> getParsedItemDtos() {
         return parsedItemDtos;
     }
-
-    public void validateElements(Elements elements) {
-        if (elements.size() > 0) {
-            log.info("Found " + elements.size() + " Ad elements");
-            return;
-        }
-        log.info("Elements set found to be empty, check parsing logic");
-    }
-
-    public void logItemCount(int totalItems, int totalPages) {
-        log.info("Found " + totalItems + "ads to scrape, a total of " + totalPages + " pages.");
-    }
 }

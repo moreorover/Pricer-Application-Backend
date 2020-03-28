@@ -12,7 +12,6 @@ public class MainProfile {
 
     private StoreRepository storeRepository;
 
-
     public MainProfile(StoreRepository storeRepository) {
         this.storeRepository = storeRepository;
     }
@@ -25,11 +24,6 @@ public class MainProfile {
     @Bean
     public ParseLauncher getMongoParser() {
         return new ParseLauncher(getMongoStoreService());
-    }
-
-    @Bean
-    public Runner runner() {
-        return new Runner(getMongoStoreService());
     }
 
 
