@@ -1,5 +1,7 @@
 package martin.dev.pricer.obs.strategy;
 
+import martin.dev.pricer.data.model.Status;
+import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.service.StoreService;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -18,11 +20,14 @@ public class Launcher {
         System.out.println("Started scheduled");
 
         this.storeService.fetchAllStores().forEach(store -> {
-            store.getUrls()
+            store.getUrls().stream()
+                    .filter(Url::isReadyToScrape)
                     .forEach(url -> {
-                        System.out.println(url);
-//                        scraperSubject.setStoreAndUrl(store, url);
-//                        scraperSubject.notifyAllObservers();
+                        this.storeService.updateUrlStatus(store, url, Status.SCRAPING);
+                        scraperSubject.setStoreAndUrl(store, url);
+                        scraperSubject.notifyAllObservers();
+                        this.storeService.updateUrlLastTimeChecked(store, url);
+                        this.storeService.updateUrlStatus(store, url, Status.READY);
                     });
         });
     }
