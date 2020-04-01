@@ -1,33 +1,12 @@
-package martin.dev.pricer.obs;
+package martin.dev.pricer.obs.strategy;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class HSamuelObserver extends ParserObserver implements Parser {
-
-    private final String NAME = "H. Samuel";
-    private final String PREFIX = "HS_";
-    private final String BASE_URL = "https://www.hsamuel.co.uk";
-    private final int START_PAGE = 1;
-
-    public HSamuelObserver(Subject subject) {
-        this.subject = subject;
-        this.subject.attach(this);
-    }
-
-    public String getNAME() {
-        return NAME;
-    }
-
-    @Override
-    public void update() {
-        System.out.println("Observer HSamuel notified!");
-        System.out.println(this.subject.getUrl().getUrl());
-    }
+public class HSamuelParser implements Parser {
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -47,7 +26,7 @@ public class HSamuelObserver extends ParserObserver implements Parser {
         Element lastPageElement = paginationButtons.get(5);
         String lastPageText = lastPageElement.text();
         int maxPageNum = Integer.parseInt(lastPageText);
-        log.info("Found " + "? " + "ads to scrape, a total of " + maxPageNum + " pages.");
+        log.info("Found " + "?" + "ads to scrape, a total of " + maxPageNum + " pages.");
         return maxPageNum;
     }
 
@@ -58,10 +37,11 @@ public class HSamuelObserver extends ParserObserver implements Parser {
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
+//        Element upcElement = adInJsoupHtml.selectFirst("meta");
         String url = parseUrl(adInJsoupHtml);
         String[] strings = url.split("/d/");
         strings = strings[1].split("/");
-        return PREFIX + strings[0];
+        return "HS_" + strings[0];
     }
 
     @Override
@@ -80,6 +60,7 @@ public class HSamuelObserver extends ParserObserver implements Parser {
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         Element element = adInJsoupHtml.select("a").first();
-        return BASE_URL + element.attr("href");
+        String urlBase = "https://www.hsamuel.co.uk";
+        return urlBase + element.attr("href");
     }
 }
