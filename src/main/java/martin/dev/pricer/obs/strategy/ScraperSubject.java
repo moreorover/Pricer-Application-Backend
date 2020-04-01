@@ -1,14 +1,15 @@
-package martin.dev.pricer.obs;
+package martin.dev.pricer.obs.strategy;
 
 import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;
+import martin.dev.pricer.obs.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Subject {
+public class ScraperSubject {
 
-    private List<ParserObserver> parserObservers = new ArrayList<ParserObserver>();
+    private List<Observer> observers = new ArrayList<Observer>();
 
     private Store store;
     private Url url;
@@ -26,14 +27,14 @@ public class Subject {
         this.url = url;
     }
 
-    public void attach(ParserObserver parserObserver) {
-        parserObservers.add(parserObserver);
+    public void attach(Observer observer) {
+        observers.add(observer);
     }
 
     public void notifyAllObservers() {
-        parserObservers.forEach(parserObserver -> {
-            if (parserObserver.getNAME().equals(this.store.getName())) {
-                parserObserver.update();
+        observers.forEach(observer -> {
+            if (observer.getName().equals(this.store.getName())) {
+                observer.update();
             }
         });
     }

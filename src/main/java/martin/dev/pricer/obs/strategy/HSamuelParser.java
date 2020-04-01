@@ -8,6 +8,10 @@ import org.jsoup.select.Elements;
 @Slf4j
 public class HSamuelParser implements Parser {
 
+    public final String NAME = "H. Samuel";
+    public final String PREFIX = "HS_";
+    public final String BASE_URL = "https://www.hsamuel.co.uk";
+
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
         String[] x = url.split("Pg=");
@@ -26,7 +30,7 @@ public class HSamuelParser implements Parser {
         Element lastPageElement = paginationButtons.get(5);
         String lastPageText = lastPageElement.text();
         int maxPageNum = Integer.parseInt(lastPageText);
-        log.info("Found " + "?" + "ads to scrape, a total of " + maxPageNum + " pages.");
+        log.info("Found " + "?" + " ads to scrape, a total of " + maxPageNum + " pages.");
         return maxPageNum;
     }
 
@@ -41,7 +45,7 @@ public class HSamuelParser implements Parser {
         String url = parseUrl(adInJsoupHtml);
         String[] strings = url.split("/d/");
         strings = strings[1].split("/");
-        return "HS_" + strings[0];
+        return PREFIX + strings[0];
     }
 
     @Override
@@ -60,7 +64,11 @@ public class HSamuelParser implements Parser {
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         Element element = adInJsoupHtml.select("a").first();
-        String urlBase = "https://www.hsamuel.co.uk";
-        return urlBase + element.attr("href");
+        return BASE_URL + element.attr("href");
+    }
+
+    @Override
+    public String getParserName() {
+        return NAME;
     }
 }

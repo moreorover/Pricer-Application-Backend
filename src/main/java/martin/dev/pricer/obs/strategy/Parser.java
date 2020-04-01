@@ -21,4 +21,6 @@ public interface Parser {
     String parseImage(Element adInJsoupHtml);
 
     String parseUrl(Element adInJsoupHtml);
+
+    String getParserName();
 }

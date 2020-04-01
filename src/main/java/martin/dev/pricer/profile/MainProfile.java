@@ -2,7 +2,6 @@ package martin.dev.pricer.profile;
 
 import martin.dev.pricer.data.repository.StoreRepository;
 import martin.dev.pricer.data.service.StoreService;
-import martin.dev.pricer.obs.Runner;
 import martin.dev.pricer.scraper.ParseLauncher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -46,4 +46,7 @@ public class ParserHandler {
         return parser.makeNextPageUrl(url, pageNum);
     }
 
+    public String getParserName(){
+        return parser.getParserName();
+    }
 }

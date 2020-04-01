@@ -1,9 +1,7 @@
 package martin.dev.pricer.obs.strategy;
 
-import martin.dev.pricer.data.model.Store;
-import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.service.ItemService;
-import martin.dev.pricer.obs.controller.ParsedItemModel;
+import martin.dev.pricer.obs.Observer;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
@@ -11,30 +9,41 @@ import org.jsoup.select.Elements;
 
 import java.util.List;
 
-public abstract class Scraper implements ScraperInterface {
+public abstract class Scraper extends Observer implements ScraperInterface {
+
+    private ScraperSubject scraperSubject;
 
     private ParserHandler parserHandler;
     private ItemService itemService;
+    private int startPage;
 
-    private Store store;
-    private Url url;
 
-    public Scraper(ParserHandler parserHandler, ItemService itemService) {
+    public Scraper(ScraperSubject scraperSubject, ParserHandler parserHandler, ItemService itemService, int startPage) {
+        this.scraperSubject = scraperSubject;
+        this.scraperSubject.attach(this);
         this.parserHandler = parserHandler;
         this.itemService = itemService;
+        this.startPage = startPage;
     }
 
-    public void scrape(Store store, Url url){
-        this.store = store;
-        this.url = url;
-    }
-
-    public void pp(int startPage, int endPage) {
-        for (int start = startPage; startPage <= endPage; startPage++) {
-            Document document = HttpClient.readContentInJsoupDocument(parserHandler.makeUrl(url.getUrl(), startPage));
+    public void parse(int endPage) {
+        for (int start = startPage; start <= endPage; start++) {
+            Document document = HttpClient.readContentInJsoupDocument(parserHandler.makeUrl(scraperSubject.getUrl().getUrl(), startPage));
             Elements parsedElements = parserHandler.parseItems(document);
-            List<ParsedItemDto> parsedItemModels = parserHandler.parseItemModels(parsedElements, url.getUrl());
-            parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItem(parsedItemDto, store, url));
+            List<ParsedItemDto> parsedItemModels = parserHandler.parseItemModels(parsedElements, scraperSubject.getUrl().getUrl());
+            parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItem(parsedItemDto, scraperSubject.getStore(), scraperSubject.getUrl()));
         }
+    }
+
+    @Override
+    public void update() {
+        Document document = HttpClient.readContentInJsoupDocument(scraperSubject.getUrl().getUrl());
+        int maxPage = parserHandler.parseMaxPageNum(document);
+        parse(maxPage);
+    }
+
+    @Override
+    public String getName(){
+        return parserHandler.getParserName();
     }
 }
