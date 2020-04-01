@@ -5,6 +5,7 @@ import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.obs.controller.ParsedItemModel;
 import martin.dev.pricer.scraper.client.HttpClient;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -29,12 +30,10 @@ public abstract class Scraper implements ScraperInterface {
     }
 
     public void pp(int startPage, int endPage) {
-        int currentRotation = 0;
-
-        for (startPage, startPage <= endPage, startPage++) {
-            Document document = HttpClient.readContentInJsoupDocument(parserHandler.makeUrl(url.getUrl(), currentRotation));
+        for (int start = startPage; startPage <= endPage; startPage++) {
+            Document document = HttpClient.readContentInJsoupDocument(parserHandler.makeUrl(url.getUrl(), startPage));
             Elements parsedElements = parserHandler.parseItems(document);
-            List<ParsedItemModel> parsedItemModels = parserHandler.parseItemModels(parsedElements, url.getUrl());
+            List<ParsedItemDto> parsedItemModels = parserHandler.parseItemModels(parsedElements, url.getUrl());
             parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItem(parsedItemDto, store, url));
         }
     }

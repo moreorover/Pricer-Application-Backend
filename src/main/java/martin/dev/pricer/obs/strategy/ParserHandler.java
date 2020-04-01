@@ -1,6 +1,6 @@
 package martin.dev.pricer.obs.strategy;
 
-import martin.dev.pricer.obs.controller.ParsedItemModel;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -16,8 +16,8 @@ public class ParserHandler {
         this.parser = parser;
     }
 
-    private ParsedItemModel parseItemModel(Element e, String urlFound){
-        ParsedItemModel parsedItem = new ParsedItemModel();
+    private ParsedItemDto parseItemModel(Element e, String urlFound){
+        ParsedItemDto parsedItem = new ParsedItemDto();
         parsedItem.setTitle(parser.parseTitle(e));
         parsedItem.setPrice(parser.parsePrice(e));
         parsedItem.setImg(parser.parseImage(e));
@@ -27,10 +27,10 @@ public class ParserHandler {
         return parsedItem;
     }
 
-    public List<ParsedItemModel> parseItemModels(Elements e, String urlFound) {
+    public List<ParsedItemDto> parseItemModels(Elements e, String urlFound) {
         return e.stream()
                 .map(element -> parseItemModel(element, urlFound))
-                .filter(ParsedItemModel::isValid)
+                .filter(ParsedItemDto::isValid)
                 .collect(Collectors.toList());
     }
 
