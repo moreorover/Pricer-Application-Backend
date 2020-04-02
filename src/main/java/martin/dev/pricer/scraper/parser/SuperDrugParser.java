@@ -1,12 +1,17 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
 public class SuperDrugParser implements Parser {
+
+    public final String NAME = "Superdrug";
+    public final String PREFIX = "SD_";
+    public final String BASE_URL = "https://www.superdrug.com";
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -44,7 +49,7 @@ public class SuperDrugParser implements Parser {
     public String parseUpc(Element adInJsoupHtml) {
         String urlString = parseUrl(adInJsoupHtml);
         String[] urlSplit = urlString.split("/p/");
-        return "SD_" + urlSplit[1];
+        return PREFIX + urlSplit[1];
     }
 
     @Override
@@ -61,18 +66,21 @@ public class SuperDrugParser implements Parser {
     @Override
     public String parseImage(Element adInJsoupHtml) {
         Element imgElement = adInJsoupHtml.selectFirst("img");
-        String urlBase = "https://www.superdrug.com/";
         if (!imgElement.attr("src").equals("")) {
-            return urlBase + imgElement.attr("src");
+            return BASE_URL + "/" + imgElement.attr("src");
         } else {
-            return urlBase + imgElement.attr("data-src");
+            return BASE_URL + "/" + imgElement.attr("data-src");
         }
     }
 
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         Element titleElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
-        String urlBase = "https://www.superdrug.com/";
-        return urlBase + titleElement.attr("href");
+        return BASE_URL + "/" + titleElement.attr("href");
+    }
+
+    @Override
+    public String getParserName() {
+        return NAME;
     }
 }

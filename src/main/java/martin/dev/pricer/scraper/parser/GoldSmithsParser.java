@@ -1,6 +1,7 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -8,9 +9,12 @@ import org.jsoup.select.Elements;
 @Slf4j
 public class GoldSmithsParser implements Parser {
 
+    public final String NAME = "Gold Smiths";
+    public final String PREFIX = "GS_";
+    public final String BASE_URL = "https://www.goldsmiths.co.uk";
+
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
-//        https://www.goldsmiths.co.uk/c/Watches/Mens-Watches/filter/Page_2/Psize_96/Show_Page/
         String[] x = url.split("Page_");
         return x[0] + "Page_" + pageNum + "/Psize_96/Show_Page/";
     }
@@ -45,7 +49,7 @@ public class GoldSmithsParser implements Parser {
     @Override
     public String parseUpc(Element adInJsoupHtml) {
         Element aElement = adInJsoupHtml.selectFirst("a");
-        return "GS_" + aElement.attr("id");
+        return PREFIX + aElement.attr("id");
     }
 
     @Override
@@ -68,7 +72,11 @@ public class GoldSmithsParser implements Parser {
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         Element aElement = adInJsoupHtml.selectFirst("a");
-        String urlBase = "https://www.goldsmiths.co.uk";
-        return urlBase + aElement.attr("href");
+        return BASE_URL + aElement.attr("href");
+    }
+
+    @Override
+    public String getParserName() {
+        return NAME;
     }
 }

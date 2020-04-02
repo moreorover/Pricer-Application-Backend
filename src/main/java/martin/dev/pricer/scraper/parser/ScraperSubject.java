@@ -1,8 +1,8 @@
-package martin.dev.pricer.obs.strategy;
+package martin.dev.pricer.scraper.parser;
 
 import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;
-import martin.dev.pricer.obs.Observer;
+import martin.dev.pricer.scraper.Observer;
 
 import java.util.ArrayList;
 import java.util.List;

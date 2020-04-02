@@ -1,12 +1,17 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
 public class CreationWatchesParser implements Parser {
+
+    public final String NAME = "Creation Watches";
+    public final String PREFIX = "CW_";
+    public final String BASE_URL = "https://www.creationwatches.com";
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -39,7 +44,7 @@ public class CreationWatchesParser implements Parser {
     @Override
     public String parseUpc(Element adInJsoupHtml) {
         Element modelElement = adInJsoupHtml.selectFirst("p[class=product-model-no]");
-        return "CW_" + modelElement.text().split(": ")[1];
+        return PREFIX + modelElement.text().split(": ")[1];
     }
 
     @Override
@@ -60,4 +65,11 @@ public class CreationWatchesParser implements Parser {
         Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
         return titleElement.attr("href");
     }
+
+    @Override
+    public String getParserName() {
+        return NAME;
+    }
+
+
 }

@@ -1,6 +1,7 @@
-package martin.dev.pricer.obs.strategy;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

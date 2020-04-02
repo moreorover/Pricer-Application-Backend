@@ -1,12 +1,17 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
 public class AMJWatchesParser implements Parser {
+
+    public final String NAME = "AMJ Watches";
+    public final String PREFIX = "AMJW_";
+    public final String BASE_URL = "https://amjwatches.co.uk";
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -44,7 +49,7 @@ public class AMJWatchesParser implements Parser {
             imgElement = imgElement.selectFirst("a");
             String url = imgElement.attr("href");
             url = url.split(".uk/")[1];
-            return "AMJW_" + url;
+            return PREFIX + url;
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
@@ -71,5 +76,10 @@ public class AMJWatchesParser implements Parser {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
         imgElement = imgElement.selectFirst("a");
         return imgElement.attr("href");
+    }
+
+    @Override
+    public String getParserName() {
+        return NAME;
     }
 }

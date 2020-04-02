@@ -1,12 +1,17 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
 public class FirstClassWatchesParser implements Parser {
+
+    public final String NAME = "First Class Watches";
+    public final String PREFIX = "FCW_";
+    public final String BASE_URL = "https://www.firstclasswatches.co.uk";
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -35,7 +40,7 @@ public class FirstClassWatchesParser implements Parser {
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
-        return "FCW_" + adInJsoupHtml.attr("data-id");
+        return PREFIX + adInJsoupHtml.attr("data-id");
     }
 
     @Override
@@ -58,5 +63,10 @@ public class FirstClassWatchesParser implements Parser {
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         return adInJsoupHtml.attr("href");
+    }
+
+    @Override
+    public String getParserName() {
+        return NAME;
     }
 }

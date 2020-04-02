@@ -1,4 +1,4 @@
-package martin.dev.pricer.obs.strategy;
+package martin.dev.pricer.scraper;
 
 
 public interface ScraperInterface {

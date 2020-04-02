@@ -1,4 +1,4 @@
-package martin.dev.pricer.obs.strategy;
+package martin.dev.pricer.scraper;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

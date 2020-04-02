@@ -1,12 +1,17 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
 public class ErnestJonesParser implements Parser {
+
+    public final String NAME = "Ernest Jones";
+    public final String PREFIX = "EJ_";
+    public final String BASE_URL = "https://www.ernestjones.co.uk";
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -41,7 +46,7 @@ public class ErnestJonesParser implements Parser {
         String url = parseUrl(adInJsoupHtml);
         String[] strings = url.split("/d/");
         strings = strings[1].split("/");
-        return "EJ_" + strings[0];
+        return PREFIX + strings[0];
     }
 
     @Override
@@ -60,7 +65,11 @@ public class ErnestJonesParser implements Parser {
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         Element element = adInJsoupHtml.select("a").first();
-        String urlBase = "https://www.ernestjones.co.uk";
-        return urlBase + element.attr("href");
+        return BASE_URL + element.attr("href");
+    }
+
+    @Override
+    public String getParserName() {
+        return NAME;
     }
 }

@@ -1,12 +1,17 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
 public class TicWatchesParser implements Parser {
+
+    public final String NAME = "Tic Watches";
+    public final String PREFIX = "TIC_";
+    public final String BASE_URL = "https://www.ticwatches.co.uk/";
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
@@ -37,7 +42,7 @@ public class TicWatchesParser implements Parser {
     @Override
     public String parseUpc(Element adInJsoupHtml) {
         String upc = adInJsoupHtml.attr("data-infid");
-        return "TIC_" + upc;
+        return PREFIX + upc;
     }
 
     @Override
@@ -50,11 +55,16 @@ public class TicWatchesParser implements Parser {
     @Override
     public String parseImage(Element adInJsoupHtml) {
         Element imgElement = adInJsoupHtml.selectFirst("img");
-        return "https://www.ticwatches.co.uk" + imgElement.attr("src");
+        return BASE_URL + imgElement.attr("src");
     }
 
     @Override
     public String parseUrl(Element adInJsoupHtml) {
         return adInJsoupHtml.selectFirst("a").attr("href");
+    }
+
+    @Override
+    public String getParserName() {
+        return NAME;
     }
 }

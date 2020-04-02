@@ -1,6 +1,6 @@
-package martin.dev.pricer.obs;
+package martin.dev.pricer.scraper;
 
-import martin.dev.pricer.obs.strategy.ScraperSubject;
+import martin.dev.pricer.scraper.parser.ScraperSubject;
 
 public abstract class Observer {
     protected ScraperSubject subject;
