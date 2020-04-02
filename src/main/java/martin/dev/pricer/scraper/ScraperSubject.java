@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.parser;
+package martin.dev.pricer.scraper;
 
 import martin.dev.pricer.data.model.Store;
 import martin.dev.pricer.data.model.Url;

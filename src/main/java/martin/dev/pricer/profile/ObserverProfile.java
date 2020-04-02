@@ -5,6 +5,7 @@ import martin.dev.pricer.data.repository.ItemRepository;
 import martin.dev.pricer.data.repository.StoreRepository;
 import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.data.service.StoreService;
+import martin.dev.pricer.scraper.ScraperSubject;
 import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.scraper.Launcher;
 import martin.dev.pricer.scraper.ParserHandler;

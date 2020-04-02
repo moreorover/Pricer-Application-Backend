@@ -2,7 +2,6 @@ package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.service.ItemService;
-import martin.dev.pricer.scraper.parser.ScraperSubject;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;

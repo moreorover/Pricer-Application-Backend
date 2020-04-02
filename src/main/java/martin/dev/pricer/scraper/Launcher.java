@@ -3,7 +3,6 @@ package martin.dev.pricer.scraper;
 import martin.dev.pricer.data.model.Status;
 import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.service.StoreService;
-import martin.dev.pricer.scraper.parser.ScraperSubject;
 import org.springframework.scheduling.annotation.Scheduled;
 
 public class Launcher {
