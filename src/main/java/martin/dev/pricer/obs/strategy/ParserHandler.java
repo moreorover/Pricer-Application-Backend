@@ -1,5 +1,6 @@
 package martin.dev.pricer.obs.strategy;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,6 +9,7 @@ import org.jsoup.select.Elements;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ParserHandler {
 
     private Parser parser;
@@ -28,10 +30,17 @@ public class ParserHandler {
     }
 
     public List<ParsedItemDto> parseItemModels(Elements e, String urlFound) {
-        return e.stream()
+        List<ParsedItemDto> parsedItemDtos = e.stream()
                 .map(element -> parseItemModel(element, urlFound))
                 .filter(ParsedItemDto::isValid)
                 .collect(Collectors.toList());
+
+        if (parsedItemDtos.size() == e.size()) {
+            log.info("Successfully parsed " + parsedItemDtos.size() + " Ads");
+        } else {
+            log.warn("Parsed only " + parsedItemDtos.size() + "Ads. Out of total: " + e.size());
+        }
+        return parsedItemDtos;
     }
 
     public int parseMaxPageNum(Document d) {

@@ -9,8 +9,6 @@ import martin.dev.pricer.obs.strategy.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.security.auth.Subject;
-
 @Configuration
 public class ObserverProfile {
 
@@ -40,19 +38,80 @@ public class ObserverProfile {
     }
 
     @Bean
+    public ParserHandler AMHWatchesParser(){
+        return new ParserHandler(new AMJWatchesParser());
+    }
+
+    @Bean
+    public ParserHandler ArgosParser(){
+        return new ParserHandler(new ArgosParser());
+    }
+
+    @Bean
+    public ParserHandler CreationWatchesParser(){
+        return new ParserHandler(new CreationWatchesParser());
+    }
+
+    @Bean
+    public ParserHandler DebenhamsParser(){
+        return new ParserHandler(new DebenhamsParser());
+    }
+
+    @Bean
+    public ParserHandler ErnestJonesParser(){
+        return new ParserHandler(new ErnestJonesParser());
+    }
+
+    @Bean
+    public ParserHandler FirstClassWatchesParser(){
+        return new ParserHandler(new FirstClassWatchesParser());
+    }
+
+    @Bean
+    public ParserHandler GoldSmithsParser(){
+        return new ParserHandler(new GoldSmithsParser());
+    }
+
+    @Bean
     public ParserHandler HSamuelParser(){
         return new ParserHandler(new HSamuelParser());
     }
 
     @Bean
-    public HSamuelScraper HSamuelScraper() {
-        return new HSamuelScraper(scraperSubject(), HSamuelParser(), getMongoItemService2(), 1);
+    public ParserHandler SuperDrugParser(){
+        return new ParserHandler(new SuperDrugParser());
+    }
+
+    @Bean
+    public ParserHandler TicWatchesParser(){
+        return new ParserHandler(new TicWatchesParser());
+    }
+
+    @Bean
+    public ParserHandler WatchoParser(){
+        return new ParserHandler(new WatchoParser());
+    }
+
+    @Bean
+    public ParserHandler WatchShopParser(){
+        return new ParserHandler(new WatchShopParser());
     }
 
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new HSamuelScraper(subject, HSamuelParser(), getMongoItemService2(), 1);
+        new Scraper(subject, AMHWatchesParser(), getMongoItemService2(), 1);
+        new Scraper(subject, ArgosParser(), getMongoItemService2(), 1);
+        new Scraper(subject, CreationWatchesParser(), getMongoItemService2(), 1);
+        new Scraper(subject, DebenhamsParser(), getMongoItemService2(), 1);
+        new Scraper(subject, ErnestJonesParser(), getMongoItemService2(), 1);
+        new Scraper(subject, FirstClassWatchesParser(), getMongoItemService2(), 1);
+        new Scraper(subject, GoldSmithsParser(), getMongoItemService2(), 1);
+        new Scraper(subject, HSamuelParser(), getMongoItemService2(), 1);
+        new Scraper(subject, SuperDrugParser(), getMongoItemService2(), 0);
+        new Scraper(subject, TicWatchesParser(), getMongoItemService2(), 1);
+        new Scraper(subject, WatchoParser(), getMongoItemService2(), 1);
+        new Scraper(subject, WatchShopParser(), getMongoItemService2(), 1);
         return subject;
     }
 
@@ -60,6 +119,4 @@ public class ObserverProfile {
     public Launcher runner() {
         return new Launcher(getMongoStoreService2(), getSubject());
     }
-
-
 }

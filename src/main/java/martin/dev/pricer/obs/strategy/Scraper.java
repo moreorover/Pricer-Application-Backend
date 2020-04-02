@@ -1,5 +1,6 @@
 package martin.dev.pricer.obs.strategy;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.obs.Observer;
 import martin.dev.pricer.scraper.client.HttpClient;
@@ -9,7 +10,8 @@ import org.jsoup.select.Elements;
 
 import java.util.List;
 
-public abstract class Scraper extends Observer implements ScraperInterface {
+@Slf4j
+public class Scraper extends Observer implements ScraperInterface {
 
     private ScraperSubject scraperSubject;
 
@@ -26,9 +28,12 @@ public abstract class Scraper extends Observer implements ScraperInterface {
         this.startPage = startPage;
     }
 
-    public void parse(int endPage) {
+    @Override
+    public void scrape(int endPage) {
         for (int start = startPage; start <= endPage; start++) {
-            Document document = HttpClient.readContentInJsoupDocument(parserHandler.makeUrl(scraperSubject.getUrl().getUrl(), startPage));
+            String url = parserHandler.makeUrl(scraperSubject.getUrl().getUrl(), start);
+            log.info("Parsing: " + url);
+            Document document = HttpClient.readContentInJsoupDocument(url);
             Elements parsedElements = parserHandler.parseItems(document);
             List<ParsedItemDto> parsedItemModels = parserHandler.parseItemModels(parsedElements, scraperSubject.getUrl().getUrl());
             parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItem(parsedItemDto, scraperSubject.getStore(), scraperSubject.getUrl()));
@@ -37,13 +42,24 @@ public abstract class Scraper extends Observer implements ScraperInterface {
 
     @Override
     public void update() {
-        Document document = HttpClient.readContentInJsoupDocument(scraperSubject.getUrl().getUrl());
-        int maxPage = parserHandler.parseMaxPageNum(document);
-        parse(maxPage);
+
+        int maxPageNum = getMaxPage();
+        scrape(maxPageNum);
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return parserHandler.getParserName();
+    }
+
+    @Override
+    public int getMaxPage() {
+        Document document = HttpClient.readContentInJsoupDocument(scraperSubject.getUrl().getUrl());
+        int maxPage = parserHandler.parseMaxPageNum(document);
+
+        if (startPage == 0) {
+            return maxPage - 1;
+        }
+        return maxPage;
     }
 }
