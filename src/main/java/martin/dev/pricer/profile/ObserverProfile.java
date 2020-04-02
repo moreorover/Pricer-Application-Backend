@@ -26,12 +26,12 @@ public class ObserverProfile {
     }
 
     @Bean
-    public ItemService getMongoItemService2() {
+    public ItemService getMongoItemService() {
         return new ItemService(itemRepository, dealRepository);
     }
 
     @Bean
-    public StoreService getMongoStoreService2() {
+    public StoreService getMongoStoreService() {
         return new StoreService(storeRepository);
     }
 
@@ -103,23 +103,23 @@ public class ObserverProfile {
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMHWatchesParser(), getMongoItemService2(), 1);
-        new Scraper(subject, ArgosParser(), getMongoItemService2(), 1);
-        new Scraper(subject, CreationWatchesParser(), getMongoItemService2(), 1);
-        new Scraper(subject, DebenhamsParser(), getMongoItemService2(), 1);
-        new Scraper(subject, ErnestJonesParser(), getMongoItemService2(), 1);
-        new Scraper(subject, FirstClassWatchesParser(), getMongoItemService2(), 1);
-        new Scraper(subject, GoldSmithsParser(), getMongoItemService2(), 1);
-        new Scraper(subject, HSamuelParser(), getMongoItemService2(), 1);
-        new Scraper(subject, SuperDrugParser(), getMongoItemService2(), 0);
-        new Scraper(subject, TicWatchesParser(), getMongoItemService2(), 1);
-        new Scraper(subject, WatchoParser(), getMongoItemService2(), 1);
-        new Scraper(subject, WatchShopParser(), getMongoItemService2(), 1);
+        new Scraper(subject, AMHWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, ArgosParser(), getMongoItemService(), 1);
+        new Scraper(subject, CreationWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, DebenhamsParser(), getMongoItemService(), 1);
+        new Scraper(subject, ErnestJonesParser(), getMongoItemService(), 1);
+        new Scraper(subject, FirstClassWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, GoldSmithsParser(), getMongoItemService(), 1);
+        new Scraper(subject, HSamuelParser(), getMongoItemService(), 1);
+        new Scraper(subject, SuperDrugParser(), getMongoItemService(), 0);
+        new Scraper(subject, TicWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, WatchoParser(), getMongoItemService(), 1);
+        new Scraper(subject, WatchShopParser(), getMongoItemService(), 1);
         return subject;
     }
 
     @Bean
     public Launcher runner() {
-        return new Launcher(getMongoStoreService2(), getSubject());
+        return new Launcher(getMongoStoreService(), getSubject());
     }
 }
