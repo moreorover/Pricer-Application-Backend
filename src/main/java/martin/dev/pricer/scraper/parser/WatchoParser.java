@@ -15,8 +15,8 @@ public class WatchoParser implements Parser {
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
-        String[] x = url.split("&page=");
-        return x[0] + "&page=" + pageNum;
+        String[] x = url.split("\\?page=");
+        return x[0] + "?page=" + pageNum;
     }
 
     @Override
