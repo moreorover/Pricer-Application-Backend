@@ -12,7 +12,9 @@ import martin.dev.pricer.scraper.ParserHandler;
 import martin.dev.pricer.scraper.Scraper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
+@Profile("prodremote")
 @Configuration
 public class ObserverProfile {
 
@@ -42,7 +44,7 @@ public class ObserverProfile {
     }
 
     @Bean
-    public ParserHandler AMHWatchesParser(){
+    public ParserHandler AMJWatchesParser(){
         return new ParserHandler(new AMJWatchesParser());
     }
 
@@ -104,7 +106,7 @@ public class ObserverProfile {
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMHWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, AMJWatchesParser(), getMongoItemService(), 1);
         new Scraper(subject, ArgosParser(), getMongoItemService(), 1);
         new Scraper(subject, CreationWatchesParser(), getMongoItemService(), 1);
         new Scraper(subject, DebenhamsParser(), getMongoItemService(), 1);
