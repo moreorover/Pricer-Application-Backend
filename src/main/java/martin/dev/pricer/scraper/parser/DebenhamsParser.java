@@ -21,7 +21,7 @@ public class DebenhamsParser implements Parser {
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        return pageContentInJsoupHtml.select("article[class^=c-product-item]");
+        return pageContentInJsoupHtml.select("div[class^=c-product-item]");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DebenhamsParser implements Parser {
 
     @Override
     public String parseTitle(Element adInJsoupHtml) {
-        Element titleElement = adInJsoupHtml.selectFirst("div[class^=c-product-item-title]");
+        Element titleElement = adInJsoupHtml.selectFirst("h2[class^=c-product-item-title]");
         return titleElement.text();
     }
 
