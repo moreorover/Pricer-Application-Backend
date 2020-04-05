@@ -15,13 +15,16 @@ public class TicWatchesParser implements Parser {
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
-        String[] x = url.split("page=");
-        return x[0] + "page=" + pageNum;
+        if (pageNum == 1){
+            return url;
+        }
+        String[] x = url.split("\\?page=");
+        return x[0] + "?page=" + pageNum;
     }
 
     @Override
     public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        return pageContentInJsoupHtml.select("div[class^=product]");
+        return pageContentInJsoupHtml.select("li[class^=col]");
     }
 
     @Override
@@ -30,7 +33,7 @@ public class TicWatchesParser implements Parser {
         String totalResults = paginationBlockElement.text().replaceAll("[^\\d.]", "");
         int adsCount = Integer.parseInt(totalResults);
         int maxPageNum = (adsCount + 24 - 1) / 24;
-        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        log.info("Found " + adsCount + " ads to scrape, a total of " + maxPageNum + " pages.");
         return maxPageNum;
     }
 
@@ -41,13 +44,13 @@ public class TicWatchesParser implements Parser {
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
-        String upc = adInJsoupHtml.attr("data-infid");
+        String upc = adInJsoupHtml.selectFirst("div").attr("data-infid");
         return PREFIX + upc;
     }
 
     @Override
     public Double parsePrice(Element adInJsoupHtml) {
-        String priceString = adInJsoupHtml.select("span[class=product-content__price--inc]").text();
+        String priceString = adInJsoupHtml.selectFirst("span[class=product-content__price--inc]").text();
         priceString = priceString.replaceAll("[^\\d.]", "");
         return Double.parseDouble(priceString);
     }
@@ -55,7 +58,7 @@ public class TicWatchesParser implements Parser {
     @Override
     public String parseImage(Element adInJsoupHtml) {
         Element imgElement = adInJsoupHtml.selectFirst("img");
-        return BASE_URL + imgElement.attr("src");
+        return BASE_URL + imgElement.attr("data-src");
     }
 
     @Override
