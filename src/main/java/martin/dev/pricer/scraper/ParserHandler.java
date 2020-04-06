@@ -38,7 +38,7 @@ public class ParserHandler {
         if (parsedItemDtos.size() == e.size()) {
             log.info("Successfully parsed " + parsedItemDtos.size() + " Ads");
         } else {
-            log.warn("Parsed only " + parsedItemDtos.size() + "Ads. Out of total: " + e.size());
+            log.warn("Parsed only " + parsedItemDtos.size() + " Ads. Out of total: " + e.size());
         }
         return parsedItemDtos;
     }
