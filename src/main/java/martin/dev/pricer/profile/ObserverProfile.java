@@ -104,6 +104,11 @@ public class ObserverProfile {
     }
 
     @Bean
+    public ParserHandler SimpkinsJewellersParser(){
+        return new ParserHandler(new SimpkinsJewellersParser());
+    }
+
+    @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
         new Scraper(subject, AMJWatchesParser(), getMongoItemService(), 1);
@@ -118,6 +123,7 @@ public class ObserverProfile {
         new Scraper(subject, TicWatchesParser(), getMongoItemService(), 1);
         new Scraper(subject, WatchoParser(), getMongoItemService(), 1);
         new Scraper(subject, WatchShopParser(), getMongoItemService(), 1);
+        new Scraper(subject, SimpkinsJewellersParser(), getMongoItemService(), 1);
         return subject;
     }
 
