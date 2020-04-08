@@ -46,16 +46,25 @@ public class Launcher {
 
         HashMap<String, Set<Category>> data = new HashMap<>();
 
-        data.put("https://www.watcho.co.uk/watches/seiko.html?page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
-        data.put("https://www.watcho.co.uk/watches/garmin.html?page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
-        data.put("https://www.watcho.co.uk/watches/casio/casio-g-shock-watches.html?page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
-        data.put("https://www.watcho.co.uk/watches/citizen.html?page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/seiko?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/accurist?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/Mondaine?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/AVI-8%20Aviator%20Watches?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/police?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/bering?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/pulsar?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/rotary?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/casio?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/citizen?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/victorinox?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/lorus?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
+        data.put("https://simpkinsjewellers.co.uk/watches/bulova?limit=100&page=1", Stream.of("Watch").map(Category::new).collect(Collectors.toSet()));
 
         Set<Url> urlList = new HashSet<>();
 
-        data.keySet().forEach(urlKey -> urlList.add(new Url(urlKey, LocalDateTime.now(), Status.READY, data.get(urlKey))));
+        data.keySet().forEach(urlKey -> urlList.add(new Url(urlKey, LocalDateTime.now().minusHours(10), Status.READY, data.get(urlKey))));
 
-        Store store = new Store("Watcho", "https://www.watcho.co.uk", "https://cdn11.bigcommerce.com/s-f06f69/images/stencil/250x100/final-logo-small_1571639906__21982.original.png", urlList);
+        Store store = new Store("Simpkins Jewellers", "https://simpkinsjewellers.co.uk", "https://simpkinsjewellers.co.uk/image/catalog/Banners/Simpkins%20Logo%202.png", urlList);
 
         this.storeService.getStoreRepository().save(store);
 

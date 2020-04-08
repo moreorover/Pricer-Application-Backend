@@ -1,26 +1,39 @@
 package martin.dev.pricer.scraper;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import lombok.Getter;
 
-public interface Parser {
+@Getter
+public abstract class Parser implements ParserI {
 
-    String makeNextPageUrl(String url, int pageNum);
+    private String NAME;
+    private String PREFIX;
+    private String BASE_URL;
+    private int ADS_PER_PAGE;
 
-    Elements parseListOfAdElements(Document pageContentInJsoupHtml);
+    private String state;
 
-    int parseMaxPageNum(Document pageContentInJsoupHtml);
+    public Parser(String NAME, String PREFIX, String BASE_URL, int ads_per_page) {
+        this.NAME = NAME;
+        this.PREFIX = PREFIX;
+        this.BASE_URL = BASE_URL;
+        this.ADS_PER_PAGE = ads_per_page;
+    }
 
-    String parseTitle(Element adInJsoupHtml);
+    public void setState(String state) {
+        this.state = state;
+    }
 
-    String parseUpc(Element adInJsoupHtml);
+    public Integer parseIntegerFromString(String string) {
+        String digits = string.replaceAll("[^\\d]", "");
+        return Integer.parseInt(digits);
+    }
 
-    Double parsePrice(Element adInJsoupHtml);
+    public Double parseDoubleFromString(String string) {
+        String digits = string.replaceAll("[^\\d.]", "");
+        return Double.parseDouble(digits);
+    }
 
-    String parseImage(Element adInJsoupHtml);
-
-    String parseUrl(Element adInJsoupHtml);
-
-    String getParserName();
+    public Integer calculateTotalPages(int adsCount) {
+        return (adsCount + ADS_PER_PAGE - 1) / ADS_PER_PAGE;
+    }
 }

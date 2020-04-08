@@ -1,13 +1,13 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.ParserI;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class SuperDrugParser implements Parser {
+public class SuperDrugParser implements ParserI {
 
     public final String NAME = "Superdrug";
     public final String PREFIX = "SD_";

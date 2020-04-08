@@ -18,7 +18,7 @@ public class ParserHandler {
         this.parser = parser;
     }
 
-    private ParsedItemDto parseItemModel(Element e, String urlFound){
+    private ParsedItemDto parseItemModel(Element e, String urlFound) {
         ParsedItemDto parsedItem = new ParsedItemDto();
         parsedItem.setTitle(parser.parseTitle(e));
         parsedItem.setPrice(parser.parsePrice(e));
@@ -47,7 +47,7 @@ public class ParserHandler {
         return parser.parseMaxPageNum(d);
     }
 
-    public Elements parseItems(Document d) {
+    public Elements parseItems(Document d) throws ParserException {
         return parser.parseListOfAdElements(d);
     }
 
@@ -55,7 +55,7 @@ public class ParserHandler {
         return parser.makeNextPageUrl(url, pageNum);
     }
 
-    public String getParserName(){
-        return parser.getParserName();
+    public String getParserName() {
+        return parser.getNAME();
     }
 }

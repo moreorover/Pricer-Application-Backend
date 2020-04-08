@@ -1,13 +1,13 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.ParserI;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class TicWatchesParser implements Parser {
+public class TicWatchesParser implements ParserI {
 
     public final String NAME = "Tic Watches";
     public final String PREFIX = "TIC_";

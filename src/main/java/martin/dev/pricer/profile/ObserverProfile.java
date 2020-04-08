@@ -2,8 +2,10 @@ package martin.dev.pricer.profile;
 
 import martin.dev.pricer.data.repository.DealRepository;
 import martin.dev.pricer.data.repository.ItemRepository;
+import martin.dev.pricer.data.repository.ParserErrorRepository;
 import martin.dev.pricer.data.repository.StoreRepository;
 import martin.dev.pricer.data.service.ItemService;
+import martin.dev.pricer.data.service.ParserErrorService;
 import martin.dev.pricer.data.service.StoreService;
 import martin.dev.pricer.scraper.ScraperSubject;
 import martin.dev.pricer.scraper.parser.*;
@@ -21,11 +23,13 @@ public class ObserverProfile {
     private StoreRepository storeRepository;
     private ItemRepository itemRepository;
     private DealRepository dealRepository;
+    private ParserErrorRepository parserErrorRepository;
 
-    public ObserverProfile(StoreRepository storeRepository, ItemRepository itemRepository, DealRepository dealRepository) {
+    public ObserverProfile(StoreRepository storeRepository, ItemRepository itemRepository, DealRepository dealRepository, ParserErrorRepository parserErrorRepository) {
         this.storeRepository = storeRepository;
         this.itemRepository = itemRepository;
         this.dealRepository = dealRepository;
+        this.parserErrorRepository = parserErrorRepository;
     }
 
     @Bean
@@ -36,6 +40,11 @@ public class ObserverProfile {
     @Bean
     public StoreService getMongoStoreService() {
         return new StoreService(storeRepository);
+    }
+
+    @Bean
+    public ParserErrorService getParserErrorService() {
+        return new ParserErrorService(parserErrorRepository);
     }
 
     @Bean
@@ -111,19 +120,19 @@ public class ObserverProfile {
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMJWatchesParser(), getMongoItemService(), 1);
-        new Scraper(subject, ArgosParser(), getMongoItemService(), 1);
-        new Scraper(subject, CreationWatchesParser(), getMongoItemService(), 1);
-        new Scraper(subject, DebenhamsParser(), getMongoItemService(), 1);
-        new Scraper(subject, ErnestJonesParser(), getMongoItemService(), 1);
-        new Scraper(subject, FirstClassWatchesParser(), getMongoItemService(), 1);
-        new Scraper(subject, GoldSmithsParser(), getMongoItemService(), 1);
-        new Scraper(subject, HSamuelParser(), getMongoItemService(), 1);
-        new Scraper(subject, SuperDrugParser(), getMongoItemService(), 0);
-        new Scraper(subject, TicWatchesParser(), getMongoItemService(), 1);
-        new Scraper(subject, WatchoParser(), getMongoItemService(), 1);
-        new Scraper(subject, WatchShopParser(), getMongoItemService(), 1);
-        new Scraper(subject, SimpkinsJewellersParser(), getMongoItemService(), 1);
+        new Scraper(subject, AMJWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, ArgosParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, CreationWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, DebenhamsParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, ErnestJonesParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, FirstClassWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, GoldSmithsParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, HSamuelParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, SuperDrugParser(), getMongoItemService(), getParserErrorService(), 0);
+        new Scraper(subject, TicWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, WatchoParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, WatchShopParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, SimpkinsJewellersParser(), getMongoItemService(), getParserErrorService(), 1);
         return subject;
     }
 

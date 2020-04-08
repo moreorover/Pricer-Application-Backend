@@ -44,20 +44,14 @@ public class ObserverProfileTests {
     }
 
     @Bean
-    public ParserHandler TicWatchesParser(){
-        return new ParserHandler(new TicWatchesParser());
-    }
-
-    @Bean
-    public ParserHandler WatchoParser(){
-        return new ParserHandler(new WatchoParser());
+    public ParserHandler getParser(){
+        return new ParserHandler(new SimpkinsJewellersParser());
     }
 
     @Bean
     public ScraperSubject registerListeners() {
         ScraperSubject subject = new ScraperSubject();
-//        new Scraper(subject, TicWatchesParser(), getMongoItemService(), 1);
-        new Scraper(subject, WatchoParser(), getMongoItemService(), 1);
+        new Scraper(subject, getParser(), getMongoItemService(), parserErrorService, 1);
         return subject;
     }
 

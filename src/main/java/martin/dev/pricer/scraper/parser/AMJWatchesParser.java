@@ -2,37 +2,52 @@ package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.ParserException;
+import martin.dev.pricer.scraper.ParserValidator;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class AMJWatchesParser implements Parser {
+public class AMJWatchesParser extends Parser {
 
-    public final String NAME = "AMJ Watches";
-    public final String PREFIX = "AMJW_";
-    public final String BASE_URL = "https://amjwatches.co.uk";
+    public AMJWatchesParser() {
+        super("AMJ Watches", "AMJW_", "https://amjwatches.co.uk", 40);
+    }
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
+        setState("makeNextPageUrl");
+
         String[] x = url.split("page=");
         return x[0] + "page=" + pageNum;
     }
 
     @Override
-    public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        return pageContentInJsoupHtml.select("div[class=watch-sec]");
+    public Elements parseListOfAdElements(Document pageContentInJsoupHtml) throws ParserException {
+        setState("parseListOfAdElements");
+
+        Elements parsedElements = pageContentInJsoupHtml.select("div[class=watch-sec]");
+        ParserValidator.validateElements(parsedElements, this);
+
+        return parsedElements;
     }
 
     @Override
-    public int parseMaxPageNum(Document pageContentInJsoupHtml) {
+    public int parseMaxPageNum(Document pageContentInJsoupHtml) throws ParserException {
+        setState("parseMaxPageNum");
+
         Element productsCountElement = pageContentInJsoupHtml.selectFirst("div[class=items-on-page]");
+        ParserValidator.validateElement(productsCountElement, this);
         String countText = productsCountElement.children().last().text();
-        countText = countText.replaceAll("[^\\d.]", "");
-        int adsCount = Integer.parseInt(countText);
-        int maxPageNum = (adsCount + 40 - 1) / 40;
-        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
-        return maxPageNum;
+        ParserValidator.validateStringIsNotEmpty(countText, this);
+        Integer adsCount = parseIntegerFromString(countText);
+        ParserValidator.validatePositiveInteger(adsCount, this);
+        Integer maxPage = calculateTotalPages(adsCount);
+
+        // TODO take logging outside of the parser
+        log.info("Found " + adsCount + " ads to scrape, a total of " + maxPage + " pages.");
+        return maxPage;
     }
 
     @Override
@@ -76,10 +91,5 @@ public class AMJWatchesParser implements Parser {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
         imgElement = imgElement.selectFirst("a");
         return imgElement.attr("href");
-    }
-
-    @Override
-    public String getParserName() {
-        return NAME;
     }
 }
