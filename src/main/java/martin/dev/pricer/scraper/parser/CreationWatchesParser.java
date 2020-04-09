@@ -1,15 +1,17 @@
 package martin.dev.pricer.scraper.parser;
 
+import lombok.experimental.ExtensionMethod;
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.ElementExtensions;
 import martin.dev.pricer.scraper.Parser;
 import martin.dev.pricer.scraper.ParserException;
-import martin.dev.pricer.scraper.ParserI;
 import martin.dev.pricer.scraper.ParserValidator;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
+@ExtensionMethod({ElementExtensions.class})
 public class CreationWatchesParser extends Parser {
 
     public CreationWatchesParser() {
