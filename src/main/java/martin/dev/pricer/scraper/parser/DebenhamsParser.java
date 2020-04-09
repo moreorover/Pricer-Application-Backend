@@ -37,7 +37,9 @@ public class DebenhamsParser extends Parser {
     public int parseMaxPageNum(Document pageContentInJsoupHtml) throws ParserException {
         setState("parseMaxPageNum");
 
-        String countString = pageContentInJsoupHtml.selectFirst("div[class*=dbh-count]").text();
+        Element paginationElement = pageContentInJsoupHtml.selectFirst("div[class*=dbh-count]");
+        ParserValidator.validateElement(paginationElement, this);
+        String countString = paginationElement.text();
         ParserValidator.validateStringIsNotEmpty(countString, this);
         Integer adsCount = parseIntegerFromString(countString);
         ParserValidator.validatePositiveInteger(adsCount, this);
@@ -54,7 +56,7 @@ public class DebenhamsParser extends Parser {
         setState("parseTitle");
 
         Element titleElement = adInJsoupHtml.selectFirst("h2[class^=c-product-item-title]");
-        ParserValidator.validateElement(titleElement, this);
+        ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String title = titleElement.text();
         ParserValidator.validateStringIsNotEmpty(title, this);
 
@@ -66,8 +68,12 @@ public class DebenhamsParser extends Parser {
         setState("parseUpc");
 
         Element aElement = adInJsoupHtml.selectFirst("a");
-        ParserValidator.validateElement(aElement, this);
-        String upc = aElement.attr("href").split("prod_")[1];
+        ParserValidator.validateElement(aElement, this, adInJsoupHtml);
+        String upcText = aElement.attr("href");
+        ParserValidator.validateStringIsNotEmpty(upcText, this);
+        String[] upcTextArray = upcText.split("prod_");
+        ParserValidator.validateStringArray(upcTextArray, 2, this, adInJsoupHtml);
+        String upc = upcTextArray[1];
         ParserValidator.validateStringIsNotEmpty(upc, this);
 
         return getPREFIX() + upc;
@@ -78,7 +84,7 @@ public class DebenhamsParser extends Parser {
         setState("parsePrice");
 
         Element priceElement = adInJsoupHtml.selectFirst("span[itemprop=price]");
-        ParserValidator.validateElement(priceElement, this);
+        ParserValidator.validateElement(priceElement, this, adInJsoupHtml);
         String priceString = priceElement.text();
         ParserValidator.validateStringIsNotEmpty(priceString, this);
         Double price = parseDoubleFromString(priceString);
@@ -99,7 +105,7 @@ public class DebenhamsParser extends Parser {
         setState("parseUrl");
 
         Element aElement = adInJsoupHtml.selectFirst("a");
-        ParserValidator.validateElement(aElement, this);
+        ParserValidator.validateElement(aElement, this, adInJsoupHtml);
         String url = aElement.attr("href");
         ParserValidator.validateStringIsNotEmpty(url, this);
 

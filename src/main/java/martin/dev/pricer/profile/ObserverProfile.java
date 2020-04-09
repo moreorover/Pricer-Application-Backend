@@ -54,85 +54,85 @@ public class ObserverProfile {
 
     @Bean
     public ParserHandler AMJWatchesParser(){
-        return new ParserHandler(new AMJWatchesParser());
+        return new ParserHandler(new AMJWatchesParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler ArgosParser(){
-        return new ParserHandler(new ArgosParser());
+        return new ParserHandler(new ArgosParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler CreationWatchesParser(){
-        return new ParserHandler(new CreationWatchesParser());
+        return new ParserHandler(new CreationWatchesParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler DebenhamsParser(){
-        return new ParserHandler(new DebenhamsParser());
+        return new ParserHandler(new DebenhamsParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler ErnestJonesParser(){
-        return new ParserHandler(new ErnestJonesParser());
+        return new ParserHandler(new ErnestJonesParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler FirstClassWatchesParser(){
-        return new ParserHandler(new FirstClassWatchesParser());
+        return new ParserHandler(new FirstClassWatchesParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler GoldSmithsParser(){
-        return new ParserHandler(new GoldSmithsParser());
+        return new ParserHandler(new GoldSmithsParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler HSamuelParser(){
-        return new ParserHandler(new HSamuelParser());
+        return new ParserHandler(new HSamuelParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler SuperDrugParser(){
-        return new ParserHandler(new SuperDrugParser());
+        return new ParserHandler(new SuperDrugParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler TicWatchesParser(){
-        return new ParserHandler(new TicWatchesParser());
+        return new ParserHandler(new TicWatchesParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler WatchoParser(){
-        return new ParserHandler(new WatchoParser());
+        return new ParserHandler(new WatchoParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler WatchShopParser(){
-        return new ParserHandler(new WatchShopParser());
+        return new ParserHandler(new WatchShopParser(), getParserErrorService());
     }
 
     @Bean
     public ParserHandler SimpkinsJewellersParser(){
-        return new ParserHandler(new SimpkinsJewellersParser());
+        return new ParserHandler(new SimpkinsJewellersParser(), getParserErrorService());
     }
 
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMJWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, ArgosParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, CreationWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, DebenhamsParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, ErnestJonesParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, FirstClassWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, GoldSmithsParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, HSamuelParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, SuperDrugParser(), getMongoItemService(), getParserErrorService(), 0);
-        new Scraper(subject, TicWatchesParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, WatchoParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, WatchShopParser(), getMongoItemService(), getParserErrorService(), 1);
-        new Scraper(subject, SimpkinsJewellersParser(), getMongoItemService(), getParserErrorService(), 1);
+        new Scraper(subject, AMJWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, ArgosParser(), getMongoItemService(), 1);
+        new Scraper(subject, CreationWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, DebenhamsParser(), getMongoItemService(), 1);
+        new Scraper(subject, ErnestJonesParser(), getMongoItemService(), 1);
+        new Scraper(subject, FirstClassWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, GoldSmithsParser(), getMongoItemService(), 1);
+        new Scraper(subject, HSamuelParser(), getMongoItemService(), 1);
+        new Scraper(subject, SuperDrugParser(), getMongoItemService(), 0);
+        new Scraper(subject, TicWatchesParser(), getMongoItemService(), 1);
+        new Scraper(subject, WatchoParser(), getMongoItemService(), 1);
+        new Scraper(subject, WatchShopParser(), getMongoItemService(), 1);
+        new Scraper(subject, SimpkinsJewellersParser(), getMongoItemService(), 1);
         return subject;
     }
 

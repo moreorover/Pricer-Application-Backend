@@ -51,45 +51,66 @@ public class AMJWatchesParser extends Parser {
     }
 
     @Override
-    public String parseTitle(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
-        imgElement = imgElement.selectFirst("a");
-        return imgElement.attr("title");
+    public String parseTitle(Element adInJsoupHtml) throws ParserException {
+        setState("parseTitle");
+
+        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a");
+        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
+        String title = imgElement.attr("title");
+        ParserValidator.validateStringIsNotEmpty(title, this);
+
+        return title;
     }
 
     @Override
-    public String parseUpc(Element adInJsoupHtml) {
-        try {
-            Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
-            imgElement = imgElement.selectFirst("a");
-            String url = imgElement.attr("href");
-            url = url.split(".uk/")[1];
-            return PREFIX + url;
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+    public String parseUpc(Element adInJsoupHtml) throws ParserException {
+        setState("parseUpc");
+
+        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a");
+        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
+        String url = imgElement.attr("href");
+        ParserValidator.validateStringIsNotEmpty(url, this);
+        String[] urlArray = url.split(".uk/");
+        ParserValidator.validateStringArray(urlArray, 2, this, adInJsoupHtml);
+
+        return getPREFIX() + urlArray[1];
     }
 
     @Override
-    public Double parsePrice(Element adInJsoupHtml) {
-        Element detailsElement = adInJsoupHtml.selectFirst("div[class=watch-details]");
+    public Double parsePrice(Element adInJsoupHtml) throws ParserException {
+        setState("parsePrice");
 
-        String priceString = detailsElement.children().last().text().replaceAll("[^\\d.]", "");
-        return Double.parseDouble(priceString);
+        Element detailsElement = adInJsoupHtml.selectFirst("div[class=watch-details]").children().last();
+        ParserValidator.validateElement(detailsElement, this, adInJsoupHtml);
+        String priceString = detailsElement.text();
+        ParserValidator.validateStringIsNotEmpty(priceString, this);
+        Double price = parseDoubleFromString(priceString);
+        ParserValidator.validatePositiveDouble(price, this);
+
+        return price;
     }
 
     @Override
-    public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
-        imgElement = imgElement.selectFirst("a");
-        imgElement = imgElement.selectFirst("img");
-        return imgElement.attr("data-src");
+    public String parseImage(Element adInJsoupHtml) throws ParserException {
+        setState("parseImage");
+
+        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a").selectFirst("img");
+        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
+        String imgUrl = imgElement.attr("data-src");
+        ParserValidator.validateStringIsNotEmpty(imgUrl, this);
+
+        return imgUrl;
     }
 
     @Override
-    public String parseUrl(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]");
-        imgElement = imgElement.selectFirst("a");
-        return imgElement.attr("href");
+    public String parseUrl(Element adInJsoupHtml) throws ParserException {
+        setState("parseUrl");
+
+        Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a");
+        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
+        String url = imgElement.attr("href");
+        ParserValidator.validateStringIsNotEmpty(url, this);
+
+        return url;
     }
 }

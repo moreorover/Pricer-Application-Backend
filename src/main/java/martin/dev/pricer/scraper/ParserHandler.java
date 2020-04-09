@@ -1,6 +1,7 @@
 package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.data.service.ParserErrorService;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,25 +14,31 @@ import java.util.stream.Collectors;
 public class ParserHandler {
 
     private Parser parser;
+    private ParserErrorService parserErrorService;
 
-    public ParserHandler(Parser parser) {
+    public ParserHandler(Parser parser, ParserErrorService parserErrorService) {
         this.parser = parser;
+        this.parserErrorService = parserErrorService;
     }
 
-    private ParsedItemDto parseItemModel(Element e, String urlFound) {
+    private ParsedItemDto parseItemModel(Element element) {
         ParsedItemDto parsedItem = new ParsedItemDto();
-        parsedItem.setTitle(parser.parseTitle(e));
-        parsedItem.setPrice(parser.parsePrice(e));
-        parsedItem.setImg(parser.parseImage(e));
-        parsedItem.setUpc(parser.parseUpc(e));
-        parsedItem.setUrl(parser.parseUrl(e));
-        parsedItem.setUrlFound(urlFound);
+        try {
+            parsedItem.setTitle(parser.parseTitle(element));
+            parsedItem.setPrice(parser.parsePrice(element));
+            parsedItem.setImg(parser.parseImage(element));
+            parsedItem.setUpc(parser.parseUpc(element));
+            parsedItem.setUrl(parser.parseUrl(element));
+            parsedItem.setUrlFound(parser.getCurrentPage());
+        } catch (ParserException e) {
+            parserErrorService.saveError(e);
+        }
         return parsedItem;
     }
 
     public List<ParsedItemDto> parseItemModels(Elements e, String urlFound) {
         List<ParsedItemDto> parsedItemDtos = e.stream()
-                .map(element -> parseItemModel(element, urlFound))
+                .map(this::parseItemModel)
                 .filter(ParsedItemDto::isValid)
                 .collect(Collectors.toList());
 
@@ -44,11 +51,23 @@ public class ParserHandler {
     }
 
     public int parseMaxPageNum(Document d) {
-        return parser.parseMaxPageNum(d);
+        int maxPageNum = 0;
+        try {
+            maxPageNum = parser.parseMaxPageNum(d);
+        } catch (ParserException e) {
+            parserErrorService.saveError(e);
+        }
+        return maxPageNum;
     }
 
-    public Elements parseItems(Document d) throws ParserException {
-        return parser.parseListOfAdElements(d);
+    public Elements parseItems(Document d) {
+        Elements elements = new Elements();
+        try {
+            elements = parser.parseListOfAdElements(d);
+        } catch (ParserException e) {
+            parserErrorService.saveError(e);
+        }
+        return elements;
     }
 
     public String makeUrl(String url, int pageNum) {
@@ -57,5 +76,9 @@ public class ParserHandler {
 
     public String getParserName() {
         return parser.getNAME();
+    }
+
+    public void setCurrentUrl(String url) {
+        this.parser.setCurrentPage(url);
     }
 }

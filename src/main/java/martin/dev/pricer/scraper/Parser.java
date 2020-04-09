@@ -1,8 +1,10 @@
 package martin.dev.pricer.scraper;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public abstract class Parser implements ParserI {
 
     private String NAME;
@@ -11,6 +13,7 @@ public abstract class Parser implements ParserI {
     private int ADS_PER_PAGE;
 
     private String state;
+    private String currentPage;
 
     public Parser(String NAME, String PREFIX, String BASE_URL, int ads_per_page) {
         this.NAME = NAME;
@@ -19,17 +22,15 @@ public abstract class Parser implements ParserI {
         this.ADS_PER_PAGE = ads_per_page;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public Integer parseIntegerFromString(String string) {
+    public Integer parseIntegerFromString(String string) throws ParserException {
         String digits = string.replaceAll("[^\\d]", "");
+        ParserValidator.validateStringIsNotEmpty(digits, this);
         return Integer.parseInt(digits);
     }
 
-    public Double parseDoubleFromString(String string) {
+    public Double parseDoubleFromString(String string) throws ParserException {
         String digits = string.replaceAll("[^\\d.]", "");
+        ParserValidator.validateStringIsNotEmpty(digits, this);
         return Double.parseDouble(digits);
     }
 
