@@ -3,7 +3,6 @@ package martin.dev.pricer.scraper.parser;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
 import martin.dev.pricer.scraper.ParserException;
-import martin.dev.pricer.scraper.ParserI;
 import martin.dev.pricer.scraper.ParserValidator;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,8 +19,11 @@ public class ArgosParser extends Parser {
     public String makeNextPageUrl(String url, int pageNum) {
         setState("makeNextPageUrl");
 
-        String[] x = url.split("/page:");
-        return x[0] + "/page:" + pageNum;
+        if (pageNum == 1) {
+            return url;
+        }
+        String[] x = url.split("page:");
+        return x[0] + "page:" + pageNum;
     }
 
     @Override
