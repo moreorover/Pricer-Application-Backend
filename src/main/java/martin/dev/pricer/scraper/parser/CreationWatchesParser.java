@@ -51,7 +51,7 @@ public class CreationWatchesParser extends Parser {
         Integer maxPageNum = calculateTotalPages(adsCount);
 
         // TODO take logging outside of the parser
-        log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        log.info("Found " + adsCount + " ads to scrape, a total of " + maxPageNum + " pages.");
         return maxPageNum;
     }
 
