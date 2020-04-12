@@ -61,7 +61,7 @@ public class WatchShopParser extends Parser {
         Element titleElement = adInJsoupHtml.selectFirst("meta[itemprop=name]");
         ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String title = titleElement.attr("content").trim();
-        ParserValidator.validateStringIsNotEmpty(title, this);
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
 
         return title;
     }
@@ -73,7 +73,7 @@ public class WatchShopParser extends Parser {
         Element upcElement = adInJsoupHtml.selectFirst("meta[itemprop=sku]");
         ParserValidator.validateElement(upcElement, this, adInJsoupHtml);
         String upc = upcElement.attr("content");
-        ParserValidator.validateStringIsNotEmpty(upc, this);
+        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
 
         return getPREFIX() + upc;
     }
@@ -87,7 +87,7 @@ public class WatchShopParser extends Parser {
         priceElement = priceElement.selectFirst("strong");
         ParserValidator.validateElement(priceElement, this, adInJsoupHtml);
         String priceString = priceElement.text();
-        ParserValidator.validateStringIsNotEmpty(priceString, this);
+        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
         Double price = parseDoubleFromString(priceString);
         ParserValidator.validatePositiveDouble(price, this);
 
@@ -104,7 +104,7 @@ public class WatchShopParser extends Parser {
         imgElement = imgElement.selectFirst("img");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String imgSrc = imgElement.attr("src");
-        ParserValidator.validateStringIsNotEmpty(imgSrc, this);
+        ParserValidator.validateStringIsNotEmpty(imgSrc, this, adInJsoupHtml);
         if (imgSrc.endsWith("loader_border.gif")) {
             return "";
         }
@@ -120,7 +120,7 @@ public class WatchShopParser extends Parser {
         imgElement = imgElement.selectFirst("a");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String url = imgElement.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
 
         return getBASE_URL() + url;
     }

@@ -59,6 +59,15 @@ public class ParserValidator {
         }
     }
 
+    public static void validateStringIsNotEmpty(String string, Parser parser, Element element) throws ParserException {
+        if (string == null) {
+            throw new ParserException("Text is null", parser, element);
+        }
+        if (string.isBlank() || string.isEmpty()) {
+            throw new ParserException("Text is empty", parser, element);
+        }
+    }
+
     public static void validateStringArray(String[] stringArray, int minimumSize, Parser parser) throws ParserException {
         if (stringArray == null) {
             throw new ParserException("String Array is null", parser);

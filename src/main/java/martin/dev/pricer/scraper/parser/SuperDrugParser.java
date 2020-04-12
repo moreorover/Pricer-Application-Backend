@@ -65,7 +65,7 @@ public class SuperDrugParser extends Parser {
         Element titleElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
         ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String title = titleElement.text();
-        ParserValidator.validateStringIsNotEmpty(title, this);
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
 
         return title;
     }
@@ -78,7 +78,7 @@ public class SuperDrugParser extends Parser {
         String[] strings = url.split("/p/");
         ParserValidator.validateStringArray(strings, 2, this, adInJsoupHtml);
         String upc = strings[1];
-        ParserValidator.validateStringIsNotEmpty(upc, this);
+        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
 
         return getPREFIX() + upc;
     }
@@ -90,7 +90,7 @@ public class SuperDrugParser extends Parser {
         Element priceElement = adInJsoupHtml.selectFirst("span[class*=item__price--now]");
         ParserValidator.validateElement(priceElement, this, adInJsoupHtml);
         String priceString = priceElement.text();
-        ParserValidator.validateStringIsNotEmpty(priceString, this);
+        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
         Double price = parseDoubleFromString(priceString);
         ParserValidator.validatePositiveDouble(price, this);
 
@@ -118,7 +118,7 @@ public class SuperDrugParser extends Parser {
         Element aElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
         ParserValidator.validateElement(aElement, this, adInJsoupHtml);
         String url = aElement.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
 
         return getBASE_URL() + "/" + url;
     }

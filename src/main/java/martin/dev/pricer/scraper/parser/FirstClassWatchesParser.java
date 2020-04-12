@@ -53,7 +53,7 @@ public class FirstClassWatchesParser extends Parser {
         setState("parseTitle");
 
         String title = adInJsoupHtml.attr("title").trim();
-        ParserValidator.validateStringIsNotEmpty(title, this);
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
 
         return title;
     }
@@ -63,7 +63,7 @@ public class FirstClassWatchesParser extends Parser {
         setState("parseUpc");
 
         String upc = adInJsoupHtml.attr("data-id");
-        ParserValidator.validateStringIsNotEmpty(upc, this);
+        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
 
         return getPREFIX() + upc;
     }
@@ -73,7 +73,7 @@ public class FirstClassWatchesParser extends Parser {
         setState("parsePrice");
 
         String priceString = adInJsoupHtml.attr("data-price");
-        ParserValidator.validateStringIsNotEmpty(priceString, this);
+        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
         Double price = parseDoubleFromString(priceString);
         ParserValidator.validatePositiveDouble(price, this);
 
@@ -87,7 +87,7 @@ public class FirstClassWatchesParser extends Parser {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=image]").selectFirst("img");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String imgUrl = imgElement.attr("src");
-        ParserValidator.validateStringIsNotEmpty(imgUrl, this);
+        ParserValidator.validateStringIsNotEmpty(imgUrl, this, adInJsoupHtml);
         if (imgUrl.endsWith("loader_border.gif")) {
             return "";
         }
@@ -99,7 +99,7 @@ public class FirstClassWatchesParser extends Parser {
         setState("parseUrl");
 
         String url = adInJsoupHtml.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
 
         return url;
     }

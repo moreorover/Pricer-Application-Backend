@@ -57,7 +57,7 @@ public class AMJWatchesParser extends Parser {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String title = imgElement.attr("title");
-        ParserValidator.validateStringIsNotEmpty(title, this);
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
 
         return title;
     }
@@ -69,7 +69,7 @@ public class AMJWatchesParser extends Parser {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String url = imgElement.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
         String[] urlArray = url.split(".uk/");
         ParserValidator.validateStringArray(urlArray, 2, this, adInJsoupHtml);
 
@@ -83,7 +83,7 @@ public class AMJWatchesParser extends Parser {
         Element detailsElement = adInJsoupHtml.selectFirst("div[class=watch-details]").children().last();
         ParserValidator.validateElement(detailsElement, this, adInJsoupHtml);
         String priceString = detailsElement.text();
-        ParserValidator.validateStringIsNotEmpty(priceString, this);
+        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
         Double price = parseDoubleFromString(priceString);
         ParserValidator.validatePositiveDouble(price, this);
 
@@ -97,7 +97,7 @@ public class AMJWatchesParser extends Parser {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a").selectFirst("img");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String imgUrl = imgElement.attr("data-src");
-        ParserValidator.validateStringIsNotEmpty(imgUrl, this);
+        ParserValidator.validateStringIsNotEmpty(imgUrl, this, adInJsoupHtml);
 
         return imgUrl;
     }
@@ -109,7 +109,7 @@ public class AMJWatchesParser extends Parser {
         Element imgElement = adInJsoupHtml.selectFirst("div[class=watch-image]").selectFirst("a");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String url = imgElement.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
 
         return url;
     }

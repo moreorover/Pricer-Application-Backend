@@ -61,7 +61,7 @@ public class GoldSmithsParser extends Parser {
         Element titleElement = adInJsoupHtml.selectFirst("div[class=product-title]");
         ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String title = titleElement.text();
-        ParserValidator.validateStringIsNotEmpty(title, this);
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
 
         return title;
     }
@@ -73,7 +73,7 @@ public class GoldSmithsParser extends Parser {
         Element aElement = adInJsoupHtml.selectFirst("a");
         ParserValidator.validateElement(aElement, this, adInJsoupHtml);
         String upc = aElement.attr("id");
-        ParserValidator.validateStringIsNotEmpty(upc, this);
+        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
 
         return getPREFIX() + upc;
     }
@@ -85,7 +85,7 @@ public class GoldSmithsParser extends Parser {
         Element priceElement = adInJsoupHtml.selectFirst("div[class=prodPrice]");
         ParserValidator.validateElement(priceElement, this, adInJsoupHtml);
         String priceString = priceElement.text();
-        ParserValidator.validateStringIsNotEmpty(priceString, this);
+        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
         Double price = parseDoubleFromString(priceString);
         ParserValidator.validatePositiveDouble(price, this);
 
@@ -99,7 +99,7 @@ public class GoldSmithsParser extends Parser {
         Element imgElement = adInJsoupHtml.selectFirst("img");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String imgSrc = imgElement.attr("src");
-        ParserValidator.validateStringIsNotEmpty(imgSrc, this);
+        ParserValidator.validateStringIsNotEmpty(imgSrc, this, adInJsoupHtml);
         if (imgSrc.endsWith(".jpg")) {
             return imgSrc;
         }
@@ -113,7 +113,7 @@ public class GoldSmithsParser extends Parser {
         Element aElement = adInJsoupHtml.selectFirst("a");
         ParserValidator.validateElement(aElement, this, adInJsoupHtml);
         String url = aElement.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
 
         return getBASE_URL() + url;
     }

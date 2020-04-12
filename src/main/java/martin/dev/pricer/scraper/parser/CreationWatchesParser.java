@@ -62,7 +62,7 @@ public class CreationWatchesParser extends Parser {
         Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
         ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String title = titleElement.text();
-        ParserValidator.validateStringIsNotEmpty(title, this);
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
 
         return title;
     }
@@ -74,11 +74,11 @@ public class CreationWatchesParser extends Parser {
         Element modelElement = adInJsoupHtml.selectFirst("p[class=product-model-no]");
         ParserValidator.validateElement(modelElement, this, adInJsoupHtml);
         String upcText = modelElement.text();
-        ParserValidator.validateStringIsNotEmpty(upcText, this);
+        ParserValidator.validateStringIsNotEmpty(upcText, this, adInJsoupHtml);
         String[] stringArray = upcText.split(": ");
         ParserValidator.validateStringArray(stringArray, 2, this, adInJsoupHtml);
         String upc = stringArray[1];
-        ParserValidator.validateStringIsNotEmpty(upc, this);
+        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
 
         return getPREFIX() + upc;
     }
@@ -90,7 +90,7 @@ public class CreationWatchesParser extends Parser {
         Element titleElement = adInJsoupHtml.selectFirst("p[class=product-price]").selectFirst("span");
         ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String priceString = titleElement.text();
-        ParserValidator.validateStringIsNotEmpty(priceString, this);
+        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
         Double price = parseDoubleFromString(priceString);
         ParserValidator.validatePositiveDouble(price, this);
 
@@ -104,7 +104,7 @@ public class CreationWatchesParser extends Parser {
         Element titleElement = adInJsoupHtml.selectFirst("div[class=product-img-box]").selectFirst("img");
         ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String imgUrl = titleElement.attr("src");
-        ParserValidator.validateStringIsNotEmpty(imgUrl, this);
+        ParserValidator.validateStringIsNotEmpty(imgUrl, this, adInJsoupHtml);
 
         return imgUrl;
     }
@@ -116,7 +116,7 @@ public class CreationWatchesParser extends Parser {
         Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
         ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
         String url = titleElement.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
 
         return url;
     }

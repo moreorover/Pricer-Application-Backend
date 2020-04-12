@@ -61,9 +61,9 @@ public class SimpkinsJewellersParser extends Parser {
         setState("parseTitle");
 
         Element imageDiv = adInJsoupHtml.selectFirst("div[class=image]");
-        ParserValidator.validateElement(imageDiv, this);
+        ParserValidator.validateElement(imageDiv, this, adInJsoupHtml);
         String title = imageDiv.selectFirst("img").attr("alt");
-        ParserValidator.validateStringIsNotEmpty(title, this);
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
 
         return title;
     }
@@ -73,11 +73,11 @@ public class SimpkinsJewellersParser extends Parser {
         setState("parseUpc");
 
         Element hoverElement = adInJsoupHtml.selectFirst("div[class=only-hover]").selectFirst("a");
-        ParserValidator.validateElement(hoverElement, this);
+        ParserValidator.validateElement(hoverElement, this, adInJsoupHtml);
         String upcString = hoverElement.attr("onclick");
-        ParserValidator.validateStringIsNotEmpty(upcString, this);
+        ParserValidator.validateStringIsNotEmpty(upcString, this, adInJsoupHtml);
         String upc = parseIntegerFromString(upcString).toString();
-        ParserValidator.validateStringIsNotEmpty(upc, this);
+        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
 
         return getPREFIX() + upc;
     }
@@ -98,7 +98,7 @@ public class SimpkinsJewellersParser extends Parser {
             priceText = priceEl.text();
         }
 
-        ParserValidator.validateStringIsNotEmpty(priceText, this);
+        ParserValidator.validateStringIsNotEmpty(priceText, this, adInJsoupHtml);
         Double price = parseDoubleFromString(priceText);
         ParserValidator.validatePositiveDouble(price, this);
         return price;
@@ -120,7 +120,7 @@ public class SimpkinsJewellersParser extends Parser {
         Element imageDiv = adInJsoupHtml.selectFirst("div[class=image]").selectFirst("a");
         ParserValidator.validateElement(imageDiv, this);
         String url = imageDiv.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this);
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
         return url;
     }
 }
