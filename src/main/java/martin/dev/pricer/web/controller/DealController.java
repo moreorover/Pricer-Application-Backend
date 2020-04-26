@@ -29,6 +29,15 @@ public class DealController {
         return new ResponseEntity<>(deals, HttpStatus.OK);
     }
 
+    @GetMapping("/store")
+    public ResponseEntity<List<Deal>> getDealsByStore(@RequestParam(required = true) String storeId,
+                                                      @RequestParam(required = false, defaultValue = "1") int page,
+                                                      @RequestParam(required = false, defaultValue = "50") int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        List<Deal> deals = this.dealRepository.findByAvailableAndStore_idOrderByDealFoundDesc(true, storeId, pageable);
+        return new ResponseEntity<>(deals, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/find")
     public ResponseEntity<Deal> findDeal(@RequestParam(required = true) String itemId) {
         Deal deal = this.dealRepository.findFirstByItem_IdAndAvailable(itemId, true);

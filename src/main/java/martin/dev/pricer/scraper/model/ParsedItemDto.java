@@ -2,8 +2,10 @@ package martin.dev.pricer.scraper.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class ParsedItemDto {
     private String title;

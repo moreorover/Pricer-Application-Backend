@@ -1,64 +1,116 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.ParserException;
+import martin.dev.pricer.scraper.ParserValidator;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class ArgosParser implements Parser {
+public class ArgosParser extends Parser {
+
+    public ArgosParser() {
+        super("Argos", "A_", "https://www.argos.co.uk", 30);
+    }
 
     @Override
     public String makeNextPageUrl(String url, int pageNum) {
-        String[] x = url.split("/page:");
-        return x[0] + "/page:" + pageNum;
+        setState("makeNextPageUrl");
+
+        if (pageNum == 1) {
+            return url;
+        }
+        String[] x = url.split("page:");
+        return x[0] + "page:" + pageNum;
     }
 
     @Override
-    public Elements parseListOfAdElements(Document pageContentInJsoupHtml) {
-        return pageContentInJsoupHtml.select("div[class^=ProductCardstyles__Wrapper-]");
+    public Elements parseListOfAdElements(Document pageContentInJsoupHtml) throws ParserException {
+        setState("parseListOfAdElements");
+
+        Elements parsedElements = pageContentInJsoupHtml.select("div[class^=ProductCardstyles__Wrapper-]");
+        ParserValidator.validateElements(parsedElements, this);
+
+        return parsedElements;
     }
 
     @Override
-    public int parseMaxPageNum(Document pageContentInJsoupHtml) {
+    public int parseMaxPageNum(Document pageContentInJsoupHtml) throws ParserException {
+        setState("parseMaxPageNum");
+
         Element searchResultsCount = pageContentInJsoupHtml.selectFirst("div[class*=search-results-count]");
+        ParserValidator.validateElement(searchResultsCount, this);
         String countString = searchResultsCount.attr("data-search-results");
-        int adsCount = Integer.parseInt(countString);
-        int maxPageNum = (adsCount + 30 - 1) / 30;
+        ParserValidator.validateStringIsNotEmpty(countString, this);
+        Integer adsCount = parseIntegerFromString(countString);
+        ParserValidator.validatePositiveInteger(adsCount, this);
+        Integer maxPageNum = calculateTotalPages(adsCount);
+        ParserValidator.validatePositiveInteger(maxPageNum, this);
+
+        // TODO take logging outside of the parser
         log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
         return maxPageNum;
     }
 
     @Override
-    public String parseTitle(Element adInJsoupHtml) {
+    public String parseTitle(Element adInJsoupHtml) throws ParserException {
+        setState("parseTitle");
+
         Element titleElement = adInJsoupHtml.selectFirst("a[class*=Title]");
-        return titleElement.text();
+        ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
+        String title = titleElement.text();
+        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
+
+        return title;
     }
 
     @Override
-    public String parseUpc(Element adInJsoupHtml) {
-        return "A_" + adInJsoupHtml.attr("data-product-id");
+    public String parseUpc(Element adInJsoupHtml) throws ParserException {
+        setState("parseUpc");
+
+        String upc = adInJsoupHtml.attr("data-product-id");
+        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
+
+        return getPREFIX() + upc;
     }
 
     @Override
-    public Double parsePrice(Element adInJsoupHtml) {
-        String priceString = adInJsoupHtml.selectFirst("div[class*=PriceText]").text();
-        priceString = priceString.replaceAll("[^\\d.]", "");
-        return Double.parseDouble(priceString);
+    public Double parsePrice(Element adInJsoupHtml) throws ParserException {
+        setState("parsePrice");
+
+        Element priceElement = adInJsoupHtml.selectFirst("div[class*=PriceText]");
+        ParserValidator.validateElement(priceElement, this, adInJsoupHtml);
+        String priceString = priceElement.text();
+        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
+        Double price = parseDoubleFromString(priceString);
+        ParserValidator.validatePositiveDouble(price, this);
+
+        return price;
     }
 
     @Override
-    public String parseImage(Element adInJsoupHtml) {
-        Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]");
-        imgElement = imgElement.selectFirst("picture");
-        imgElement = imgElement.selectFirst("img");
-        return imgElement.attr("src");
+    public String parseImage(Element adInJsoupHtml) throws ParserException {
+        setState("parseImage");
+
+        Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]").selectFirst("picture").selectFirst("img");
+        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
+        String imgUrl = imgElement.attr("src");
+        ParserValidator.validateStringIsNotEmpty(imgUrl, this, adInJsoupHtml);
+
+        return imgUrl;
     }
 
     @Override
-    public String parseUrl(Element adInJsoupHtml) {
+    public String parseUrl(Element adInJsoupHtml) throws ParserException {
+        setState("parseUrl");
+
         Element urlElement = adInJsoupHtml.selectFirst("a");
-        String urlBase = "https://www.argos.co.uk";
-        return urlBase + urlElement.attr("href");
+        ParserValidator.validateElement(urlElement, this, adInJsoupHtml);
+        String url = urlElement.attr("href");
+        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
+
+        return getBASE_URL() + url;
     }
 }
