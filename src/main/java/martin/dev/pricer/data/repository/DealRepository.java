@@ -22,7 +22,7 @@ public interface DealRepository extends PagingAndSortingRepository<Deal, String>
 
     List<Deal> findByAvailableAndStore_idOrderByDealFoundDesc(boolean available, String store_id ,Pageable pageable);
 
-    Deal findFirstByItem_IdAndAvailable(String item_id, boolean available);
+    Deal findFirstByItem_IdAndAvailableOrderByDealFoundDesc(String item_id, boolean available);
 
     @NotNull Optional<Deal> findById(@NotNull String id);
 }

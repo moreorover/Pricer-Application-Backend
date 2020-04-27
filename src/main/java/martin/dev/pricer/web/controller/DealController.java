@@ -42,7 +42,7 @@ public class DealController {
 
     @GetMapping(path = "/find")
     public ResponseEntity<Deal> findDeal(@RequestParam(required = true) String itemId) {
-        Deal deal = this.dealRepository.findFirstByItem_IdAndAvailable(itemId, true);
+        Deal deal = this.dealRepository.findFirstByItem_IdAndAvailableOrderByDealFoundDesc(itemId, true);
         return new ResponseEntity<>(deal, HttpStatus.OK);
     }
 
