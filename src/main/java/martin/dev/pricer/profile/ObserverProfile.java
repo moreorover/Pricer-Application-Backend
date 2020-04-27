@@ -7,6 +7,7 @@ import martin.dev.pricer.data.repository.StoreRepository;
 import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.data.service.ParserErrorService;
 import martin.dev.pricer.data.service.StoreService;
+import martin.dev.pricer.discord.BotSendMessage;
 import martin.dev.pricer.scraper.ScraperSubject;
 import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.scraper.Launcher;
@@ -38,7 +39,7 @@ public class ObserverProfile {
 
     @Bean
     public ItemService getMongoItemService() {
-        return new ItemService(itemRepository, dealRepository);
+        return new ItemService(itemRepository, dealRepository, getBotSendMessage());
     }
 
     @Bean
@@ -151,6 +152,11 @@ public class ObserverProfile {
             e.printStackTrace();
         }
         return jda;
+    }
+
+    @Bean
+    public BotSendMessage getBotSendMessage() {
+        return new BotSendMessage(jda());
     }
 
     @Bean

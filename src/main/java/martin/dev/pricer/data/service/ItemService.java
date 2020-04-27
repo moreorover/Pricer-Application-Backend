@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.*;
 import martin.dev.pricer.data.repository.DealRepository;
 import martin.dev.pricer.data.repository.ItemRepository;
+import martin.dev.pricer.discord.BotSendMessage;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,17 @@ public class ItemService implements ItemServiceI {
 
     private ItemRepository itemRepository;
     private DealRepository dealRepository;
+    private BotSendMessage botSendMessage;
 
     public ItemService(ItemRepository itemRepository, DealRepository dealRepository) {
         this.itemRepository = itemRepository;
         this.dealRepository = dealRepository;
+    }
+
+    public ItemService(ItemRepository itemRepository, DealRepository dealRepository, BotSendMessage botSendMessage) {
+        this.itemRepository = itemRepository;
+        this.dealRepository = dealRepository;
+        this.botSendMessage = botSendMessage;
     }
 
     @Override
@@ -84,6 +92,11 @@ public class ItemService implements ItemServiceI {
                 save(dbItem);
                 Deal newDeal = new Deal(dbItem, dbItem.getCategories(), store, LocalDateTime.now(), true);
                 dealRepository.save(newDeal);
+
+                if (botSendMessage != null) {
+                    botSendMessage.sendEmbedded(newDeal);
+                }
+
             } else if (dbItem.getLastPrice() < parsedItemDto.getPrice()) {
                 // if price has risen since last time
                 newPrice(dbItem, parsedItemDto.getPrice());

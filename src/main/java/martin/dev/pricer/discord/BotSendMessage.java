@@ -35,9 +35,9 @@ public class BotSendMessage {
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(deal.getItem().getTitle(), deal.getItem().getUrl())
+            embedBuilder.setTitle(deal.getItem().getTitle(), "http://51.83.87.167:8082/item/" + deal.getItem().getId())
                     .setThumbnail(deal.getStore().getLogo())
-                    .setImage("attachment://Sample_Chart_300_DPI.png")
+                    .setImage(deal.getItem().getImg())
                     .addField("Price", "" + deal.getItem().getLastPrice(), true)
                     .addField("Delta", "" + deal.getItem().getLastDelta() + "%", true)
                     .addField("Average Price", "" + deal.getItem().getAvgPrice(), true)
@@ -48,14 +48,6 @@ public class BotSendMessage {
 //                embedBuilder.setImage(deal.getItem().getImg());
 //            }
 //            channel.sendMessage(embedBuilder.build()).queue();
-
-            try {
-                this.buildChart(deal);
-                channel.sendMessage(embedBuilder.build()).queue();
-//                channel.sendFile(new File("charts/" + deal.getItem().getId() + "_dpi")).queue();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }
