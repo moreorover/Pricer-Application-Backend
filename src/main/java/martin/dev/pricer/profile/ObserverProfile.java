@@ -12,9 +12,13 @@ import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.scraper.Launcher;
 import martin.dev.pricer.scraper.ParserHandler;
 import martin.dev.pricer.scraper.Scraper;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import javax.security.auth.login.LoginException;
 
 @Profile("prodremote")
 @Configuration
@@ -137,7 +141,19 @@ public class ObserverProfile {
     }
 
     @Bean
+    public JDA jda(){
+        JDA jda = null;
+        try {
+            jda = new JDABuilder("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I")
+                    .build();
+        } catch (LoginException e) {
+            e.printStackTrace();
+        }
+        return jda;
+    }
+
+    @Bean
     public Launcher runner() {
-        return new Launcher(getMongoStoreService(), getSubject());
+        return new Launcher(getMongoStoreService(), getSubject(), jda());
     }
 }
