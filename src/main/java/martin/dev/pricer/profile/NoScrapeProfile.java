@@ -7,6 +7,7 @@ import martin.dev.pricer.data.repository.StoreRepository;
 import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.data.service.ParserErrorService;
 import martin.dev.pricer.data.service.StoreService;
+import martin.dev.pricer.discord.BotSendMessage;
 import martin.dev.pricer.scraper.Launcher;
 import martin.dev.pricer.scraper.ParserHandler;
 import martin.dev.pricer.scraper.ScraperSubject;
@@ -37,7 +38,7 @@ public class NoScrapeProfile {
 
     @Bean
     public ItemService getMongoItemService() {
-        return new ItemService(itemRepository, dealRepository);
+        return new ItemService(itemRepository, dealRepository, getBotSendMessage());
     }
 
     @Bean
@@ -143,12 +144,18 @@ public class NoScrapeProfile {
     public JDA jda(){
         JDA jda = null;
         try {
+            //TODO move API key to properties file
             jda = new JDABuilder("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I")
                     .build();
         } catch (LoginException e) {
             e.printStackTrace();
         }
         return jda;
+    }
+
+    @Bean
+    public BotSendMessage getBotSendMessage() {
+        return new BotSendMessage(jda());
     }
 
     @Bean

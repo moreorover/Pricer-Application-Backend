@@ -1,5 +1,6 @@
 package martin.dev.pricer.data.service;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.*;
@@ -22,11 +23,6 @@ public class ItemService implements ItemServiceI {
     private ItemRepository itemRepository;
     private DealRepository dealRepository;
     private BotSendMessage botSendMessage;
-
-    public ItemService(ItemRepository itemRepository, DealRepository dealRepository) {
-        this.itemRepository = itemRepository;
-        this.dealRepository = dealRepository;
-    }
 
     public ItemService(ItemRepository itemRepository, DealRepository dealRepository, BotSendMessage botSendMessage) {
         this.itemRepository = itemRepository;

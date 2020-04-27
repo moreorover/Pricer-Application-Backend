@@ -7,14 +7,19 @@ import martin.dev.pricer.data.repository.StoreRepository;
 import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.data.service.ParserErrorService;
 import martin.dev.pricer.data.service.StoreService;
+import martin.dev.pricer.discord.BotSendMessage;
 import martin.dev.pricer.scraper.Launcher;
 import martin.dev.pricer.scraper.ParserHandler;
 import martin.dev.pricer.scraper.Scraper;
 import martin.dev.pricer.scraper.ScraperSubject;
 import martin.dev.pricer.scraper.parser.*;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import javax.security.auth.login.LoginException;
 
 @Profile("testscollection")
 @Configuration
@@ -34,7 +39,7 @@ public class ObserverProfileTests {
 
     @Bean
     public ItemService getMongoItemService() {
-        return new ItemService(itemRepository, dealRepository);
+        return new ItemService(itemRepository, dealRepository, getBotSendMessage());
     }
 
     @Bean
@@ -134,6 +139,24 @@ public class ObserverProfileTests {
         new Scraper(subject, WatchShopParser(), getMongoItemService(), 1);
         new Scraper(subject, SimpkinsJewellersParser(), getMongoItemService(), 1);
         return subject;
+    }
+
+    @Bean
+    public JDA jda(){
+        JDA jda = null;
+        try {
+            //TODO move API key to properties file
+            jda = new JDABuilder("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I")
+                    .build();
+        } catch (LoginException e) {
+            e.printStackTrace();
+        }
+        return jda;
+    }
+
+    @Bean
+    public BotSendMessage getBotSendMessage() {
+        return new BotSendMessage(jda());
     }
 
     @Bean
