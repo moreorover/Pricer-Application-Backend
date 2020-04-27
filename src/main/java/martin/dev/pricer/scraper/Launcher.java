@@ -1,15 +1,20 @@
 package martin.dev.pricer.scraper;
 
-import martin.dev.pricer.data.model.Category;
-import martin.dev.pricer.data.model.Status;
-import martin.dev.pricer.data.model.Store;
-import martin.dev.pricer.data.model.Url;
+import martin.dev.pricer.data.model.*;
+import martin.dev.pricer.data.repository.DealRepository;
 import martin.dev.pricer.data.service.StoreService;
+import martin.dev.pricer.discord.BotSendMessage;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +23,22 @@ public class Launcher {
 
     private StoreService storeService;
     private ScraperSubject scraperSubject;
+    private JDA jda;
+
+    private DealRepository dealRepository;
+
+    public Launcher(StoreService storeService, ScraperSubject scraperSubject, JDA jda, DealRepository dealRepository) {
+        this.storeService = storeService;
+        this.scraperSubject = scraperSubject;
+        this.jda = jda;
+        this.dealRepository = dealRepository;
+    }
+
+    public Launcher(StoreService storeService, ScraperSubject scraperSubject, JDA jda) {
+        this.storeService = storeService;
+        this.scraperSubject = scraperSubject;
+        this.jda = jda;
+    }
 
     public Launcher(StoreService storeService, ScraperSubject scraperSubject) {
         this.storeService = storeService;
@@ -26,8 +47,6 @@ public class Launcher {
 
     @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
     public void runner() {
-        System.out.println("Started scheduled");
-
         this.storeService.fetchAllStores().forEach(store -> {
             store.getUrls().stream()
                     .filter(Url::isReadyToScrape)
@@ -41,7 +60,18 @@ public class Launcher {
         });
     }
 
-//    @Scheduled(fixedRate = 600000000, initialDelay = 1)
+//    @Scheduled(initialDelay = 5 * 1000, fixedRate = 60000 * 60 * 356)
+    public void discordBotRunner() {
+        BotSendMessage botSendMessage = new BotSendMessage(this.jda);
+        Pageable pageable = PageRequest.of(0, 2);
+        List<Deal> deals = dealRepository.findByAvailable(true, pageable);
+
+        for (Deal deal : deals) {
+            botSendMessage.sendEmbedded(deal);
+        }
+    }
+
+    //    @Scheduled(fixedRate = 600000000, initialDelay = 1)
     public void insertNewStore() {
 
         HashMap<String, Set<Category>> data = new HashMap<>();
