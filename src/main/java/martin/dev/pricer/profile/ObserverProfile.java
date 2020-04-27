@@ -144,6 +144,7 @@ public class ObserverProfile {
     public JDA jda(){
         JDA jda = null;
         try {
+            //TODO move API key to properties file
             jda = new JDABuilder("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I")
                     .build();
         } catch (LoginException e) {
