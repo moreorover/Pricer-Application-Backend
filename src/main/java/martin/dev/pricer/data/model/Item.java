@@ -2,12 +2,16 @@ package martin.dev.pricer.data.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -96,5 +100,19 @@ public class Item extends BaseEntity {
         return prices.stream()
                 .max(Comparator.comparing(Price::getFoundAt))
                 .get().getDelta();
+    }
+
+    public boolean equalsToParsedItem(ParsedItemDto parsedItemDto) {
+        return this.title.equals(parsedItemDto.getTitle()) &&
+                this.url.equals(parsedItemDto.getUrl()) &&
+                this.img.equals(parsedItemDto.getImg()) &&
+                this.urlFound.equals(parsedItemDto.getUrlFound());
+    }
+
+    public void update(ParsedItemDto parsedItemDto) {
+        this.title = parsedItemDto.getTitle();
+        this.url = parsedItemDto.getUrl();
+        this.img = parsedItemDto.getImg();
+        this.urlFound = parsedItemDto.getUrlFound();
     }
 }

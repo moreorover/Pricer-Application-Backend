@@ -82,27 +82,33 @@ public class ItemService implements ItemServiceI {
                 // if item has not been recorded yet
                 Item buildItem = buildItemOfParsedData(parsedItemDto, store, url);
                 save(buildItem);
-            } else if (dbItem.getLastPrice() > parsedItemDto.getPrice()) {
-                // if price has dropped since last time
-                newPrice(dbItem, parsedItemDto.getPrice());
-                save(dbItem);
-                Deal newDeal = new Deal(dbItem, dbItem.getCategories(), store, LocalDateTime.now(), true);
-                dealRepository.save(newDeal);
-
-                if (botSendMessage != null) {
-                    botSendMessage.sendEmbedded(newDeal);
+            } else {
+                if (!dbItem.equalsToParsedItem(parsedItemDto)) {
+                    dbItem.update(parsedItemDto);
+                    save(dbItem);
                 }
+                if (dbItem.getLastPrice() > parsedItemDto.getPrice()) {
+                    // if price has dropped since last time
+                    newPrice(dbItem, parsedItemDto.getPrice());
+                    save(dbItem);
+                    Deal newDeal = new Deal(dbItem, dbItem.getCategories(), store, LocalDateTime.now(), true);
+                    dealRepository.save(newDeal);
 
-            } else if (dbItem.getLastPrice() < parsedItemDto.getPrice()) {
-                // if price has risen since last time
-                newPrice(dbItem, parsedItemDto.getPrice());
-                save(dbItem);
+                    if (botSendMessage != null) {
+                        botSendMessage.sendEmbedded(newDeal);
+                    }
 
-                Deal expiredDeal = dealRepository.findFirstByItem_IdAndAvailableOrderByDealFoundDesc(dbItem.getId(), true);
-                if (expiredDeal != null){
-                    expiredDeal.setAvailable(false);
-                    expiredDeal.setItem(dbItem);
-                    dealRepository.save(expiredDeal);
+                } else if (dbItem.getLastPrice() < parsedItemDto.getPrice()) {
+                    // if price has risen since last time
+                    newPrice(dbItem, parsedItemDto.getPrice());
+                    save(dbItem);
+
+                    Deal expiredDeal = dealRepository.findFirstByItem_IdAndAvailableOrderByDealFoundDesc(dbItem.getId(), true);
+                    if (expiredDeal != null) {
+                        expiredDeal.setAvailable(false);
+                        expiredDeal.setItem(dbItem);
+                        dealRepository.save(expiredDeal);
+                    }
                 }
             }
         }
