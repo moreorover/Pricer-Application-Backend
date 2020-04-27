@@ -89,7 +89,7 @@ public class ItemService implements ItemServiceI {
                 newPrice(dbItem, parsedItemDto.getPrice());
                 save(dbItem);
 
-                Deal expiredDeal = dealRepository.findFirstByItem_IdAndAvailable(dbItem.getId(), true);
+                Deal expiredDeal = dealRepository.findFirstByItem_IdAndAvailableOrderByDealFoundDesc(dbItem.getId(), true);
                 if (expiredDeal != null){
                     expiredDeal.setAvailable(false);
                     expiredDeal.setItem(dbItem);
