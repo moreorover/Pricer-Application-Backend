@@ -1,8 +1,3 @@
-CREATE TABLE `TEST_RESOURCE_TABLE` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `some` varchar(250) NOT NULL
-);
-
 CREATE TABLE `store` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
