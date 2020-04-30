@@ -1,40 +1,49 @@
-CREATE TABLE `store` (
-                         `id` int PRIMARY KEY AUTO_INCREMENT,
-                         `name` varchar(250) NOT NULL,
-                         `url` varchar(250) UNIQUE NOT NULL,
-                         `logo` varchar(250) UNIQUE NOT NULL
+CREATE TABLE `store`
+(
+    `id`   int PRIMARY KEY AUTO_INCREMENT,
+    `name` varchar(250)        NOT NULL,
+    `url`  varchar(250) UNIQUE NOT NULL,
+    `logo` varchar(250) UNIQUE NOT NULL
 );
 
-CREATE TABLE `url` (
-                       `id` int PRIMARY KEY AUTO_INCREMENT,
-                       `url` varchar(250) UNIQUE NOT NULL,
-                       `checked_at` datetime,
-                       `store_id` int NOT NULL,
-                       `status_id` int NOT NULL
+CREATE TABLE `url`
+(
+    `id`         int PRIMARY KEY AUTO_INCREMENT,
+    `url`        varchar(250) UNIQUE NOT NULL,
+    `checked_at` datetime,
+    `store_id`   int                 NOT NULL,
+    `status_id`  int                 NOT NULL
 );
 
-CREATE TABLE `status` (
-                          `id` int PRIMARY KEY AUTO_INCREMENT,
-                          `status` varchar(50) UNIQUE NOT NULL
+CREATE TABLE `status`
+(
+    `id`     int PRIMARY KEY AUTO_INCREMENT,
+    `status` varchar(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE `category` (
-                            `id` int PRIMARY KEY AUTO_INCREMENT,
-                            `category` varchar(50) UNIQUE NOT NULL
+CREATE TABLE `category`
+(
+    `id`       int PRIMARY KEY AUTO_INCREMENT,
+    `category` varchar(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE `url_category` (
-                                `url_id` int NOT NULL,
-                                `category_id` int NOT NULL
+CREATE TABLE `url_category`
+(
+    `url_id`      int NOT NULL,
+    `category_id` int NOT NULL
 );
 
-ALTER TABLE `url` ADD FOREIGN KEY (`store_id`) REFERENCES `store` (`id`);
+ALTER TABLE `url`
+    ADD FOREIGN KEY (`store_id`) REFERENCES `store` (`id`);
 
-ALTER TABLE `url` ADD FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+ALTER TABLE `url`
+    ADD FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
-ALTER TABLE `url_category` ADD FOREIGN KEY (`url_id`) REFERENCES `url` (`id`);
+ALTER TABLE `url_category`
+    ADD FOREIGN KEY (`url_id`) REFERENCES `url` (`id`);
 
-ALTER TABLE `url_category` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+ALTER TABLE `url_category`
+    ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 
 INSERT INTO `status` (id, status) VALUES
 (1, 'Ready'),
