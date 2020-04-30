@@ -23,21 +23,13 @@ public class Launcher {
 
     private StoreService storeService;
     private ScraperSubject scraperSubject;
-    private JDA jda;
 
     private DealRepository dealRepository;
 
-    public Launcher(StoreService storeService, ScraperSubject scraperSubject, JDA jda, DealRepository dealRepository) {
+    public Launcher(StoreService storeService, ScraperSubject scraperSubject, DealRepository dealRepository) {
         this.storeService = storeService;
         this.scraperSubject = scraperSubject;
-        this.jda = jda;
         this.dealRepository = dealRepository;
-    }
-
-    public Launcher(StoreService storeService, ScraperSubject scraperSubject, JDA jda) {
-        this.storeService = storeService;
-        this.scraperSubject = scraperSubject;
-        this.jda = jda;
     }
 
     public Launcher(StoreService storeService, ScraperSubject scraperSubject) {
@@ -61,15 +53,15 @@ public class Launcher {
     }
 
 //    @Scheduled(initialDelay = 5 * 1000, fixedRate = 60000 * 60 * 356)
-    public void discordBotRunner() {
-        BotSendMessage botSendMessage = new BotSendMessage(this.jda);
-        Pageable pageable = PageRequest.of(0, 2);
-        List<Deal> deals = dealRepository.findByAvailable(true, pageable);
-
-        for (Deal deal : deals) {
-            botSendMessage.sendEmbedded(deal);
-        }
-    }
+//    public void discordBotRunner() {
+//        BotSendMessage botSendMessage = new BotSendMessage(this.jda);
+//        Pageable pageable = PageRequest.of(0, 2);
+//        List<Deal> deals = dealRepository.findByAvailable(true, pageable);
+//
+//        for (Deal deal : deals) {
+//            botSendMessage.sendEmbedded(deal);
+//        }
+//    }
 
     //    @Scheduled(fixedRate = 600000000, initialDelay = 1)
     public void insertNewStore() {

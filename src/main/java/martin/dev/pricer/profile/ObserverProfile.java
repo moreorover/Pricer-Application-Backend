@@ -39,7 +39,7 @@ public class ObserverProfile {
 
     @Bean
     public ItemService getMongoItemService() {
-        return new ItemService(itemRepository, dealRepository, getBotSendMessage());
+        return new ItemService(itemRepository, dealRepository);
     }
 
     @Bean
@@ -142,25 +142,7 @@ public class ObserverProfile {
     }
 
     @Bean
-    public JDA jda(){
-        JDA jda = null;
-        try {
-            //TODO move API key to properties file
-            jda = new JDABuilder("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I")
-                    .build();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        }
-        return jda;
-    }
-
-    @Bean
-    public BotSendMessage getBotSendMessage() {
-        return new BotSendMessage(jda());
-    }
-
-    @Bean
     public Launcher runner() {
-        return new Launcher(getMongoStoreService(), getSubject(), jda());
+        return new Launcher(getMongoStoreService(), getSubject());
     }
 }
