@@ -16,8 +16,4 @@ public class Status extends BaseEntity{
 
     public Status() {
     }
-
-    public Status(String status) {
-        this.status = status;
-    }
 }

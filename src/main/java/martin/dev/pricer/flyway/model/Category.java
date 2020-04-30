@@ -21,8 +21,4 @@ public class Category extends BaseEntity{
 
     public Category() {
     }
-
-    public Category(String category) {
-        this.category = category;
-    }
 }

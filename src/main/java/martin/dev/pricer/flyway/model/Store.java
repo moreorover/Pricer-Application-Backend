@@ -2,7 +2,6 @@ package martin.dev.pricer.flyway.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -21,12 +20,6 @@ public class Store extends BaseEntity {
     private Set<Url> urls;
 
     public Store() {
-    }
-
-    public Store(String name, String url, String logo) {
-        this.name = name;
-        this.url = url;
-        this.logo = logo;
     }
 
     @Override
