@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemRepositoryFlyway extends JpaRepository<Item, Long> {
+
+    Item findItemByUpc(String upc);
 }

@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,8 +34,8 @@ class UrlRepositoryFlywayTest {
     @Test
     public void fetchListOfUrlsIfCheckedAtIsBeforeOrNullAndStatus() {
         LocalDateTime localDateTime = LocalDateTime.now().minusHours(2);
-        Status status = statusRepositoryFlyway.findStatusByStatus("Disabled");
-        List<Url> urls = urlRepositoryFlyway.findAllByCheckedAtBeforeOrCheckedAtIsNullAndStatusOrderByCheckedAtAsc(localDateTime, status);
+        Optional<Status> status = statusRepositoryFlyway.findById(3L);
+        List<Url> urls = urlRepositoryFlyway.findAllByCheckedAtBeforeOrCheckedAtIsNullAndStatusOrderByCheckedAtAsc(localDateTime, status.get());
         assertTrue(urls.size() > 0);
 
     }
