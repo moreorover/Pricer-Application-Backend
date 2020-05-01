@@ -108,4 +108,8 @@ public class ItemServiceFlyway {
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.parseDouble(df.format(delta));
     }
+
+    public Item saveItem(Item item) {
+        return this.itemRepositoryFlyway.save(item);
+    }
 }
