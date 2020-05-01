@@ -63,7 +63,8 @@ INSERT INTO `store` (id, name, url, logo) VALUES
 (10, 'Gold Smiths', 'https://www.goldsmiths.co.uk', 'https://lh3.googleusercontent.com/-Ck01XdjIITQ/AAAAAAAAAAI/AAAAAAAAA9o/iz6zLZRdIZ0/s250-c/photo.jpg'),
 (11, 'Tic Watches', 'https://www.ticwatches.co.uk', 'https://www.ticwatches.co.uk/images/modules/promo_units/1575387494-68252500.png'),
 (12, 'Watcho', 'https://www.watcho.co.uk', 'https://cdn11.bigcommerce.com/s-f06f69/images/stencil/250x100/final-logo-small_1571639906__21982.original.png'),
-(13, 'Simpkins Jewellers', 'https://simpkinsjewellers.co.uk', 'https://simpkinsjewellers.co.uk/image/catalog/Banners/Simpkins%20Logo%202.png');
+(13, 'Simpkins Jewellers', 'https://simpkinsjewellers.co.uk', 'https://simpkinsjewellers.co.uk/image/catalog/Banners/Simpkins%20Logo%202.png'),
+(14, 'Place Hodler', 'place holder', 'place holder');
 
 INSERT INTO `url` (id, url, checked_at, store_id, status_id) VALUES
 (1, 'https://www.creationwatches.com/products/timex-watches-434/index-1-5d.html?currency=GBP', null, 1, 3),
@@ -121,7 +122,8 @@ INSERT INTO `url` (id, url, checked_at, store_id, status_id) VALUES
 (53, 'https://simpkinsjewellers.co.uk/watches/lorus?limit=100&page=1', null, 13, 3),
 (54, 'https://simpkinsjewellers.co.uk/watches/AVI-8%20Aviator%20Watches?limit=100&page=1', null, 13, 3),
 (55, 'https://simpkinsjewellers.co.uk/watches/accurist?limit=100&page=1', null, 13, 3),
-(56, 'https://simpkinsjewellers.co.uk/watches/bering?limit=100&page=1', null, 13, 3);
+(56, 'https://simpkinsjewellers.co.uk/watches/bering?limit=100&page=1', null, 13, 3),
+(57, 'place holder', null, 14, 3);
 
 INSERT INTO category (id, category) VALUES
 (1, 'Watch'),
