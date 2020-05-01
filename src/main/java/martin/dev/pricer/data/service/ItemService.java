@@ -6,13 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.*;
 import martin.dev.pricer.data.repository.DealRepository;
 import martin.dev.pricer.data.repository.ItemRepository;
-import martin.dev.pricer.discord.BotSendMessage;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -26,6 +28,11 @@ public class ItemService implements ItemServiceI {
     public ItemService(ItemRepository itemRepository, DealRepository dealRepository) {
         this.itemRepository = itemRepository;
         this.dealRepository = dealRepository;
+    }
+
+    public List<Item> fetchItems(int page) {
+        Pageable pageable = PageRequest.of(page - 1, 100);
+        return this.itemRepository.findAllBy(pageable);
     }
 
     @Override
