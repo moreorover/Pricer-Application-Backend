@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -56,8 +57,14 @@ public class Item extends BaseEntity{
 
     public void newPrice(Price price) {
         price.setItem(this);
+
+        if (this.getPrices() == null) {
+            this.setPrices(new HashSet<Price>());
+        }
+
         this.prices.add(price);
         this.price = price.getPrice();
+        this.delta = price.getDelta();
     }
 
     public void newDeal(Deal deal) {
