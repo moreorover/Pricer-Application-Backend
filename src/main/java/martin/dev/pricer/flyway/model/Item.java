@@ -38,6 +38,22 @@ public class Item extends BaseEntity{
     public Item() {
     }
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "upc='" + upc + '\'' +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", img='" + img + '\'' +
+                ", price=" + price +
+                ", delta=" + delta +
+                ", foundTime=" + foundTime +
+                ", foundWhere='" + foundWhere + '\'' +
+                ", deals=" + deals +
+                ", prices=" + prices +
+                '}';
+    }
+
     public void newPrice(Price price) {
         price.setItem(this);
         this.prices.add(price);
@@ -47,6 +63,11 @@ public class Item extends BaseEntity{
     public void newDeal(Deal deal) {
         deal.setItem(this);
         this.deals.add(deal);
+    }
+
+    public boolean isDealAvailable() {
+        return this.deals.stream()
+                .anyMatch(Deal::isDealAvailable);
     }
 
     public double getMaxPrice() {
