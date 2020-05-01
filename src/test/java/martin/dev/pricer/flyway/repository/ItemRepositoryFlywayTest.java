@@ -1,8 +1,11 @@
 package martin.dev.pricer.flyway.repository;
 
+import martin.dev.pricer.flyway.model.Deal;
 import martin.dev.pricer.flyway.model.Item;
 import martin.dev.pricer.flyway.model.Price;
 import martin.dev.pricer.flyway.model.Url;
+import martin.dev.pricer.flyway.service.ItemServiceFlyway;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +24,8 @@ class ItemRepositoryFlywayTest {
     @Autowired
     private ItemRepositoryFlyway itemRepositoryFlyway;
 
-    @Autowired UrlRepositoryFlyway urlRepositoryFlyway;
+    @Autowired
+    private UrlRepositoryFlyway urlRepositoryFlyway;
 
     @Test
     public void saveItem(){
@@ -42,7 +46,7 @@ class ItemRepositoryFlywayTest {
 
         List<Item> items = itemRepositoryFlyway.findAll();
 
-        assertEquals(5, items.size());
+        assertEquals(2, items.size());
     }
 
     @Test
