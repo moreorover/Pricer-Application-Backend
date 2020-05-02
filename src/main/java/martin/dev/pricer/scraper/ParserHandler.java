@@ -2,11 +2,13 @@ package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.service.ParserErrorService;
+import martin.dev.pricer.flyway.model.Url;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,11 +38,28 @@ public class ParserHandler {
         return parsedItem;
     }
 
-    public List<ParsedItemDto> parseItemModels(Elements e, String urlFound) {
+    public List<ParsedItemDto> parseItemModels(Elements e, String url) {
         List<ParsedItemDto> parsedItemDtos = e.stream()
                 .map(this::parseItemModel)
                 .filter(ParsedItemDto::isValid)
                 .collect(Collectors.toList());
+
+        if (parsedItemDtos.size() == e.size()) {
+            log.info("Successfully parsed " + parsedItemDtos.size() + " Ads");
+        } else {
+            log.warn("Parsed only " + parsedItemDtos.size() + " Ads. Out of total: " + e.size());
+        }
+        return parsedItemDtos;
+    }
+
+    public List<ParsedItemDto> parseItemModels(Elements e, Url url) {
+        List<ParsedItemDto> parsedItemDtos = e.stream()
+                .map(this::parseItemModel)
+                .filter(ParsedItemDto::isValid)
+                .collect(Collectors.toList());
+
+        parsedItemDtos.forEach(parsedItemDto -> parsedItemDto.setUrlObject(url));
+        parsedItemDtos.forEach(parsedItemDto -> parsedItemDto.setFoundTime(LocalDateTime.now()));
 
         if (parsedItemDtos.size() == e.size()) {
             log.info("Successfully parsed " + parsedItemDtos.size() + " Ads");

@@ -37,7 +37,7 @@ public class Launcher {
         this.scraperSubject = scraperSubject;
     }
 
-    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
+//    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
     public void runner() {
         this.storeService.fetchAllStores().forEach(store -> {
             store.getUrls().stream()

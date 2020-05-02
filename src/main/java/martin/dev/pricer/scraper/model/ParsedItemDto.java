@@ -31,9 +31,9 @@ public class ParsedItemDto {
 
     public boolean isValid() {
         return !(
-                this.title.isBlank() || this.title.isEmpty() ||
-                        this.url.isBlank() || this.url.isEmpty() ||
-                        this.upc.isBlank() || this.upc.isEmpty() ||
+                this.title.isBlank() || this.title.isEmpty() || this.title == null ||
+                        this.url.isBlank() || this.url.isEmpty() || this.url == null ||
+                        this.upc.isBlank() || this.upc.isEmpty() || this.upc == null ||
                         this.price <= 0
         );
     }

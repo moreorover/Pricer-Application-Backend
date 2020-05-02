@@ -94,7 +94,11 @@ public class ArgosParser extends Parser {
     public String parseImage(Element adInJsoupHtml) throws ParserException {
         setState("parseImage");
 
-        Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]").selectFirst("picture").selectFirst("img");
+        Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]");
+        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
+        imgElement = imgElement.selectFirst("picture");
+        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
+        imgElement = imgElement.selectFirst("img");
         ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
         String imgUrl = imgElement.attr("src");
         ParserValidator.validateStringIsNotEmpty(imgUrl, this, adInJsoupHtml);

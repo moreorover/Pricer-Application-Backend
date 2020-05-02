@@ -25,8 +25,9 @@ public class ParserErrorService {
     }
 
     public void saveError(ParserException e) {
-        ParserError parserError = new ParserError(e);
-        this.parserErrorRepository.save(parserError);
+//        ParserError parserError = new ParserError(e);
+//        this.parserErrorRepository.save(parserError);
+        System.out.println("Parser error occurred.");
     }
 
     public List<ParserError> fetchAll(){
