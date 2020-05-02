@@ -15,6 +15,7 @@ public class Deal extends BaseEntity{
 
     private boolean dealAvailable;
     private LocalDateTime foundTime;
+    private boolean postedToDiscord;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
