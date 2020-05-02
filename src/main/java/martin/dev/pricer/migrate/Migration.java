@@ -8,6 +8,7 @@ import martin.dev.pricer.flyway.service.ItemServiceFlyway;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +29,15 @@ public class Migration {
     @Autowired
     private UrlRepositoryFlyway urlRepositoryFlyway;
 
-//    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
+//    @Scheduled(fixedRate = 6000000 * 1000, initialDelay = 5 * 1000)
     public void migrate() {
+        System.out.println("Started migration");
 
-        for (int pageNumber = 1; pageNumber < 5000; pageNumber++) {
+        for (int pageNumber = 190; pageNumber < 5000; pageNumber++) {
             List<Item> mongoItems = itemService.fetchItems(pageNumber);
             System.out.println("Found " + mongoItems.size() + " items in database.");
+            System.out.println("Page number: " + pageNumber);
+            System.out.println("Total Items processed: " + pageNumber * 100);
             mongoItems.forEach(mongoItem -> {
                 @NotNull Optional<Url> sqlUrl = urlRepositoryFlyway.findById(57L);
 
@@ -58,7 +62,12 @@ public class Migration {
                     parsedItemDto.setPrice(price.getPrice());
                     parsedItemDto.setFoundTime(price.getFoundAt());
 
-                    itemServiceFlyway.processParsedItemDto(parsedItemDto);
+                    try {
+                        itemServiceFlyway.processParsedItemDto(parsedItemDto);
+                    } catch (DataIntegrityViolationException e) {
+                        System.out.println("Exception for: " + mongoItem.getUpc());
+                    }
+
                 });
             });
         }
