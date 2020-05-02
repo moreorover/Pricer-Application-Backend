@@ -1,11 +1,8 @@
 package martin.dev.pricer.flyway.repository;
 
-import martin.dev.pricer.flyway.model.Deal;
 import martin.dev.pricer.flyway.model.Item;
 import martin.dev.pricer.flyway.model.Price;
 import martin.dev.pricer.flyway.model.Url;
-import martin.dev.pricer.flyway.service.ItemServiceFlyway;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
