@@ -1,6 +1,6 @@
-package martin.dev.pricer.flyway.repository;
+package martin.dev.pricer.data.repository;
 
-import martin.dev.pricer.flyway.model.Store;
+import martin.dev.pricer.data.model.Store;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,14 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles({"test"})
-class StoreRepositoryFlywayTest {
+class StoreRepositoryTest {
 
     @Autowired
-    private StoreRepositoryFlyway storeRepositoryFlyway;
+    private StoreRepository storeRepository;
 
     @Test
     public void checkIfDbIsPopulated() {
-        List<Store> stores = storeRepositoryFlyway.findAll();
+        List<Store> stores = storeRepository.findAll();
         assertNotEquals(stores.size(), 0);
     }
 

@@ -1,10 +1,7 @@
-package martin.dev.pricer.scraper.flyway;
+package martin.dev.pricer.scraper;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.flyway.service.ItemServiceFlyway;
-import martin.dev.pricer.scraper.AbstractParser;
-import martin.dev.pricer.scraper.Observer;
-import martin.dev.pricer.scraper.ScraperInterface;
+import martin.dev.pricer.data.service.ItemService;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
@@ -18,9 +15,9 @@ public class Scraper extends Observer implements ScraperInterface {
     private ScraperSubject scraperSubject;
 
     private AbstractParser parser;
-    private ItemServiceFlyway itemService;
+    private ItemService itemService;
 
-    public Scraper(ScraperSubject scraperSubject, AbstractParser parser, ItemServiceFlyway itemService) {
+    public Scraper(ScraperSubject scraperSubject, AbstractParser parser, ItemService itemService) {
         this.scraperSubject = scraperSubject;
         this.scraperSubject.attach(this);
         this.parser = parser;

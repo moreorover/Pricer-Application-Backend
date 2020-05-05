@@ -27,7 +27,7 @@ public class ArgosParser extends AbstractParser {
     public void parseListOfAdElements() {
         try {
             Elements parsedElements = getDocument().select("div[class^=ProductCardstyles__Wrapper-]");
-            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements");
+            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
             setElements(parsedElements);
         } catch (ParserException e) {
             setElements(new Elements());
@@ -38,13 +38,13 @@ public class ArgosParser extends AbstractParser {
     public void parseMaxPageNum() {
         try {
             Element searchResultsCount = getDocument().selectFirst("div[class*=search-results-count]");
-            getParserValidator().validate(searchResultsCount, 1, "maxPageNum");
+            getParserValidator().validate(searchResultsCount, 1, "maxPageNum", this);
             String countString = searchResultsCount.attr("data-search-results");
-            getParserValidator().validate(countString, 2, "maxPageNum");
+            getParserValidator().validate(countString, 2, "maxPageNum", this);
             Integer adsCount = parseIntegerFromString(countString);
-            getParserValidator().validate(adsCount, 3, "maxPageNum");
+            getParserValidator().validate(adsCount, 3, "maxPageNum", this);
             Integer maxPageNum = calculateTotalPages(adsCount);
-            getParserValidator().validate(maxPageNum, 4, "maxPageNum");
+            getParserValidator().validate(maxPageNum, 4, "maxPageNum", this);
             setMAX_PAGE_NUMBER(maxPageNum);
             log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
         } catch (ParserException e) {
@@ -57,9 +57,9 @@ public class ArgosParser extends AbstractParser {
     public String parseTitle(Element adInJsoupHtml) {
         try {
             Element titleElement = adInJsoupHtml.selectFirst("a[class*=Title]");
-            getParserValidator().validate(titleElement, 1, "parseTitle");
+            getParserValidator().validate(titleElement, 1, "parseTitle", this);
             String title = titleElement.text();
-            getParserValidator().validate(title, 2, "parseTitle");
+            getParserValidator().validate(title, 2, "parseTitle", this);
             return title;
         } catch (ParserException e) {
             return "";
@@ -70,7 +70,7 @@ public class ArgosParser extends AbstractParser {
     public String parseUpc(Element adInJsoupHtml) {
         try {
             String upc = adInJsoupHtml.attr("data-product-id");
-            getParserValidator().validate(upc, 1, "parseUpc");
+            getParserValidator().validate(upc, 1, "parseUpc", this);
 
             return getPREFIX() + upc;
         } catch (ParserException e) {
@@ -82,11 +82,11 @@ public class ArgosParser extends AbstractParser {
     public Double parsePrice(Element adInJsoupHtml) {
         try {
             Element priceElement = adInJsoupHtml.selectFirst("div[class*=PriceText]");
-            getParserValidator().validate(priceElement, 1, "parsePrice");
+            getParserValidator().validate(priceElement, 1, "parsePrice", this);
             String priceString = priceElement.text();
-            getParserValidator().validate(priceString, 2, "parsePrice");
+            getParserValidator().validate(priceString, 2, "parsePrice", this);
             Double price = parseDoubleFromString(priceString);
-            getParserValidator().validate(price, 3, "parsePrice");
+            getParserValidator().validate(price, 3, "parsePrice", this);
             return price;
         } catch (ParserException e) {
             return 0.0;
@@ -115,9 +115,9 @@ public class ArgosParser extends AbstractParser {
     public String parseUrl(Element adInJsoupHtml) {
         try {
             Element urlElement = adInJsoupHtml.selectFirst("a");
-            getParserValidator().validate(urlElement, 1, "parseUrl");
+            getParserValidator().validate(urlElement, 1, "parseUrl", this);
             String url = urlElement.attr("href");
-            getParserValidator().validate(url, 2, "parseUrl");
+            getParserValidator().validate(url, 2, "parseUrl", this);
             return getBASE_URL() + url;
         } catch (ParserException e) {
             return "";

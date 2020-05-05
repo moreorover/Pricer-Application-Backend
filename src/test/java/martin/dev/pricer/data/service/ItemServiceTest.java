@@ -1,12 +1,10 @@
-package martin.dev.pricer.flyway.service;
+package martin.dev.pricer.data.service;
 
-import martin.dev.pricer.flyway.model.Deal;
-import martin.dev.pricer.flyway.model.Item;
-import martin.dev.pricer.flyway.model.Url;
-import martin.dev.pricer.flyway.repository.ItemRepositoryFlyway;
-import martin.dev.pricer.flyway.repository.UrlRepositoryFlyway;
+import martin.dev.pricer.data.model.Deal;
+import martin.dev.pricer.data.model.Item;
+import martin.dev.pricer.data.model.Url;
+import martin.dev.pricer.data.repository.UrlRepository;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,17 +17,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles({"test"})
-class ItemServiceFlywayTest {
+class ItemServiceTest {
 
     @Autowired
-    private UrlRepositoryFlyway urlRepositoryFlyway;
+    private UrlRepository urlRepository;
 
     @Autowired
-    private ItemServiceFlyway itemServiceFlyway;
+    private ItemService itemService;
 
     @Test
     public void testItemId1NothingChanged() {
-        Optional<Url> url = urlRepositoryFlyway.findById(3L);
+        Optional<Url> url = urlRepository.findById(3L);
 
         ParsedItemDto parsedItemDto = new ParsedItemDto();
         parsedItemDto.setTitle("Plants vs Zombies Garden Warfare 2 PS4 Hits Game");
@@ -43,9 +41,9 @@ class ItemServiceFlywayTest {
 
         assertTrue(parsedItemDto.isValid());
 
-        itemServiceFlyway.processParsedItemDto(parsedItemDto);
+        itemService.processParsedItemDto(parsedItemDto);
 
-        Item item = itemServiceFlyway.fetchItemByUp(parsedItemDto.getUpc());
+        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
         assertNotNull(item);
         assertEquals(item.getName(), parsedItemDto.getTitle());
         assertEquals(item.getId(), 1L);
@@ -55,7 +53,7 @@ class ItemServiceFlywayTest {
 
     @Test
     public void testItemId2DetailsChangedNoPriceChange() {
-        Optional<Url> url = urlRepositoryFlyway.findById(3L);
+        Optional<Url> url = urlRepository.findById(3L);
 
         ParsedItemDto parsedItemDto = new ParsedItemDto();
         parsedItemDto.setTitle("Plants vs Zombies Garden Warfare 2 PS4 Hits Game");
@@ -69,9 +67,9 @@ class ItemServiceFlywayTest {
 
         assertTrue(parsedItemDto.isValid());
 
-        itemServiceFlyway.processParsedItemDto(parsedItemDto);
+        itemService.processParsedItemDto(parsedItemDto);
 
-        Item item = itemServiceFlyway.fetchItemByUp(parsedItemDto.getUpc());
+        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
         assertNotNull(item);
         assertEquals(item.getName(), parsedItemDto.getTitle());
         assertEquals(item.getImg(), parsedItemDto.getImg());
@@ -84,7 +82,7 @@ class ItemServiceFlywayTest {
 
     @Test
     public void testItemId2PriceWentUp() {
-        Optional<Url> url = urlRepositoryFlyway.findById(3L);
+        Optional<Url> url = urlRepository.findById(3L);
 
         ParsedItemDto parsedItemDto = new ParsedItemDto();
         parsedItemDto.setTitle("Plants vs Zombies Garden Warfare 2 PS4 Hits Game");
@@ -98,9 +96,9 @@ class ItemServiceFlywayTest {
 
         assertTrue(parsedItemDto.isValid());
 
-        itemServiceFlyway.processParsedItemDto(parsedItemDto);
+        itemService.processParsedItemDto(parsedItemDto);
 
-        Item item = itemServiceFlyway.fetchItemByUp(parsedItemDto.getUpc());
+        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
         assertNotNull(item);
         assertEquals(item.getName(), parsedItemDto.getTitle());
         assertEquals(item.getImg(), parsedItemDto.getImg());
@@ -113,7 +111,7 @@ class ItemServiceFlywayTest {
 
     @Test
     public void testItemId2PriceWentDown() {
-        Optional<Url> url = urlRepositoryFlyway.findById(3L);
+        Optional<Url> url = urlRepository.findById(3L);
 
         ParsedItemDto parsedItemDto = new ParsedItemDto();
         parsedItemDto.setTitle("Plants vs Zombies Garden Warfare 2 PS4 Hits Game");
@@ -127,9 +125,9 @@ class ItemServiceFlywayTest {
 
         assertTrue(parsedItemDto.isValid());
 
-        itemServiceFlyway.processParsedItemDto(parsedItemDto);
+        itemService.processParsedItemDto(parsedItemDto);
 
-        Item item = itemServiceFlyway.fetchItemByUp(parsedItemDto.getUpc());
+        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
         assertNotNull(item);
         assertEquals(item.getName(), parsedItemDto.getTitle());
         assertEquals(item.getImg(), parsedItemDto.getImg());
@@ -142,7 +140,7 @@ class ItemServiceFlywayTest {
 
     @Test
     public void testParsedItemDto() {
-        Optional<Url> url = urlRepositoryFlyway.findById(3L);
+        Optional<Url> url = urlRepository.findById(3L);
 
         ParsedItemDto parsedItemDto = new ParsedItemDto();
         parsedItemDto.setTitle("Plants vs Zombies Garden Warfare 2 PS4 Hits Game");

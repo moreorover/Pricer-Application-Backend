@@ -1,32 +1,48 @@
 package martin.dev.pricer.data.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-public class Url {
+@Entity
+@Getter
+@Setter
+@ToString
+public class Url extends BaseEntity {
 
     private String url;
-    private LocalDateTime lastChecked;
+
+    @Column(name = "checked_at")
+    private LocalDateTime checkedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
     private Status status;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "url_category",
+            joinColumns = {@JoinColumn(name = "url_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")})
     private Set<Category> categories;
 
-    public void updateLastCheckedToNow() {
-        this.setLastChecked(LocalDateTime.now());
+    public Url() {
     }
 
-    public void updateStatusTo(Status status) {
-        this.setStatus(status);
+    public Url(String url, Store store, Status status) {
+        this.url = url;
+        this.store = store;
+        this.status = status;
     }
 
     public boolean isReadyToScrape() {
-        return this.lastChecked.isBefore(LocalDateTime.now().minusHours(2)) && this.status.equals(Status.READY);
+        return this.status.getStatus().equals("Ready") && (this.checkedAt == null || this.checkedAt.isBefore(LocalDateTime.now().minusHours(2)));
     }
-
-
 }

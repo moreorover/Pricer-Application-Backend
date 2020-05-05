@@ -24,7 +24,7 @@ public class FirstClassWatchesParser extends AbstractParser {
     public void parseListOfAdElements() {
         try {
             Elements parsedElements = getDocument().select("a[class=listingproduct]");
-            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements");
+            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
             setElements(parsedElements);
         } catch (ParserException e) {
             setElements(new Elements());
@@ -35,11 +35,11 @@ public class FirstClassWatchesParser extends AbstractParser {
     public void parseMaxPageNum() {
         try {
             Elements showResults = getDocument().select("span[class=tablet-inline]");
-            getParserValidator().validate(showResults, 1, "parseMaxPageNum");
+            getParserValidator().validate(showResults, 1, "parseMaxPageNum", this);
             String maxPageNumText = showResults.text();
-            getParserValidator().validate(maxPageNumText, 2, "parseMaxPageNum");
+            getParserValidator().validate(maxPageNumText, 2, "parseMaxPageNum", this);
             Integer maxPageNum = parseIntegerFromString(maxPageNumText);
-            getParserValidator().validate(maxPageNum, 3, "parseMaxPageNum");
+            getParserValidator().validate(maxPageNum, 3, "parseMaxPageNum", this);
             setMAX_PAGE_NUMBER(maxPageNum);
             log.info("Found " + "? " + "ads to scrape, a total of " + maxPageNum + " pages.");
         } catch (ParserException e) {
@@ -52,7 +52,7 @@ public class FirstClassWatchesParser extends AbstractParser {
     public String parseTitle(Element adInJsoupHtml) {
         try {
             String title = adInJsoupHtml.attr("title").trim();
-            getParserValidator().validate(title, 1, "parseTitle");
+            getParserValidator().validate(title, 1, "parseTitle", this);
 
             return title;
         } catch (ParserException e) {
@@ -64,7 +64,7 @@ public class FirstClassWatchesParser extends AbstractParser {
     public String parseUpc(Element adInJsoupHtml) {
         try {
             String upc = adInJsoupHtml.attr("data-id");
-            getParserValidator().validate(upc, 1, "parseUpc");
+            getParserValidator().validate(upc, 1, "parseUpc", this);
 
             return getPREFIX() + upc;
         } catch (ParserException e) {
@@ -76,9 +76,9 @@ public class FirstClassWatchesParser extends AbstractParser {
     public Double parsePrice(Element adInJsoupHtml) {
         try {
             String priceString = adInJsoupHtml.attr("data-price");
-            getParserValidator().validate(priceString, 1, "parsePrice");
+            getParserValidator().validate(priceString, 1, "parsePrice", this);
             Double price = parseDoubleFromString(priceString);
-            getParserValidator().validate(price, 2, "parsePrice");
+            getParserValidator().validate(price, 2, "parsePrice", this);
 
             return price;
         } catch (ParserException e) {
@@ -90,9 +90,9 @@ public class FirstClassWatchesParser extends AbstractParser {
     public String parseImage(Element adInJsoupHtml) {
         try {
             Element imgElement = adInJsoupHtml.selectFirst("div[class=image]").selectFirst("img");
-            getParserValidator().validate(imgElement, 1, "parseImage");
+            getParserValidator().validate(imgElement, 1, "parseImage", this);
             String imgUrl = imgElement.attr("src");
-            getParserValidator().validate(imgUrl, 2, "parseImage");
+            getParserValidator().validate(imgUrl, 2, "parseImage", this);
             if (imgUrl.endsWith("loader_border.gif")) {
                 return "";
             }
@@ -106,7 +106,7 @@ public class FirstClassWatchesParser extends AbstractParser {
     public String parseUrl(Element adInJsoupHtml) {
         try {
             String url = adInJsoupHtml.attr("href");
-            getParserValidator().validate(url, 1, "parseUrl");
+            getParserValidator().validate(url, 1, "parseUrl", this);
 
             return url;
         } catch (ParserException e) {

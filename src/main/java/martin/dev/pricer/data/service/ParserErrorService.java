@@ -1,32 +1,27 @@
 package martin.dev.pricer.data.service;
 
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.ParserError;
+import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.repository.ParserErrorRepository;
-import martin.dev.pricer.scraper.ParserException;
+import martin.dev.pricer.scraper.AbstractParser;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-@Slf4j
 @Service
-@Getter
 public class ParserErrorService {
 
-    private ParserErrorRepository parserErrorRepository;
+    private final ParserErrorRepository parserErrorRepository;
 
     public ParserErrorService(ParserErrorRepository parserErrorRepository) {
         this.parserErrorRepository = parserErrorRepository;
     }
 
-    public void saveError(ParserException e) {
-//        ParserError parserError = new ParserError(e);
-//        this.parserErrorRepository.save(parserError);
-        System.out.println("Parser error occurred.");
+    public void logErrorToDatabase(int stepNumber, String parserOperation, AbstractParser parser) {
+        ParserError parserError = new ParserError();
+        parserError.setUrlObject(parser.getUrlObject());
+        parserError.setUrl(parser.getCurrentPageUrl());
+        parserError.setParserOperation(parserOperation);
+        parserError.setStepNumber(stepNumber);
+        parserErrorRepository.save(parserError);
     }
 
-    public List<ParserError> fetchAll() {
-        return this.parserErrorRepository.findAll();
-    }
 }

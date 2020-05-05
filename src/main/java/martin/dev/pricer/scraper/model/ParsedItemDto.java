@@ -3,7 +3,7 @@ package martin.dev.pricer.scraper.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import martin.dev.pricer.flyway.model.Url;
+import martin.dev.pricer.data.model.Url;
 
 import java.time.LocalDateTime;
 

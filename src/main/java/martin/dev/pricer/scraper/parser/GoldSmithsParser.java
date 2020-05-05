@@ -24,7 +24,7 @@ public class GoldSmithsParser extends AbstractParser {
     public void parseListOfAdElements() {
         try {
             Elements parsedElements = getDocument().select("div[class=product]");
-            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements");
+            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
             setElements(parsedElements);
         } catch (ParserException e) {
             setElements(new Elements());
@@ -35,15 +35,15 @@ public class GoldSmithsParser extends AbstractParser {
     public void parseMaxPageNum() {
         try {
             Element resultsElement = getDocument().selectFirst("p[class^=showAllResults]");
-            getParserValidator().validate(resultsElement, 1, "parseMaxPageNum");
+            getParserValidator().validate(resultsElement, 1, "parseMaxPageNum", this);
             resultsElement = resultsElement.selectFirst("span[class=bold]");
-            getParserValidator().validate(resultsElement, 2, "parseMaxPageNum");
+            getParserValidator().validate(resultsElement, 2, "parseMaxPageNum", this);
             String countString = resultsElement.text();
-            getParserValidator().validate(countString, 3, "parseMaxPageNum");
+            getParserValidator().validate(countString, 3, "parseMaxPageNum", this);
             Integer adsCount = parseIntegerFromString(countString);
-            getParserValidator().validate(adsCount, 4, "parseMaxPageNum");
+            getParserValidator().validate(adsCount, 4, "parseMaxPageNum", this);
             Integer maxPageNum = calculateTotalPages(adsCount);
-            getParserValidator().validate(maxPageNum, 5, "parseMaxPageNum");
+            getParserValidator().validate(maxPageNum, 5, "parseMaxPageNum", this);
             setMAX_PAGE_NUMBER(maxPageNum);
             log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
         } catch (ParserException e) {
@@ -57,9 +57,9 @@ public class GoldSmithsParser extends AbstractParser {
     public String parseTitle(Element adInJsoupHtml) {
         try {
             Element titleElement = adInJsoupHtml.selectFirst("div[class=product-title]");
-            getParserValidator().validate(titleElement, 1, "parseTitle");
+            getParserValidator().validate(titleElement, 1, "parseTitle", this);
             String title = titleElement.text();
-            getParserValidator().validate(title, 2, "parseTitle");
+            getParserValidator().validate(title, 2, "parseTitle", this);
 
             return title;
         } catch (ParserException e) {
@@ -71,9 +71,9 @@ public class GoldSmithsParser extends AbstractParser {
     public String parseUpc(Element adInJsoupHtml) {
         try {
             Element aElement = adInJsoupHtml.selectFirst("a");
-            getParserValidator().validate(aElement, 1, "parseUpc");
+            getParserValidator().validate(aElement, 1, "parseUpc", this);
             String upc = aElement.attr("id");
-            getParserValidator().validate(upc, 2, "parseUpc");
+            getParserValidator().validate(upc, 2, "parseUpc", this);
 
             return getPREFIX() + upc;
         } catch (ParserException e) {
@@ -85,11 +85,11 @@ public class GoldSmithsParser extends AbstractParser {
     public Double parsePrice(Element adInJsoupHtml) {
         try {
             Element priceElement = adInJsoupHtml.selectFirst("div[class=prodPrice]");
-            getParserValidator().validate(priceElement, 1, "parsePrice");
+            getParserValidator().validate(priceElement, 1, "parsePrice", this);
             String priceString = priceElement.text();
-            getParserValidator().validate(priceString, 2, "parsePrice");
+            getParserValidator().validate(priceString, 2, "parsePrice", this);
             Double price = parseDoubleFromString(priceString);
-            getParserValidator().validate(price, 3, "parsePrice");
+            getParserValidator().validate(price, 3, "parsePrice", this);
 
             return price;
         } catch (ParserException e) {
@@ -101,9 +101,9 @@ public class GoldSmithsParser extends AbstractParser {
     public String parseImage(Element adInJsoupHtml) {
         try {
             Element imgElement = adInJsoupHtml.selectFirst("img");
-            getParserValidator().validate(imgElement, 1, "parseImage");
+            getParserValidator().validate(imgElement, 1, "parseImage", this);
             String imgSrc = imgElement.attr("src");
-            getParserValidator().validate(imgSrc, 2, "parseImage");
+            getParserValidator().validate(imgSrc, 2, "parseImage", this);
             if (imgSrc.endsWith(".jpg")) {
                 return imgSrc;
             }
@@ -117,9 +117,9 @@ public class GoldSmithsParser extends AbstractParser {
     public String parseUrl(Element adInJsoupHtml) {
         try {
             Element aElement = adInJsoupHtml.selectFirst("a");
-            getParserValidator().validate(aElement, 1, "parseUrl");
+            getParserValidator().validate(aElement, 1, "parseUrl", this);
             String url = aElement.attr("href");
-            getParserValidator().validate(url, 2, "parseUrl");
+            getParserValidator().validate(url, 2, "parseUrl", this);
 
             return getBASE_URL() + url;
         } catch (ParserException e) {

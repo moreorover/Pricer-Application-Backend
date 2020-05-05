@@ -3,7 +3,7 @@ package martin.dev.pricer.scraper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.flyway.model.Url;
+import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -55,14 +55,14 @@ public abstract class AbstractParser implements Parser {
     @Override
     public Integer parseIntegerFromString(String string) throws ParserException {
         String digits = string.replaceAll("[^\\d]", "");
-        this.parserValidator.validate(digits, 1, "parseIntegerFromString");
+        this.parserValidator.validate(digits, 1, "parseIntegerFromString", this);
         return Integer.parseInt(digits);
     }
 
     @Override
     public Double parseDoubleFromString(String string) throws ParserException {
         String digits = string.replaceAll("[^\\d.]", "");
-        this.parserValidator.validate(digits, 1, "parseDoubleFromString");
+        this.parserValidator.validate(digits, 1, "parseDoubleFromString", this);
         return Double.parseDouble(digits);
     }
 

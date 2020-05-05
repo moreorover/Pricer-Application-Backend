@@ -1,7 +1,7 @@
-package martin.dev.pricer.flyway.repository;
+package martin.dev.pricer.data.repository;
 
-import martin.dev.pricer.flyway.model.Status;
-import martin.dev.pricer.flyway.model.Url;
+import martin.dev.pricer.data.model.Status;
+import martin.dev.pricer.data.model.Url;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,17 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles({"test"})
-class UrlRepositoryFlywayTest {
+class UrlRepositoryTest {
 
     @Autowired
-    private UrlRepositoryFlyway urlRepositoryFlyway;
+    private UrlRepository urlRepository;
 
     @Autowired
-    private StatusRepositoryFlyway statusRepositoryFlyway;
+    private StatusRepository statusRepository;
 
     @Test
     public void checkIfDbIsPopulated() {
-        List<Url> urls = urlRepositoryFlyway.findAll();
+        List<Url> urls = urlRepository.findAll();
         assertTrue(urls.size() > 0);
         assertNotNull(urls.get(0).getStore());
         assertTrue(urls.get(0).getCategories().size() > 0);
@@ -34,8 +34,8 @@ class UrlRepositoryFlywayTest {
     @Test
     public void fetchListOfUrlsIfCheckedAtIsBeforeOrNullAndStatus() {
         LocalDateTime localDateTime = LocalDateTime.now().minusHours(2);
-        Optional<Status> status = statusRepositoryFlyway.findById(3L);
-        List<Url> urls = urlRepositoryFlyway.findAllByCheckedAtBeforeOrCheckedAtIsNullAndStatusOrderByCheckedAtAsc(localDateTime, status.get());
+        Optional<Status> status = statusRepository.findById(3L);
+        List<Url> urls = urlRepository.findAllByStatus(status.get());
         assertTrue(urls.size() > 0);
 
     }

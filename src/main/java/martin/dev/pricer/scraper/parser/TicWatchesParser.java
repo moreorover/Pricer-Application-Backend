@@ -27,7 +27,7 @@ public class TicWatchesParser extends AbstractParser {
     public void parseListOfAdElements() {
         try {
         Elements parsedElements = getDocument().select("li[class^=col]");
-        getParserValidator().validate(parsedElements, 1, "parseListOfAdElements");
+        getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
         setElements(parsedElements);
     } catch (ParserException e) {
         setElements(new Elements());
@@ -38,13 +38,13 @@ public class TicWatchesParser extends AbstractParser {
     public void parseMaxPageNum() {
         try {
             Element paginationBlockElement = getDocument().selectFirst("div[class=product-listings__top__view-all]");
-            getParserValidator().validate(paginationBlockElement, 1, "parseMaxPageNum");
+            getParserValidator().validate(paginationBlockElement, 1, "parseMaxPageNum", this);
             String countString = paginationBlockElement.text();
-            getParserValidator().validate(countString, 2, "parseMaxPageNum");
+            getParserValidator().validate(countString, 2, "parseMaxPageNum", this);
             Integer adsCount = parseIntegerFromString(countString);
-            getParserValidator().validate(adsCount, 3, "parseMaxPageNum");
+            getParserValidator().validate(adsCount, 3, "parseMaxPageNum", this);
             Integer maxPageNum = calculateTotalPages(adsCount);
-            getParserValidator().validate(maxPageNum, 4, "parseMaxPageNum");
+            getParserValidator().validate(maxPageNum, 4, "parseMaxPageNum", this);
             setMAX_PAGE_NUMBER(maxPageNum);
             log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
         } catch (ParserException e) {
@@ -58,9 +58,9 @@ public class TicWatchesParser extends AbstractParser {
     public String parseTitle(Element adInJsoupHtml) {
     try {
         Element titleElement = adInJsoupHtml.selectFirst("a");
-        getParserValidator().validate(titleElement, 1, "parseTitle");
+        getParserValidator().validate(titleElement, 1, "parseTitle", this);
         String title = titleElement.attr("title");
-        getParserValidator().validate(title, 2, "parseTitle");
+        getParserValidator().validate(title, 2, "parseTitle", this);
 
         return title;
     } catch (ParserException e) {
@@ -72,9 +72,9 @@ public class TicWatchesParser extends AbstractParser {
     public String parseUpc(Element adInJsoupHtml) {
     try{
         Element upcElement = adInJsoupHtml.selectFirst("div");
-        getParserValidator().validate(upcElement, 1, "parseUpc");
+        getParserValidator().validate(upcElement, 1, "parseUpc", this);
         String upc = upcElement.attr("data-infid");
-        getParserValidator().validate(upc, 2, "parseUpc");
+        getParserValidator().validate(upc, 2, "parseUpc", this);
 
         return getPREFIX() + upc;
         } catch (ParserException e) {
@@ -86,11 +86,11 @@ public class TicWatchesParser extends AbstractParser {
     public Double parsePrice(Element adInJsoupHtml) {
     try{
         Element priceElement = adInJsoupHtml.selectFirst("span[class=product-content__price--inc]");
-        getParserValidator().validate(priceElement, 1, "parsePrice");
+        getParserValidator().validate(priceElement, 1, "parsePrice", this);
         String priceString = priceElement.text();
-        getParserValidator().validate(priceString, 2, "parsePrice");
+        getParserValidator().validate(priceString, 2, "parsePrice", this);
         Double price = parseDoubleFromString(priceString);
-        getParserValidator().validate(price, 3, "parsePrice");
+        getParserValidator().validate(price, 3, "parsePrice", this);
 
         return price;
         } catch (ParserException e) {
@@ -102,9 +102,9 @@ public class TicWatchesParser extends AbstractParser {
     public String parseImage(Element adInJsoupHtml) {
     try{
         Element imgElement = adInJsoupHtml.selectFirst("img");
-        getParserValidator().validate(imgElement, 1, "parseImage");
+        getParserValidator().validate(imgElement, 1, "parseImage", this);
         String imgSrc = imgElement.attr("data-src");
-        getParserValidator().validate(imgSrc, 2, "parseImage");
+        getParserValidator().validate(imgSrc, 2, "parseImage", this);
 
         return getBASE_URL() + imgSrc;
         } catch (ParserException e) {
@@ -116,9 +116,9 @@ public class TicWatchesParser extends AbstractParser {
     public String parseUrl(Element adInJsoupHtml) {
     try{
         Element aElement = adInJsoupHtml.selectFirst("a");
-        getParserValidator().validate(aElement, 1, "parseUrl");
+        getParserValidator().validate(aElement, 1, "parseUrl", this);
         String url = aElement.attr("href");
-        getParserValidator().validate(url, 2, "parseUrl");
+        getParserValidator().validate(url, 2, "parseUrl", this);
 
         return url;
         } catch (ParserException e) {

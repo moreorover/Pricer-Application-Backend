@@ -24,7 +24,7 @@ public class CreationWatchesParser extends AbstractParser {
     public void parseListOfAdElements() {
         try {
             Elements parsedElements = getDocument().select("div[class=product-box]");
-            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements");
+            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
             setElements(parsedElements);
         } catch (ParserException e) {
             setElements(new Elements());
@@ -35,15 +35,15 @@ public class CreationWatchesParser extends AbstractParser {
     public void parseMaxPageNum() {
         try {
             Element countBox = getDocument().selectFirst("div[class=display-heading-box]").selectFirst("strong");
-            getParserValidator().validate(countBox, 1, "parseMaxPageNum");
+            getParserValidator().validate(countBox, 1, "parseMaxPageNum", this);
             String[] stringArray = countBox.text().split("of");
-            getParserValidator().validate(stringArray, 2, "parseMaxPageNum");
+            getParserValidator().validate(stringArray, 2, "parseMaxPageNum", this);
             String countString = stringArray[1];
-            getParserValidator().validate(countString, 3, "parseMaxPageNum");
+            getParserValidator().validate(countString, 3, "parseMaxPageNum", this);
             Integer adsCount = parseIntegerFromString(countString);
-            getParserValidator().validate(adsCount, 4, "parseMaxPageNum");
+            getParserValidator().validate(adsCount, 4, "parseMaxPageNum", this);
             Integer maxPageNum = calculateTotalPages(adsCount);
-            getParserValidator().validate(maxPageNum, 5, "parseMaxPageNum");
+            getParserValidator().validate(maxPageNum, 5, "parseMaxPageNum", this);
             setMAX_PAGE_NUMBER(maxPageNum);
         } catch (ParserException e) {
             setMAX_PAGE_NUMBER(0);
@@ -55,9 +55,9 @@ public class CreationWatchesParser extends AbstractParser {
     public String parseTitle(Element adInJsoupHtml) {
         try {
             Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
-            getParserValidator().validate(titleElement, 1, "parseTitle");
+            getParserValidator().validate(titleElement, 1, "parseTitle", this);
             String title = titleElement.text();
-            getParserValidator().validate(title, 2, "parseTitle");
+            getParserValidator().validate(title, 2, "parseTitle", this);
 
             return title;
         } catch (ParserException e) {
@@ -69,13 +69,13 @@ public class CreationWatchesParser extends AbstractParser {
     public String parseUpc(Element adInJsoupHtml) {
         try {
             Element modelElement = adInJsoupHtml.selectFirst("p[class=product-model-no]");
-            getParserValidator().validate(modelElement, 1, "parseUpc");
+            getParserValidator().validate(modelElement, 1, "parseUpc", this);
             String upcText = modelElement.text();
-            getParserValidator().validate(upcText, 2, "parseUpc");
+            getParserValidator().validate(upcText, 2, "parseUpc", this);
             String[] stringArray = upcText.split(": ");
-            getParserValidator().validate(stringArray, 3, "parseUpc");
+            getParserValidator().validate(stringArray, 3, "parseUpc", this);
             String upc = stringArray[1];
-            getParserValidator().validate(upc, 4, "parseUpc");
+            getParserValidator().validate(upc, 4, "parseUpc", this);
 
             return getPREFIX() + upc;
         } catch (ParserException e) {
@@ -87,11 +87,11 @@ public class CreationWatchesParser extends AbstractParser {
     public Double parsePrice(Element adInJsoupHtml) {
         try {
             Element titleElement = adInJsoupHtml.selectFirst("p[class=product-price]").selectFirst("span");
-            getParserValidator().validate(titleElement, 1, "parsePrice");
+            getParserValidator().validate(titleElement, 1, "parsePrice", this);
             String priceString = titleElement.text();
-            getParserValidator().validate(priceString, 2, "parsePrice");
+            getParserValidator().validate(priceString, 2, "parsePrice", this);
             Double price = parseDoubleFromString(priceString);
-            getParserValidator().validate(price, 3, "parsePrice");
+            getParserValidator().validate(price, 3, "parsePrice", this);
 
             return price;
         } catch (ParserException e) {
@@ -103,9 +103,9 @@ public class CreationWatchesParser extends AbstractParser {
     public String parseImage(Element adInJsoupHtml) {
         try {
             Element titleElement = adInJsoupHtml.selectFirst("div[class=product-img-box]").selectFirst("img");
-            getParserValidator().validate(titleElement, 1, "parseImage");
+            getParserValidator().validate(titleElement, 1, "parseImage", this);
             String imgUrl = titleElement.attr("src");
-            getParserValidator().validate(imgUrl, 2, "parseImage");
+            getParserValidator().validate(imgUrl, 2, "parseImage", this);
 
             return imgUrl;
         } catch (ParserException e) {
@@ -117,9 +117,9 @@ public class CreationWatchesParser extends AbstractParser {
     public String parseUrl(Element adInJsoupHtml) {
         try {
             Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
-            getParserValidator().validate(titleElement, 1, "parseUrl");
+            getParserValidator().validate(titleElement, 1, "parseUrl", this);
             String url = titleElement.attr("href");
-            getParserValidator().validate(url, 2, "parseUrl");
+            getParserValidator().validate(url, 2, "parseUrl", this);
 
             return url;
         } catch (ParserException e) {

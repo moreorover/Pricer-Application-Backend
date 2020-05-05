@@ -1,56 +1,94 @@
 package martin.dev.pricer.data.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.*;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@Document
-@Data
+@Entity
+@Getter
+@Setter
 public class Item extends BaseEntity {
 
     private String upc;
-    private String title;
+    private String name;
     private String url;
     private String img;
+    private double price;
+    private double delta;
+    private LocalDateTime foundTime;
+    private String foundWhere;
 
-    private Set<Price> prices = new HashSet<>();
-    private Set<Category> categories = new HashSet<>();
-    @DBRef
-    private Store store;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "url_id", nullable = false)
+    private Url urlObject;
 
-    private String urlFound;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Deal> deals;
 
-    public Item(String upc, String title, String url, String img, Set<Price> prices, Set<Category> categories, Store store, String urlFound) {
-        this.upc = upc;
-        this.title = title;
-        this.url = url;
-        this.img = img;
-        this.prices = prices;
-        this.categories = categories;
-        this.store = store;
-        this.urlFound = urlFound;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Price> prices;
+
+    public Item() {
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "upc='" + upc + '\'' +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", img='" + img + '\'' +
+                ", price=" + price +
+                ", delta=" + delta +
+                ", foundTime=" + foundTime +
+                ", foundWhere='" + foundWhere + '\'' +
+                ", deals=" + deals +
+                ", prices=" + prices +
+                '}';
+    }
+
+    public void newPrice(Price price) {
+        price.setItem(this);
+
+        if (this.getPrices() == null) {
+            this.setPrices(new HashSet<Price>());
+        }
+
+        this.prices.add(price);
+        this.price = price.getPrice();
+        this.delta = price.getDelta();
+    }
+
+    public void newDeal(Deal deal) {
+        deal.setItem(this);
+        this.deals.add(deal);
+    }
+
+    public boolean isDealAvailable() {
+        return this.deals.stream()
+                .anyMatch(Deal::isDealAvailable);
     }
 
     public double getMaxPrice() {
         return this.prices.stream()
                 .mapToDouble(Price::getPrice)
                 .max()
-                .orElse(Double.NaN);
+                .orElse(0.0);
     }
 
     public double getMinPrice() {
         return this.prices.stream()
                 .mapToDouble(Price::getPrice)
                 .min()
-                .orElse(Double.NaN);
+                .orElse(0.0);
     }
 
     public double getAvgPrice() {
@@ -67,14 +105,14 @@ public class Item extends BaseEntity {
         return this.prices.stream()
                 .mapToDouble(Price::getDelta)
                 .max()
-                .orElse(Double.NaN);
+                .orElse(0.0);
     }
 
     public double getMinDelta() {
         return this.prices.stream()
                 .mapToDouble(Price::getDelta)
                 .min()
-                .orElse(Double.NaN);
+                .orElse(0.0);
     }
 
     public double getAvgDelta() {
@@ -89,27 +127,23 @@ public class Item extends BaseEntity {
 
     public double getLastPrice() {
         return prices.stream()
-                .max(Comparator.comparing(Price::getFoundAt))
+                .max(Comparator.comparing(Price::getFoundTime))
                 .get().getPrice();
     }
 
     public double getLastDelta() {
         return prices.stream()
-                .max(Comparator.comparing(Price::getFoundAt))
+                .max(Comparator.comparing(Price::getFoundTime))
                 .get().getDelta();
     }
 
-    public boolean equalsToParsedItem(ParsedItemDto parsedItemDto) {
-        return this.title.equals(parsedItemDto.getTitle()) &&
-                this.url.equals(parsedItemDto.getUrl()) &&
-                this.img.equals(parsedItemDto.getImg()) &&
-                this.urlFound.equals(parsedItemDto.getUrlFound());
-    }
-
-    public void update(ParsedItemDto parsedItemDto) {
-        this.title = parsedItemDto.getTitle();
-        this.url = parsedItemDto.getUrl();
-        this.img = parsedItemDto.getImg();
-        this.urlFound = parsedItemDto.getUrlFound();
+    public boolean compareToParsedItemDto(ParsedItemDto parsedItemDto) {
+        // return TRUE if no changes found
+        return upc.equals(parsedItemDto.getUpc()) &&
+                name.equals(parsedItemDto.getTitle()) &&
+                url.equals(parsedItemDto.getUrl()) &&
+                Objects.equals(img, parsedItemDto.getImg()) &&
+                foundWhere.equals(parsedItemDto.getUrlFound()) &&
+                urlObject.equals(parsedItemDto.getUrlObject());
     }
 }

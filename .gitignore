@@ -31,9 +31,6 @@ build/
 .vscode/
 .mvn/
 
-/src/main/resources/application-prodremote.properties
 /logs/
 /logs/logfile.log
-/src/main/resources/application-testscollection.properties
-/src/main/resources/application-noscrape.properties
 /charts/

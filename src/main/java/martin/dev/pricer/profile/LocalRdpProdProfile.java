@@ -1,59 +1,66 @@
 package martin.dev.pricer.profile;
 
-import martin.dev.pricer.flyway.repository.ItemRepositoryFlyway;
-import martin.dev.pricer.flyway.repository.ParserErrorRepositoryFlyway;
-import martin.dev.pricer.flyway.repository.StatusRepositoryFlyway;
-import martin.dev.pricer.flyway.repository.UrlRepositoryFlyway;
-import martin.dev.pricer.flyway.service.ItemServiceFlyway;
-import martin.dev.pricer.flyway.service.ParserErrorServiceFlyway;
-import martin.dev.pricer.flyway.service.StatusServiceFlyway;
-import martin.dev.pricer.flyway.service.UrlServiceFlyway;
-import martin.dev.pricer.scraper.AbstractParser;
-import martin.dev.pricer.scraper.JsoupValidator;
-import martin.dev.pricer.scraper.ParserValidator;
-import martin.dev.pricer.scraper.flyway.LauncherFlyway;
-import martin.dev.pricer.scraper.flyway.Scraper;
-import martin.dev.pricer.scraper.flyway.ScraperSubject;
+import martin.dev.pricer.data.repository.*;
+import martin.dev.pricer.data.service.*;
+import martin.dev.pricer.discord.DiscordService;
+import martin.dev.pricer.scraper.*;
 import martin.dev.pricer.scraper.parser.*;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-@Profile("sqldatabase")
+import javax.security.auth.login.LoginException;
+
+@Profile("local-rdp-prod")
 @Configuration
-public class SQLDatabaseProfile {
+public class LocalRdpProdProfile {
 
-    private StatusRepositoryFlyway statusRepositoryFlyway;
-    private UrlRepositoryFlyway urlRepositoryFlyway;
-    private ItemRepositoryFlyway itemRepositoryFlyway;
-    private ParserErrorRepositoryFlyway parserErrorRepositoryFlyway;
+    private StatusRepository statusRepository;
+    private UrlRepository urlRepository;
+    private ItemRepository itemRepository;
+    private ParserErrorRepository parserErrorRepository;
+    private DealRepository dealRepository;
 
-    public SQLDatabaseProfile(StatusRepositoryFlyway statusRepositoryFlyway, UrlRepositoryFlyway urlRepositoryFlyway, ItemRepositoryFlyway itemRepositoryFlyway, ParserErrorRepositoryFlyway parserErrorRepositoryFlyway) {
-        this.statusRepositoryFlyway = statusRepositoryFlyway;
-        this.urlRepositoryFlyway = urlRepositoryFlyway;
-        this.itemRepositoryFlyway = itemRepositoryFlyway;
-        this.parserErrorRepositoryFlyway = parserErrorRepositoryFlyway;
+    public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
+        this.statusRepository = statusRepository;
+        this.urlRepository = urlRepository;
+        this.itemRepository = itemRepository;
+        this.parserErrorRepository = parserErrorRepository;
+        this.dealRepository = dealRepository;
     }
 
     @Bean
-    public ItemServiceFlyway getSqlItemService() {
-        return new ItemServiceFlyway(itemRepositoryFlyway);
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
+        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(2);
+        return threadPoolTaskScheduler;
     }
 
     @Bean
-    public StatusServiceFlyway getSqlStatusService() {
-        return new StatusServiceFlyway(statusRepositoryFlyway);
+    public ItemService getSqlItemService() {
+        return new ItemService(itemRepository);
     }
 
     @Bean
-    public UrlServiceFlyway getSqlUrlService() {
-        return new UrlServiceFlyway(urlRepositoryFlyway);
+    public StatusService getSqlStatusService() {
+        return new StatusService(statusRepository);
     }
 
     @Bean
-    public ParserErrorServiceFlyway getParserErrorService() {
-        return new ParserErrorServiceFlyway(parserErrorRepositoryFlyway);
+    public UrlService getSqlUrlService() {
+        return new UrlService(urlRepository);
     }
+
+    @Bean
+    public ParserErrorService getParserErrorService() {
+        return new ParserErrorService(parserErrorRepository);
+    }
+
+    @Bean
+    public DealService getDealService() { return new DealService(dealRepository); }
 
     @Bean
     public ScraperSubject scraperSubject() {
@@ -150,7 +157,18 @@ public class SQLDatabaseProfile {
     }
 
     @Bean
-    public LauncherFlyway runner() {
-        return new LauncherFlyway(getSqlStatusService(), getSqlUrlService(), getSubject());
+    public DiscordService discordBot() {
+        try {
+            JDA jda = JDABuilder.createDefault("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I").build();
+            return new DiscordService(jda);
+        } catch (LoginException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Bean
+    public Launcher runner() {
+        return new Launcher(getSqlStatusService(), getSqlUrlService(), getDealService(), getSubject(), discordBot());
     }
 }
