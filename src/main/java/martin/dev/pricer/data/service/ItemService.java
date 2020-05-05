@@ -1,6 +1,5 @@
 package martin.dev.pricer.data.service;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.*;

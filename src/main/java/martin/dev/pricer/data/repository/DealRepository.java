@@ -16,11 +16,11 @@ public interface DealRepository extends PagingAndSortingRepository<Deal, String>
 
     List<Deal> findByOrderByDealFoundDesc(Pageable pageable);
 
-    List<Deal> findByAvailableOrderByDealFoundDesc(boolean available ,Pageable pageable);
+    List<Deal> findByAvailableOrderByDealFoundDesc(boolean available, Pageable pageable);
 
-    List<Deal> findByAvailable(boolean available ,Pageable pageable);
+    List<Deal> findByAvailable(boolean available, Pageable pageable);
 
-    List<Deal> findByAvailableAndStore_idOrderByDealFoundDesc(boolean available, String store_id ,Pageable pageable);
+    List<Deal> findByAvailableAndStore_idOrderByDealFoundDesc(boolean available, String store_id, Pageable pageable);
 
     Deal findFirstByItem_IdAndAvailableOrderByDealFoundDesc(String item_id, boolean available);
 

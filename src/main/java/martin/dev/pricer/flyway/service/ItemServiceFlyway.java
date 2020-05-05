@@ -35,7 +35,7 @@ public class ItemServiceFlyway {
             updateItem(item, parsedItemDto);
             item = itemRepositoryFlyway.save(item);
         }
-        if (item.getPrice() > parsedItemDto.getPrice()){
+        if (item.getPrice() > parsedItemDto.getPrice()) {
             // if new price has gone down
             newItemPrice(item, parsedItemDto);
             itemDealExpired(item);
@@ -43,7 +43,7 @@ public class ItemServiceFlyway {
             itemRepositoryFlyway.save(item);
             return;
         }
-        if (item.getPrice() < parsedItemDto.getPrice()){
+        if (item.getPrice() < parsedItemDto.getPrice()) {
             // if new price has gone up
             newItemPrice(item, parsedItemDto);
             itemDealExpired(item);
@@ -77,7 +77,9 @@ public class ItemServiceFlyway {
         item.setUpc(parsedItemDto.getUpc());
         item.setName(parsedItemDto.getTitle());
         item.setUrl(parsedItemDto.getUrl());
-        item.setImg(parsedItemDto.getImg());
+        if (!parsedItemDto.getImg().equals("")){
+            item.setImg(parsedItemDto.getImg());
+        }
         item.setFoundWhere(parsedItemDto.getUrlFound());
         item.setUrlObject(parsedItemDto.getUrlObject());
     }
@@ -94,6 +96,7 @@ public class ItemServiceFlyway {
         Deal deal = new Deal();
         deal.setDealAvailable(true);
         deal.setFoundTime(parsedItemDto.getFoundTime());
+        deal.setPostedToDiscord(false);
         item.newDeal(deal);
     }
 

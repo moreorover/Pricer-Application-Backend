@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class Category extends BaseEntity{
+public class Category extends BaseEntity {
 
     private String category;
 

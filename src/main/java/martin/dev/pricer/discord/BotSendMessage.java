@@ -9,10 +9,7 @@ import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XYChart;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.IntStream;
 
 public class BotSendMessage {

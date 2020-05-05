@@ -1,40 +1,35 @@
 package martin.dev.pricer.scraper;
 
-import lombok.Getter;
-import lombok.Setter;
+import martin.dev.pricer.scraper.model.ParsedItemDto;
+import org.jsoup.nodes.Element;
 
-@Getter
-@Setter
-public abstract class Parser implements ParserI {
+import java.util.List;
 
-    private String NAME;
-    private String PREFIX;
-    private String BASE_URL;
-    private int ADS_PER_PAGE;
+public interface Parser {
 
-    private String state;
-    private String currentPage;
+    String makeNextPageUrl(int pageNum);
 
-    public Parser(String NAME, String PREFIX, String BASE_URL, int ads_per_page) {
-        this.NAME = NAME;
-        this.PREFIX = PREFIX;
-        this.BASE_URL = BASE_URL;
-        this.ADS_PER_PAGE = ads_per_page;
-    }
+    void parseListOfAdElements();
 
-    public Integer parseIntegerFromString(String string) throws ParserException {
-        String digits = string.replaceAll("[^\\d]", "");
-        ParserValidator.validateStringIsNotEmpty(digits, this);
-        return Integer.parseInt(digits);
-    }
+    void parseMaxPageNum();
 
-    public Double parseDoubleFromString(String string) throws ParserException {
-        String digits = string.replaceAll("[^\\d.]", "");
-        ParserValidator.validateStringIsNotEmpty(digits, this);
-        return Double.parseDouble(digits);
-    }
+    String parseTitle(Element adInJsoupHtml);
 
-    public Integer calculateTotalPages(int adsCount) {
-        return (adsCount + ADS_PER_PAGE - 1) / ADS_PER_PAGE;
-    }
+    String parseUpc(Element adInJsoupHtml);
+
+    Double parsePrice(Element adInJsoupHtml);
+
+    String parseImage(Element adInJsoupHtml);
+
+    String parseUrl(Element adInJsoupHtml);
+
+    Integer parseIntegerFromString(String string) throws ParserException;
+
+    Double parseDoubleFromString(String string) throws ParserException;
+
+    Integer calculateTotalPages(int adsCount);
+
+    ParsedItemDto parseItemModel(Element element);
+
+    List<ParsedItemDto> parseItemModels();
 }

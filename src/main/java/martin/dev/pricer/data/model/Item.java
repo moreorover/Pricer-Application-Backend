@@ -3,15 +3,12 @@ package martin.dev.pricer.data.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)

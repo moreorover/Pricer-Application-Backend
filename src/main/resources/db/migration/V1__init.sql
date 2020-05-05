@@ -33,6 +33,38 @@ CREATE TABLE `url_category`
     `category_id` int NOT NULL
 );
 
+CREATE TABLE `item`
+(
+    `id`         int PRIMARY KEY AUTO_INCREMENT,
+    `upc`        varchar(100) UNIQUE NOT NULL,
+    `name`       varchar(250)        NOT NULL,
+    `url`        varchar(250)        NOT NULL,
+    `img`        varchar(250),
+    `price`      double              NOT NULL,
+    `delta`      double              NOT NULL,
+    `found_time`  datetime            NOT NULL,
+    `found_where` varchar(250)        NOT NULL,
+    `url_id`     int                 NOT NULL
+);
+
+CREATE TABLE `price`
+(
+    `id`        int PRIMARY KEY AUTO_INCREMENT,
+    `item_id`   int      NOT NULL,
+    `found_time` datetime NOT NULL,
+    `price`     double   NOT NULL,
+    `delta`     double   NOT NULL
+);
+
+CREATE TABLE `deal`
+(
+    `id`         int PRIMARY KEY AUTO_INCREMENT,
+    `item_id`     int                 NOT NULL,
+    `deal_available` boolean NOT NULL,
+    `found_time` datetime NOT NULL,
+    `posted_to_discord` boolean NOT NULL DEFAULT 0
+);
+
 ALTER TABLE `url`
     ADD FOREIGN KEY (`store_id`) REFERENCES `store` (`id`);
 
@@ -44,6 +76,15 @@ ALTER TABLE `url_category`
 
 ALTER TABLE `url_category`
     ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+
+ALTER TABLE `item`
+    ADD FOREIGN KEY (`url_id`) REFERENCES `url` (`id`);
+
+ALTER TABLE `price`
+    ADD FOREIGN KEY (`item_id`) REFERENCES `item` (`id`);
+
+ALTER TABLE `deal`
+    ADD FOREIGN KEY (`item_id`) REFERENCES `item` (`id`);
 
 INSERT INTO `status` (id, status) VALUES
 (1, 'Ready'),

@@ -2,7 +2,7 @@ package martin.dev.pricer.data.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.AbstractParser;
 import martin.dev.pricer.scraper.ParserException;
 import org.jsoup.nodes.Element;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 public class ParserError extends BaseEntity {
 
     private LocalDateTime dateTime;
-    private Parser parser;
+    private AbstractParser parser;
     private String message;
     private Element element;
 
-    public ParserError(LocalDateTime dateTime, Parser parser, String message, Element element) {
+    public ParserError(LocalDateTime dateTime, AbstractParser parser, String message, Element element) {
         this.dateTime = dateTime;
         this.parser = parser;
         this.message = message;
@@ -37,7 +37,7 @@ public class ParserError extends BaseEntity {
         return dateTime;
     }
 
-    public Parser getParser() {
+    public AbstractParser getParser() {
         return parser;
     }
 

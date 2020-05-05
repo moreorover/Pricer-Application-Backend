@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Deal extends BaseEntity{
+public class Deal extends BaseEntity {
 
     private boolean dealAvailable;
     private LocalDateTime foundTime;

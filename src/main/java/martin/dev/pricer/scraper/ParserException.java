@@ -4,25 +4,25 @@ import org.jsoup.nodes.Element;
 
 public class ParserException extends Exception {
 
-    private Parser parser;
+    private AbstractParser parser;
     private Element element;
 
     public ParserException(String message) {
         super(message);
     }
 
-    public ParserException(String message, Parser parser) {
+    public ParserException(String message, AbstractParser parser) {
         super(message);
         this.parser = parser;
     }
 
-    public ParserException(String message, Parser parser, Element element) {
+    public ParserException(String message, AbstractParser parser, Element element) {
         super(message);
         this.parser = parser;
         this.element = element;
     }
 
-    public Parser getParser() {
+    public AbstractParser getParser() {
         return parser;
     }
 

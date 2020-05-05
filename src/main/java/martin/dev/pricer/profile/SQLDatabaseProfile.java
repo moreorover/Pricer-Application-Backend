@@ -1,14 +1,16 @@
 package martin.dev.pricer.profile;
 
-import martin.dev.pricer.data.repository.ParserErrorRepository;
-import martin.dev.pricer.data.service.ParserErrorService;
 import martin.dev.pricer.flyway.repository.ItemRepositoryFlyway;
+import martin.dev.pricer.flyway.repository.ParserErrorRepositoryFlyway;
 import martin.dev.pricer.flyway.repository.StatusRepositoryFlyway;
 import martin.dev.pricer.flyway.repository.UrlRepositoryFlyway;
 import martin.dev.pricer.flyway.service.ItemServiceFlyway;
+import martin.dev.pricer.flyway.service.ParserErrorServiceFlyway;
 import martin.dev.pricer.flyway.service.StatusServiceFlyway;
 import martin.dev.pricer.flyway.service.UrlServiceFlyway;
-import martin.dev.pricer.scraper.ParserHandler;
+import martin.dev.pricer.scraper.AbstractParser;
+import martin.dev.pricer.scraper.JsoupValidator;
+import martin.dev.pricer.scraper.ParserValidator;
 import martin.dev.pricer.scraper.flyway.LauncherFlyway;
 import martin.dev.pricer.scraper.flyway.Scraper;
 import martin.dev.pricer.scraper.flyway.ScraperSubject;
@@ -24,13 +26,13 @@ public class SQLDatabaseProfile {
     private StatusRepositoryFlyway statusRepositoryFlyway;
     private UrlRepositoryFlyway urlRepositoryFlyway;
     private ItemRepositoryFlyway itemRepositoryFlyway;
-    private ParserErrorRepository parserErrorRepository;
+    private ParserErrorRepositoryFlyway parserErrorRepositoryFlyway;
 
-    public SQLDatabaseProfile(StatusRepositoryFlyway statusRepositoryFlyway, UrlRepositoryFlyway urlRepositoryFlyway, ItemRepositoryFlyway itemRepositoryFlyway, ParserErrorRepository parserErrorRepository) {
+    public SQLDatabaseProfile(StatusRepositoryFlyway statusRepositoryFlyway, UrlRepositoryFlyway urlRepositoryFlyway, ItemRepositoryFlyway itemRepositoryFlyway, ParserErrorRepositoryFlyway parserErrorRepositoryFlyway) {
         this.statusRepositoryFlyway = statusRepositoryFlyway;
         this.urlRepositoryFlyway = urlRepositoryFlyway;
         this.itemRepositoryFlyway = itemRepositoryFlyway;
-        this.parserErrorRepository = parserErrorRepository;
+        this.parserErrorRepositoryFlyway = parserErrorRepositoryFlyway;
     }
 
     @Bean
@@ -39,103 +41,112 @@ public class SQLDatabaseProfile {
     }
 
     @Bean
-    public StatusServiceFlyway getSqlStatusService() { return new StatusServiceFlyway(statusRepositoryFlyway); }
-
-    @Bean
-    public UrlServiceFlyway getSqlUrlService() { return new UrlServiceFlyway(urlRepositoryFlyway); }
-
-    @Bean
-    public ParserErrorService getParserErrorService() {
-        return new ParserErrorService(parserErrorRepository);
+    public StatusServiceFlyway getSqlStatusService() {
+        return new StatusServiceFlyway(statusRepositoryFlyway);
     }
 
     @Bean
-    public ScraperSubject scraperSubject(){
+    public UrlServiceFlyway getSqlUrlService() {
+        return new UrlServiceFlyway(urlRepositoryFlyway);
+    }
+
+    @Bean
+    public ParserErrorServiceFlyway getParserErrorService() {
+        return new ParserErrorServiceFlyway(parserErrorRepositoryFlyway);
+    }
+
+    @Bean
+    public ScraperSubject scraperSubject() {
         return new ScraperSubject();
     }
 
     @Bean
-    public ParserHandler AMJWatchesParser(){
-        return new ParserHandler(new AMJWatchesParser(), getParserErrorService());
+    public AbstractParser AMJWatchesParser() {
+        return new AMJWatchesParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler ArgosParser(){
-        return new ParserHandler(new ArgosParser(), getParserErrorService());
+    public AbstractParser ArgosParser() {
+        return new ArgosParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler CreationWatchesParser(){
-        return new ParserHandler(new CreationWatchesParser(), getParserErrorService());
+    public AbstractParser CreationWatchesParser() {
+        return new CreationWatchesParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler DebenhamsParser(){
-        return new ParserHandler(new DebenhamsParser(), getParserErrorService());
+    public AbstractParser DebenhamsParser() {
+        return new DebenhamsParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler ErnestJonesParser(){
-        return new ParserHandler(new ErnestJonesParser(), getParserErrorService());
+    public AbstractParser ErnestJonesParser() {
+        return new ErnestJonesParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler FirstClassWatchesParser(){
-        return new ParserHandler(new FirstClassWatchesParser(), getParserErrorService());
+    public AbstractParser FirstClassWatchesParser() {
+        return new FirstClassWatchesParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler GoldSmithsParser(){
-        return new ParserHandler(new GoldSmithsParser(), getParserErrorService());
+    public AbstractParser GoldSmithsParser() {
+        return new GoldSmithsParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler HSamuelParser(){
-        return new ParserHandler(new HSamuelParser(), getParserErrorService());
+    public AbstractParser HSamuelParser() {
+        return new HSamuelParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler SuperDrugParser(){
-        return new ParserHandler(new SuperDrugParser(), getParserErrorService());
+    public AbstractParser SuperDrugParser() {
+        return new SuperDrugParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler TicWatchesParser(){
-        return new ParserHandler(new TicWatchesParser(), getParserErrorService());
+    public AbstractParser TicWatchesParser() {
+        return new TicWatchesParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler WatchoParser(){
-        return new ParserHandler(new WatchoParser(), getParserErrorService());
+    public AbstractParser WatchoParser() {
+        return new WatchoParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler WatchShopParser(){
-        return new ParserHandler(new WatchShopParser(), getParserErrorService());
+    public AbstractParser WatchShopParser() {
+        return new WatchShopParser(getParserValidator());
     }
 
     @Bean
-    public ParserHandler SimpkinsJewellersParser(){
-        return new ParserHandler(new SimpkinsJewellersParser(), getParserErrorService());
+    public AbstractParser SimpkinsJewellersParser() {
+        return new SimpkinsJewellersParser(getParserValidator());
     }
 
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMJWatchesParser(), getSqlItemService(), 1);
-        new Scraper(subject, ArgosParser(), getSqlItemService(), 1);
-        new Scraper(subject, CreationWatchesParser(), getSqlItemService(), 1);
-        new Scraper(subject, DebenhamsParser(), getSqlItemService(), 1);
-        new Scraper(subject, ErnestJonesParser(), getSqlItemService(), 1);
-        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService(), 1);
-        new Scraper(subject, GoldSmithsParser(), getSqlItemService(), 1);
-        new Scraper(subject, HSamuelParser(), getSqlItemService(), 1);
-        new Scraper(subject, SuperDrugParser(), getSqlItemService(), 0);
-        new Scraper(subject, TicWatchesParser(), getSqlItemService(), 1);
-        new Scraper(subject, WatchoParser(), getSqlItemService(), 1);
-        new Scraper(subject, WatchShopParser(), getSqlItemService(), 1);
-        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService(), 1);
+        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
+        new Scraper(subject, ArgosParser(), getSqlItemService());
+        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
+        new Scraper(subject, DebenhamsParser(), getSqlItemService());
+        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
+        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
+        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
+        new Scraper(subject, HSamuelParser(), getSqlItemService());
+        new Scraper(subject, SuperDrugParser(), getSqlItemService());
+        new Scraper(subject, TicWatchesParser(), getSqlItemService());
+        new Scraper(subject, WatchoParser(), getSqlItemService());
+        new Scraper(subject, WatchShopParser(), getSqlItemService());
+        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
         return subject;
+    }
+
+    @Bean
+    public ParserValidator getParserValidator() {
+        return new JsoupValidator(getParserErrorService());
     }
 
     @Bean

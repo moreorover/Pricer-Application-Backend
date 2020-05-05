@@ -29,11 +29,11 @@ public class Migration {
     @Autowired
     private UrlRepositoryFlyway urlRepositoryFlyway;
 
-//    @Scheduled(fixedRate = 6000000 * 1000, initialDelay = 5 * 1000)
+    @Scheduled(fixedRate = 6000000 * 1000, initialDelay = 5 * 1000)
     public void migrate() {
         System.out.println("Started migration");
 
-        for (int pageNumber = 190; pageNumber < 5000; pageNumber++) {
+        for (int pageNumber = 1; pageNumber < 5000; pageNumber++) {
             List<Item> mongoItems = itemService.fetchItems(pageNumber);
             System.out.println("Found " + mongoItems.size() + " items in database.");
             System.out.println("Page number: " + pageNumber);

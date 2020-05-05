@@ -9,7 +9,6 @@ import martin.dev.pricer.data.repository.StoreRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,7 +40,7 @@ public class StoreService {
         this.getStoreRepository().save(store);
     }
 
-    public List<Store> fetchAllStores(){
+    public List<Store> fetchAllStores() {
         return this.getStoreRepository().findAll();
     }
 }

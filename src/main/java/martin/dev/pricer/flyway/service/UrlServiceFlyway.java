@@ -2,7 +2,6 @@ package martin.dev.pricer.flyway.service;
 
 import martin.dev.pricer.flyway.model.Status;
 import martin.dev.pricer.flyway.model.Url;
-import martin.dev.pricer.flyway.repository.DealRepositoryFlyway;
 import martin.dev.pricer.flyway.repository.UrlRepositoryFlyway;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +17,7 @@ public class UrlServiceFlyway {
         this.urlRepositoryFlyway = urlRepositoryFlyway;
     }
 
+    // TODO test this as it returns incorrect dataset
     public List<Url> fetchUrlByStatus(LocalDateTime checkedAt, Status status) {
         return this.urlRepositoryFlyway.findAllByCheckedAtBeforeOrCheckedAtIsNullAndStatusOrderByCheckedAtAsc(checkedAt, status);
     }

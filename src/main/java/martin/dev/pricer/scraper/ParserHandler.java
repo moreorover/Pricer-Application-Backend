@@ -1,103 +1,30 @@
 package martin.dev.pricer.scraper;
 
-import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.service.ParserErrorService;
 import martin.dev.pricer.flyway.model.Url;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Slf4j
-public class ParserHandler {
+public interface ParserHandler {
 
-    private Parser parser;
-    private ParserErrorService parserErrorService;
+    ParsedItemDto parseItemModel(Element element);
 
-    public ParserHandler(Parser parser, ParserErrorService parserErrorService) {
-        this.parser = parser;
-        this.parserErrorService = parserErrorService;
-    }
+    List<ParsedItemDto> parseItemModels(Elements e, String url);
 
-    private ParsedItemDto parseItemModel(Element element) {
-        ParsedItemDto parsedItem = new ParsedItemDto();
-        try {
-            parsedItem.setTitle(parser.parseTitle(element));
-            parsedItem.setPrice(parser.parsePrice(element));
-            parsedItem.setImg(parser.parseImage(element));
-            parsedItem.setUpc(parser.parseUpc(element));
-            parsedItem.setUrl(parser.parseUrl(element));
-            parsedItem.setUrlFound(parser.getCurrentPage());
-        } catch (ParserException e) {
-            parserErrorService.saveError(e);
-        }
-        return parsedItem;
-    }
+    List<ParsedItemDto> parseItemModels(Elements e, Url url);
 
-    public List<ParsedItemDto> parseItemModels(Elements e, String url) {
-        List<ParsedItemDto> parsedItemDtos = e.stream()
-                .map(this::parseItemModel)
-                .filter(ParsedItemDto::isValid)
-                .collect(Collectors.toList());
+    int parseMaxPageNum(Document d);
 
-        if (parsedItemDtos.size() == e.size()) {
-            log.info("Successfully parsed " + parsedItemDtos.size() + " Ads");
-        } else {
-            log.warn("Parsed only " + parsedItemDtos.size() + " Ads. Out of total: " + e.size());
-        }
-        return parsedItemDtos;
-    }
+    Elements parseItems(Document d);
 
-    public List<ParsedItemDto> parseItemModels(Elements e, Url url) {
-        List<ParsedItemDto> parsedItemDtos = e.stream()
-                .map(this::parseItemModel)
-                .filter(ParsedItemDto::isValid)
-                .collect(Collectors.toList());
+    void makeUrl(String url, int pageNum);
 
-        parsedItemDtos.forEach(parsedItemDto -> parsedItemDto.setUrlObject(url));
-        parsedItemDtos.forEach(parsedItemDto -> parsedItemDto.setFoundTime(LocalDateTime.now()));
+    String getParserName();
 
-        if (parsedItemDtos.size() == e.size()) {
-            log.info("Successfully parsed " + parsedItemDtos.size() + " Ads");
-        } else {
-            log.warn("Parsed only " + parsedItemDtos.size() + " Ads. Out of total: " + e.size());
-        }
-        return parsedItemDtos;
-    }
+    void setCurrentUrl(String url);
 
-    public int parseMaxPageNum(Document d) {
-        int maxPageNum = 0;
-        try {
-            maxPageNum = parser.parseMaxPageNum(d);
-        } catch (ParserException e) {
-            parserErrorService.saveError(e);
-        }
-        return maxPageNum;
-    }
-
-    public Elements parseItems(Document d) {
-        Elements elements = new Elements();
-        try {
-            elements = parser.parseListOfAdElements(d);
-        } catch (ParserException e) {
-            parserErrorService.saveError(e);
-        }
-        return elements;
-    }
-
-    public String makeUrl(String url, int pageNum) {
-        return parser.makeNextPageUrl(url, pageNum);
-    }
-
-    public String getParserName() {
-        return parser.getNAME();
-    }
-
-    public void setCurrentUrl(String url) {
-        this.parser.setCurrentPage(url);
-    }
+    String getCurrentUrl();
 }

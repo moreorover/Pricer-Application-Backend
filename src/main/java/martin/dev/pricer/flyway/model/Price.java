@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Price extends BaseEntity{
+public class Price extends BaseEntity {
 
     private LocalDateTime foundTime;
     private double price;

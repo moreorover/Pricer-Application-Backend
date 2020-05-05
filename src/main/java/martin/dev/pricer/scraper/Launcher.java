@@ -1,20 +1,15 @@
 package martin.dev.pricer.scraper;
 
-import martin.dev.pricer.data.model.*;
+import martin.dev.pricer.data.model.Category;
+import martin.dev.pricer.data.model.Status;
+import martin.dev.pricer.data.model.Store;
+import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.repository.DealRepository;
 import martin.dev.pricer.data.service.StoreService;
-import martin.dev.pricer.discord.BotSendMessage;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,7 +32,7 @@ public class Launcher {
         this.scraperSubject = scraperSubject;
     }
 
-//    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
+    //    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
     public void runner() {
         this.storeService.fetchAllStores().forEach(store -> {
             store.getUrls().stream()

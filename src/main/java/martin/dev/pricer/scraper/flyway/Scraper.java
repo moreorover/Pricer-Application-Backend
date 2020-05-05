@@ -2,14 +2,14 @@ package martin.dev.pricer.scraper.flyway;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.flyway.service.ItemServiceFlyway;
+import martin.dev.pricer.scraper.AbstractParser;
 import martin.dev.pricer.scraper.Observer;
-import martin.dev.pricer.scraper.ParserHandler;
 import martin.dev.pricer.scraper.ScraperInterface;
 import martin.dev.pricer.scraper.client.HttpClient;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -17,50 +17,49 @@ public class Scraper extends Observer implements ScraperInterface {
 
     private ScraperSubject scraperSubject;
 
-    private ParserHandler parserHandler;
-    private ItemServiceFlyway itemServiceFlyway;
-    private int startPage;
+    private AbstractParser parser;
+    private ItemServiceFlyway itemService;
 
-    public Scraper(ScraperSubject scraperSubject, ParserHandler parserHandler, ItemServiceFlyway itemServiceFlyway, int startPage) {
+    public Scraper(ScraperSubject scraperSubject, AbstractParser parser, ItemServiceFlyway itemService) {
         this.scraperSubject = scraperSubject;
         this.scraperSubject.attach(this);
-        this.parserHandler = parserHandler;
-        this.itemServiceFlyway = itemServiceFlyway;
-        this.startPage = startPage;
-    }
-
-    @Override
-    public void scrape(int endPage) {
-        for (int start = startPage; start <= endPage; start++) {
-            String url = parserHandler.makeUrl(scraperSubject.getUrl().getUrl(), start);
-            this.parserHandler.setCurrentUrl(url);
-            log.info("Parsing: " + url);
-            Document document = HttpClient.readContentInJsoupDocument(url);
-            Elements parsedElements = parserHandler.parseItems(document);
-            List<ParsedItemDto> parsedItemModels = parserHandler.parseItemModels(parsedElements, scraperSubject.getUrl());
-            parsedItemModels.forEach(parsedItemDto -> itemServiceFlyway.processParsedItemDto(parsedItemDto));
-        }
+        this.parser = parser;
+        this.itemService = itemService;
     }
 
     @Override
     public void update() {
-        int maxPageNum = getMaxPage();
-        scrape(maxPageNum);
+        this.parser.setUrlObject(scraperSubject.getUrl());
+        List<String> urlsToScrape = fetchUrlsToScrape();
+        scrapeUrls(urlsToScrape);
     }
 
     @Override
     public String getName() {
-        return parserHandler.getParserName();
+        return parser.getNAME();
     }
 
-    @Override
-    public int getMaxPage() {
+    public List<String> fetchUrlsToScrape() {
+        List<String> urlsToScrape = new ArrayList<>();
         Document document = HttpClient.readContentInJsoupDocument(scraperSubject.getUrl().getUrl());
-        int maxPage = parserHandler.parseMaxPageNum(document);
-
-        if (startPage == 0) {
-            return maxPage - 1;
+        parser.setDocument(document);
+        parser.parseMaxPageNum();
+        for (int page_number = parser.getSTART_PAGE_NUMBER(); page_number <= parser.getMAX_PAGE_NUMBER(); page_number++) {
+            String url = parser.makeNextPageUrl(page_number);
+            urlsToScrape.add(url);
         }
-        return maxPage;
+        return urlsToScrape;
+    }
+
+    public void scrapeUrls(List<String> urlsToScrape) {
+        urlsToScrape.forEach(url -> {
+            parser.setCurrentPageUrl(url);
+            log.info("Parsing: " + url);
+            Document document = HttpClient.readContentInJsoupDocument(url);
+            parser.setDocument(document);
+            parser.parseListOfAdElements();
+            List<ParsedItemDto> parsedItemModels = parser.parseItemModels();
+            parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItemDto(parsedItemDto));
+        });
     }
 }

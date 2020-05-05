@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Item extends BaseEntity{
+public class Item extends BaseEntity {
 
     private String upc;
     private String name;
