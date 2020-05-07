@@ -5,6 +5,7 @@ import martin.dev.pricer.data.model.Item;
 import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.repository.UrlRepository;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +27,7 @@ class ItemServiceTest {
     private ItemService itemService;
 
     @Test
-    public void testItemId1NothingChanged() {
+    public void addItem() {
         Optional<Url> url = urlRepository.findById(3L);
 
         ParsedItemDto parsedItemDto = new ParsedItemDto();
@@ -42,17 +43,21 @@ class ItemServiceTest {
         assertTrue(parsedItemDto.isValid());
 
         itemService.processParsedItemDto(parsedItemDto);
-
-        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
-        assertNotNull(item);
-        assertEquals(item.getName(), parsedItemDto.getTitle());
-        assertEquals(item.getId(), 1L);
-        assertEquals(4, item.getDeals().size());
-        assertEquals(1, item.getDeals().stream().filter(Deal::isDealAvailable).count());
     }
 
     @Test
-    public void testItemId2DetailsChangedNoPriceChange() {
+    public void testItemSaved() {
+
+        Item item = itemService.fetchItemByUpc("A_8869559");
+        assertNotNull(item);
+        assertEquals(item.getName(), "Plants vs Zombies Garden Warfare 2 PS4 Hits Game");
+        assertEquals(item.getId(), 1L);
+        assertEquals(0, item.getDeals().size());
+        assertEquals(0, item.getDeals().stream().filter(Deal::isDealAvailable).count());
+    }
+
+    @Test
+    public void testItemDetailsChangedNoPriceChange() {
         Optional<Url> url = urlRepository.findById(3L);
 
         ParsedItemDto parsedItemDto = new ParsedItemDto();
@@ -69,15 +74,15 @@ class ItemServiceTest {
 
         itemService.processParsedItemDto(parsedItemDto);
 
-        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
+        Item item = itemService.fetchItemByUpc(parsedItemDto.getUpc());
         assertNotNull(item);
         assertEquals(item.getName(), parsedItemDto.getTitle());
         assertEquals(item.getImg(), parsedItemDto.getImg());
         assertEquals(item.getId(), 1L);
-        assertEquals(4, item.getDeals().size());
-        assertEquals(7, item.getPrices().size());
-        assertTrue(item.isDealAvailable());
-        assertEquals(1, item.getDeals().stream().filter(Deal::isDealAvailable).count());
+        assertEquals(0, item.getDeals().size());
+        assertEquals(1, item.getPrices().size());
+        assertFalse(item.isDealAvailable());
+        assertEquals(0, item.getDeals().stream().filter(Deal::isDealAvailable).count());
     }
 
     @Test
@@ -98,13 +103,15 @@ class ItemServiceTest {
 
         itemService.processParsedItemDto(parsedItemDto);
 
-        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
+        Item item = itemService.fetchItemByUpc(parsedItemDto.getUpc());
         assertNotNull(item);
         assertEquals(item.getName(), parsedItemDto.getTitle());
         assertEquals(item.getImg(), parsedItemDto.getImg());
         assertEquals(item.getId(), 1L);
-        assertEquals(4, item.getDeals().size());
-        assertEquals(8, item.getPrices().size());
+        assertEquals(12, item.getPrice());
+        assertEquals(100, item.getDelta());
+        assertEquals(0, item.getDeals().size());
+        assertEquals(2, item.getPrices().size());
         assertFalse(item.isDealAvailable());
         assertEquals(0, item.getDeals().stream().filter(Deal::isDealAvailable).count());
     }
@@ -127,13 +134,15 @@ class ItemServiceTest {
 
         itemService.processParsedItemDto(parsedItemDto);
 
-        Item item = itemService.fetchItemByUp(parsedItemDto.getUpc());
+        Item item = itemService.fetchItemByUpc(parsedItemDto.getUpc());
         assertNotNull(item);
         assertEquals(item.getName(), parsedItemDto.getTitle());
         assertEquals(item.getImg(), parsedItemDto.getImg());
         assertEquals(item.getId(), 1L);
-        assertEquals(5, item.getDeals().size());
-        assertEquals(9, item.getPrices().size());
+        assertEquals(3, item.getPrice());
+        assertEquals(-75, item.getDelta());
+        assertEquals(1, item.getDeals().size());
+        assertEquals(3, item.getPrices().size());
         assertTrue(item.isDealAvailable());
         assertEquals(1, item.getDeals().stream().filter(Deal::isDealAvailable).count());
     }

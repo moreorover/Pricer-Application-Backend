@@ -21,6 +21,7 @@ class StoreRepositoryTest {
     public void checkIfDbIsPopulated() {
         List<Store> stores = storeRepository.findAll();
         assertNotEquals(stores.size(), 0);
+        assertEquals(13, stores.size());
     }
 
 }
