@@ -16,6 +16,8 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
 
     List<Url> findAllByStatus(Status status);
 
-    @NotNull Optional<Url> findById(@NotNull Long id);
+    List<Url> findAllByStatusAndCheckedAtIsBefore(Status status, LocalDateTime checkedAt);
+
+    List<Url> findAllByStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNull(Status status, LocalDateTime checkedAt, Status status2);
 
 }

@@ -18,7 +18,7 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public Item fetchItemByUp(String upc) {
+    public Item fetchItemByUpc(String upc) {
         return itemRepository.findItemByUpc(upc);
     }
 

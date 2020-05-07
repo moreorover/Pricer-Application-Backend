@@ -35,8 +35,8 @@ public class Launcher {
         Status statusProcessing = this.statusService.findStatusByStatus("Processing");
         Status statusDisabled = this.statusService.findStatusByStatus("Disabled");
 
-        LocalDateTime timeInPast = LocalDateTime.now().plusHours(2);
-        List<Url> urlsToScrape = this.urlService.fetchUrlByStatus(statusReady);
+        LocalDateTime timeInPast = LocalDateTime.now().minusHours(2);
+        List<Url> urlsToScrape = this.urlService.fetchUrlByStatusAndCheckedAtBefore(statusReady, timeInPast);
         urlsToScrape.stream()
                 .filter(Url::isReadyToScrape)
                 .forEach(url -> {
