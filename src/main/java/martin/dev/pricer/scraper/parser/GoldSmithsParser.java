@@ -48,7 +48,6 @@ public class GoldSmithsParser extends AbstractParser {
             log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
         } catch (ParserException e) {
             setMAX_PAGE_NUMBER(0);
-            e.printStackTrace();
         }
 
     }

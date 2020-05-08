@@ -44,7 +44,6 @@ public class FirstClassWatchesParser extends AbstractParser {
             log.info("Found " + "? " + "ads to scrape, a total of " + maxPageNum + " pages.");
         } catch (ParserException e) {
             setMAX_PAGE_NUMBER(0);
-            e.printStackTrace();
         }
     }
 

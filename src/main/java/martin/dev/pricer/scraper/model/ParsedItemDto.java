@@ -20,21 +20,12 @@ public class ParsedItemDto {
     private LocalDateTime foundTime;
     private Url urlObject;
 
-    public ParsedItemDto(String title, String url, String img, String upc, double price, String urlFound) {
-        this.title = title;
-        this.url = url;
-        this.img = img;
-        this.upc = upc;
-        this.price = price;
-        this.urlFound = urlFound;
-    }
-
     public boolean isValid() {
         return !(
-                this.title.isBlank() || this.title.isEmpty() ||
-                        this.url.isBlank() || this.url.isEmpty() ||
-                        this.upc.isBlank() || this.upc.isEmpty() ||
-                        this.price <= 0
+                this.title == null || this.title.isBlank() || this.title.isEmpty() ||
+                this.url == null || this.url.isBlank() || this.url.isEmpty() ||
+                this.upc == null || this.upc.isBlank() || this.upc.isEmpty() ||
+                this.price <= 0
         );
     }
 }

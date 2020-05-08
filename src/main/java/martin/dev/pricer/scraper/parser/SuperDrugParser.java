@@ -53,7 +53,6 @@ public class SuperDrugParser extends AbstractParser {
             }
         } catch (ParserException e) {
             setMAX_PAGE_NUMBER(0);
-            e.printStackTrace();
         }
 
     }

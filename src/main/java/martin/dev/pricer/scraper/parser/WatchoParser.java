@@ -35,10 +35,11 @@ public class WatchoParser extends AbstractParser {
     public void parseMaxPageNum() {
         try {
             Elements paginationElements = getDocument().select("li[class^=pagination-item]");
-            getParserValidator().validate(paginationElements, 1, "parseMaxPageNum", this);
+//            getParserValidator().validate(paginationElements, 1, "parseMaxPageNum", this);
             if (paginationElements.size() == 0) {
                 log.info("Found " + "?" + " ads to scrape, a total of " + 1 + " pages.");
                 setMAX_PAGE_NUMBER(1);
+                return;
             }
             Element lastPaginationElement = paginationElements.get(paginationElements.size() - 2);
             getParserValidator().validate(lastPaginationElement, 2, "parseMaxPageNum", this);
@@ -49,8 +50,7 @@ public class WatchoParser extends AbstractParser {
             setMAX_PAGE_NUMBER(maxPageNum);
             log.info("Found " + "? " + "ads to scrape, a total of " + maxPageNum + " pages.");
         } catch (ParserException e) {
-            setMAX_PAGE_NUMBER(0);
-            e.printStackTrace();
+            setMAX_PAGE_NUMBER(1);
         }
     }
 

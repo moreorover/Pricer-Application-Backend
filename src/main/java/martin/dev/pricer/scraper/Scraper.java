@@ -37,6 +37,7 @@ public class Scraper extends Observer implements ScraperInterface {
     }
 
     public List<String> fetchUrlsToScrape() {
+        parser.setCurrentPageUrl(scraperSubject.getUrl().getUrl());
         List<String> urlsToScrape = new ArrayList<>();
         Document document = HttpClient.readContentInJsoupDocument(scraperSubject.getUrl().getUrl());
         parser.setDocument(document);

@@ -6,6 +6,8 @@ import martin.dev.pricer.data.repository.ParserErrorRepository;
 import martin.dev.pricer.scraper.AbstractParser;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ParserErrorService {
 
@@ -21,6 +23,7 @@ public class ParserErrorService {
         parserError.setUrl(parser.getCurrentPageUrl());
         parserError.setParserOperation(parserOperation);
         parserError.setStepNumber(stepNumber);
+        parserError.setFoundTime(LocalDateTime.now());
         parserErrorRepository.save(parserError);
     }
 

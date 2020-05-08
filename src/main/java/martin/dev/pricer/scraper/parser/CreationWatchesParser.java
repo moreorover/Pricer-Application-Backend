@@ -47,7 +47,6 @@ public class CreationWatchesParser extends AbstractParser {
             setMAX_PAGE_NUMBER(maxPageNum);
         } catch (ParserException e) {
             setMAX_PAGE_NUMBER(0);
-            log.warn(e.getMessage());
         }
     }
 

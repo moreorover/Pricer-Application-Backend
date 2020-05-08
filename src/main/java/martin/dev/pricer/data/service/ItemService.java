@@ -5,9 +5,12 @@ import martin.dev.pricer.data.model.Item;
 import martin.dev.pricer.data.model.Price;
 import martin.dev.pricer.data.repository.ItemRepository;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -89,6 +92,7 @@ public class ItemService {
         price.setDelta(calculateDelta(item.getPrice(), parsedItemDto.getPrice()));
         price.setPrice(parsedItemDto.getPrice());
         price.setFoundTime(parsedItemDto.getFoundTime());
+        item.setFoundTime(parsedItemDto.getFoundTime());
         item.newPrice(price);
     }
 
@@ -114,5 +118,10 @@ public class ItemService {
 
     public Item saveItem(Item item) {
         return this.itemRepository.save(item);
+    }
+
+    public List<Item> fetchItemsByDealLessThanZero(int pageNumber, int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return itemRepository.findAllByDeltaIsLessThanOrderByFoundTimeDesc(0.0, pageable);
     }
 }
