@@ -1,127 +1,136 @@
 package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.AbstractParser;
 import martin.dev.pricer.scraper.ParserException;
 import martin.dev.pricer.scraper.ParserValidator;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class WatchShopParser extends Parser {
+public class WatchShopParser extends AbstractParser {
 
-    public WatchShopParser() {
-        super("Watch Shop", "WS_", "https://www.watchshop.com", 192);
+    public WatchShopParser(ParserValidator parserValidator) {
+        super(parserValidator, "Watch Shop", "WS_", "https://www.watchshop.com", 192, 1);
     }
 
     @Override
-    public String makeNextPageUrl(String url, int pageNum) {
-        setState("makeNextPageUrl");
-
-        String[] x = url.split("&page=");
+    public String makeNextPageUrl(int pageNum) {
+        String[] x = getUrlObject().getUrl().split("&page=");
         return x[0] + "&page=" + pageNum;
     }
 
     @Override
-    public Elements parseListOfAdElements(Document pageContentInJsoupHtml) throws ParserException {
-        setState("parseListOfAdElements");
-
-        Elements parsedElements = pageContentInJsoupHtml.select("div[class*=product-container]");
-        ParserValidator.validateElements(parsedElements, this);
-
-        return parsedElements;
+    public void parseListOfAdElements() {
+        try {
+            Elements parsedElements = getDocument().select("div[class*=product-container]");
+            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
+            setElements(parsedElements);
+        } catch (ParserException e) {
+            setElements(new Elements());
+        }
     }
 
     @Override
-    public int parseMaxPageNum(Document pageContentInJsoupHtml) throws ParserException {
-        setState("parseMaxPageNum");
-
-        Elements showResults = pageContentInJsoupHtml.select("div[class=show-results]");
-        ParserValidator.validateElements(showResults, this);
-        String results = showResults.text();
-        ParserValidator.validateStringIsNotEmpty(results, this);
-        String[] resultsArray = results.split(" of ");
-        ParserValidator.validateStringArray(resultsArray, 2, this);
-        String result = resultsArray[1];
-        ParserValidator.validateStringIsNotEmpty(result, this);
-        Integer adsCount = parseIntegerFromString(result);
-        ParserValidator.validatePositiveInteger(adsCount, this);
-        Integer maxPageNum = calculateTotalPages(adsCount);
-
-        // TODO take logging outside of the parser
-        log.info("Found " + adsCount + " ads to scrape, a total of " + maxPageNum + " pages.");
-        return maxPageNum;
+    public void parseMaxPageNum() {
+        try {
+            Elements showResults = getDocument().select("div[class=show-results]");
+            getParserValidator().validate(showResults, 1, "parseMaxPageNum", this);
+            String results = showResults.text();
+            getParserValidator().validate(results, 2, "parseMaxPageNum", this);
+            String[] resultsArray = results.split(" of ");
+            getParserValidator().validate(resultsArray, 3, "parseMaxPageNum", this);
+            String result = resultsArray[1];
+            getParserValidator().validate(result, 4, "parseMaxPageNum", this);
+            Integer adsCount = parseIntegerFromString(result);
+            getParserValidator().validate(adsCount, 5, "parseMaxPageNum", this);
+            Integer maxPageNum = calculateTotalPages(adsCount);
+            getParserValidator().validate(maxPageNum, 6, "parseMaxPageNum", this);
+            setMAX_PAGE_NUMBER(maxPageNum);
+            log.info("Found " + adsCount + "ads to scrape, a total of " + maxPageNum + " pages.");
+        } catch (ParserException e) {
+            setMAX_PAGE_NUMBER(0);
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public String parseTitle(Element adInJsoupHtml) throws ParserException {
-        setState("parseTitle");
+    public String parseTitle(Element adInJsoupHtml) {
+        try {
+            Element titleElement = adInJsoupHtml.selectFirst("meta[itemprop=name]");
+            getParserValidator().validate(titleElement, 1, "parseTitle", this);
+            String title = titleElement.attr("content").trim();
+            getParserValidator().validate(title, 2, "parseTitle", this);
 
-        Element titleElement = adInJsoupHtml.selectFirst("meta[itemprop=name]");
-        ParserValidator.validateElement(titleElement, this, adInJsoupHtml);
-        String title = titleElement.attr("content").trim();
-        ParserValidator.validateStringIsNotEmpty(title, this, adInJsoupHtml);
-
-        return title;
-    }
-
-    @Override
-    public String parseUpc(Element adInJsoupHtml) throws ParserException {
-        setState("parseUpc");
-
-        Element upcElement = adInJsoupHtml.selectFirst("meta[itemprop=sku]");
-        ParserValidator.validateElement(upcElement, this, adInJsoupHtml);
-        String upc = upcElement.attr("content");
-        ParserValidator.validateStringIsNotEmpty(upc, this, adInJsoupHtml);
-
-        return getPREFIX() + upc;
-    }
-
-    @Override
-    public Double parsePrice(Element adInJsoupHtml) throws ParserException {
-        setState("parsePrice");
-
-        Element priceElement = adInJsoupHtml.selectFirst("div[class=product-price]");
-        ParserValidator.validateElement(priceElement, this, adInJsoupHtml);
-        priceElement = priceElement.selectFirst("strong");
-        ParserValidator.validateElement(priceElement, this, adInJsoupHtml);
-        String priceString = priceElement.text();
-        ParserValidator.validateStringIsNotEmpty(priceString, this, adInJsoupHtml);
-        Double price = parseDoubleFromString(priceString);
-        ParserValidator.validatePositiveDouble(price, this);
-
-        return price;
-    }
-
-    @Override
-    public String parseImage(Element adInJsoupHtml) throws ParserException {
-        setState("parseImage");
-
-
-        Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
-        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
-        imgElement = imgElement.selectFirst("img");
-        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
-        String imgSrc = imgElement.attr("src");
-        ParserValidator.validateStringIsNotEmpty(imgSrc, this, adInJsoupHtml);
-        if (imgSrc.endsWith("loader_border.gif")) {
+            return title;
+        } catch (ParserException e) {
             return "";
         }
-        return imgSrc;
     }
 
     @Override
-    public String parseUrl(Element adInJsoupHtml) throws ParserException {
-        setState("parseUrl");
+    public String parseUpc(Element adInJsoupHtml) {
+        try {
+            Element upcElement = adInJsoupHtml.selectFirst("meta[itemprop=sku]");
+            getParserValidator().validate(upcElement, 1, "parseUpc", this);
+            String upc = upcElement.attr("content");
+            getParserValidator().validate(upc, 2, "parseUpc", this);
 
-        Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
-        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
-        imgElement = imgElement.selectFirst("a");
-        ParserValidator.validateElement(imgElement, this, adInJsoupHtml);
-        String url = imgElement.attr("href");
-        ParserValidator.validateStringIsNotEmpty(url, this, adInJsoupHtml);
+            return getPREFIX() + upc;
+        } catch (ParserException e) {
+            return "";
+        }
+    }
 
-        return getBASE_URL() + url;
+    @Override
+    public Double parsePrice(Element adInJsoupHtml) {
+        try {
+            Element priceElement = adInJsoupHtml.selectFirst("div[class=product-price]");
+            getParserValidator().validate(priceElement, 1, "parsePrice", this);
+            priceElement = priceElement.selectFirst("strong");
+            getParserValidator().validate(priceElement, 2, "parsePrice", this);
+            String priceString = priceElement.text();
+            getParserValidator().validate(priceString, 3, "parsePrice", this);
+            Double price = parseDoubleFromString(priceString);
+            getParserValidator().validate(price, 4, "parsePrice", this);
+
+            return price;
+        } catch (ParserException e) {
+            return 0.0;
+        }
+    }
+
+    @Override
+    public String parseImage(Element adInJsoupHtml) {
+        try {
+            Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
+            getParserValidator().validate(imgElement, 1, "parseImage", this);
+            imgElement = imgElement.selectFirst("img");
+            getParserValidator().validate(imgElement, 2, "parseImage", this);
+            String imgSrc = imgElement.attr("src");
+            getParserValidator().validate(imgSrc, 3, "parseImage", this);
+            if (imgSrc.endsWith("loader_border.gif")) {
+                return "";
+            }
+            return imgSrc;
+        } catch (ParserException e) {
+            return "";
+        }
+    }
+
+    @Override
+    public String parseUrl(Element adInJsoupHtml) {
+        try {
+            Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
+            getParserValidator().validate(imgElement, 1, "parseUrl", this);
+            imgElement = imgElement.selectFirst("a");
+            getParserValidator().validate(imgElement, 2, "parseUrl", this);
+            String url = imgElement.attr("href");
+            getParserValidator().validate(url, 3, "parseUrl", this);
+
+            return getBASE_URL() + url;
+        } catch (ParserException e) {
+            return "";
+        }
     }
 }

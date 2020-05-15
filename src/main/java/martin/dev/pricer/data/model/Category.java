@@ -1,14 +1,26 @@
 package martin.dev.pricer.data.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Document
-@Data
-@AllArgsConstructor
-public class Category {
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
-    private String name;
+@Entity
+@Getter
+@Setter
+@ToString
+public class Category extends BaseEntity {
+
+    private String category;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "categories")
+    private Set<Url> urls;
+
+    public Category() {
+    }
 }

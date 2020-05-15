@@ -1,51 +1,25 @@
 package martin.dev.pricer.data.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import martin.dev.pricer.scraper.Parser;
-import martin.dev.pricer.scraper.ParserException;
-import org.jsoup.nodes.Element;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
-@Document
-@Data
+@Entity
+@Getter
+@Setter
 public class ParserError extends BaseEntity {
 
-    private LocalDateTime dateTime;
-    private Parser parser;
-    private String message;
-    private Element element;
+    private int stepNumber;
+    private String parserOperation;
+    private String url;
+    private LocalDateTime foundTime;
 
-    public ParserError(LocalDateTime dateTime, Parser parser, String message, Element element) {
-        this.dateTime = dateTime;
-        this.parser = parser;
-        this.message = message;
-        this.element = element;
-    }
+    @ManyToOne
+    @JoinColumn(name = "url_id")
+    private Url urlObject;
 
-    public ParserError(ParserException e) {
-        this.dateTime = LocalDateTime.now();
-        this.parser = e.getParser();
-        this.message = e.getMessage();
-        this.element = e.getElement();
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public Parser getParser() {
-        return parser;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Element getElement() {
-        return element;
-    }
 }

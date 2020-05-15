@@ -1,28 +1,28 @@
 package martin.dev.pricer.data.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@Document
-@Data
+@Entity
+@Getter
+@Setter
 public class Deal extends BaseEntity {
 
-    private Item item;
-    private Set<Category> categories;
-    private Store store;
-    private LocalDateTime dealFound;
-    private boolean available;
+    private boolean dealAvailable;
+    private LocalDateTime foundTime;
+    private boolean postedToDiscord;
 
-    public Deal(Item item, Set<Category> categories, Store store, LocalDateTime dealFound, boolean available) {
-        this.item = item;
-        this.categories = categories;
-        this.store = store;
-        this.dealFound = dealFound;
-        this.available = available;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    public Deal() {
     }
 }

@@ -1,19 +1,28 @@
 package martin.dev.pricer.data.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-public class Price {
+@Entity
+@Getter
+@Setter
+public class Price extends BaseEntity {
 
-    private Double price;
-    private Double delta;
-    private LocalDateTime foundAt;
+    private LocalDateTime foundTime;
+    private double price;
+    private double delta;
 
-    public double compareTo(Price otherPrice) {
-        return otherPrice.price - this.price;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    public Price() {
     }
 }

@@ -1,101 +1,127 @@
 package martin.dev.pricer.data.service;
 
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.model.*;
-import martin.dev.pricer.data.repository.DealRepository;
+import martin.dev.pricer.data.model.Deal;
+import martin.dev.pricer.data.model.Item;
+import martin.dev.pricer.data.model.Price;
 import martin.dev.pricer.data.repository.ItemRepository;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-@Slf4j
 @Service
-@Getter
-public class ItemService implements ItemServiceI {
+public class ItemService {
 
-    private ItemRepository itemRepository;
-    private DealRepository dealRepository;
+    private final ItemRepository itemRepository;
 
-    public ItemService(ItemRepository itemRepository, DealRepository dealRepository) {
+    public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
-        this.dealRepository = dealRepository;
     }
 
-    @Override
-    public Item findByUpc(String upc) {
-        return this.itemRepository.findByUpc(upc);
+    public Item fetchItemByUpc(String upc) {
+        return itemRepository.findItemByUpc(upc);
     }
 
-    @Override
-    public Item save(Item newItem) {
-        return this.itemRepository.save(newItem);
+    public void processParsedItemDto(ParsedItemDto parsedItemDto) {
+        Item item = itemRepository.findItemByUpc(parsedItemDto.getUpc());
+
+        if (item == null) {
+            // if no such item with upc
+            item = buildNewItem(parsedItemDto);
+            itemRepository.save(item);
+            return;
+        }
+        if (!item.compareToParsedItemDto(parsedItemDto)) {
+            updateItem(item, parsedItemDto);
+            item = itemRepository.save(item);
+        }
+        if (item.getPrice() > parsedItemDto.getPrice()) {
+            // if new price has gone down
+            newItemPrice(item, parsedItemDto);
+            itemDealExpired(item);
+            newItemDeal(item, parsedItemDto);
+            itemRepository.save(item);
+            return;
+        }
+        if (item.getPrice() < parsedItemDto.getPrice()) {
+            // if new price has gone up
+            newItemPrice(item, parsedItemDto);
+            itemDealExpired(item);
+            itemRepository.save(item);
+        }
     }
 
-    @Override
-    public Item buildItemOfParsedData(ParsedItemDto parsedItemDto, Store store, Url url) {
-        Set<Price> prices = new HashSet<>();
-        prices.add(new Price(parsedItemDto.getPrice(),
-                0.0,
-                LocalDateTime.now()));
+    private Item buildNewItem(ParsedItemDto parsedItemDto) {
+        Item item = new Item();
+        item.setUpc(parsedItemDto.getUpc());
+        item.setName(parsedItemDto.getTitle());
+        item.setUrl(parsedItemDto.getUrl());
+        item.setImg(parsedItemDto.getImg());
+        item.setPrice(parsedItemDto.getPrice());
+        item.setDelta(0.0);
+        item.setFoundTime(parsedItemDto.getFoundTime());
+        item.setFoundWhere(parsedItemDto.getUrlFound());
+        item.setUrlObject(parsedItemDto.getUrlObject());
 
-        return new Item(parsedItemDto.getUpc(),
-                parsedItemDto.getTitle(),
-                parsedItemDto.getUrl(),
-                parsedItemDto.getImg(),
-                prices,
-                url.getCategories(),
-                store,
-                parsedItemDto.getUrlFound());
+        Price price = new Price();
+        price.setDelta(0.0);
+        price.setPrice(parsedItemDto.getPrice());
+        price.setFoundTime(parsedItemDto.getFoundTime());
+
+        item.newPrice(price);
+
+        return item;
     }
 
-    @Override
+    private void updateItem(Item item, ParsedItemDto parsedItemDto) {
+        item.setUpc(parsedItemDto.getUpc());
+        item.setName(parsedItemDto.getTitle());
+        item.setUrl(parsedItemDto.getUrl());
+        if (!parsedItemDto.getImg().equals("")){
+            item.setImg(parsedItemDto.getImg());
+        }
+        item.setFoundWhere(parsedItemDto.getUrlFound());
+        item.setUrlObject(parsedItemDto.getUrlObject());
+    }
+
+    private void newItemPrice(Item item, ParsedItemDto parsedItemDto) {
+        Price price = new Price();
+        price.setDelta(calculateDelta(item.getPrice(), parsedItemDto.getPrice()));
+        price.setPrice(parsedItemDto.getPrice());
+        price.setFoundTime(parsedItemDto.getFoundTime());
+        item.setFoundTime(parsedItemDto.getFoundTime());
+        item.newPrice(price);
+    }
+
+    private void newItemDeal(Item item, ParsedItemDto parsedItemDto) {
+        Deal deal = new Deal();
+        deal.setDealAvailable(true);
+        deal.setFoundTime(parsedItemDto.getFoundTime());
+        deal.setPostedToDiscord(false);
+        item.newDeal(deal);
+    }
+
+    private void itemDealExpired(Item item) {
+        item.getDeals().stream()
+                .filter(Deal::isDealAvailable)
+                .forEach(deal -> deal.setDealAvailable(false));
+    }
+
     public double calculateDelta(double oldPrice, double newPrice) {
         double delta = 100 * ((newPrice - oldPrice) / oldPrice);
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.parseDouble(df.format(delta));
     }
 
-    @Override
-    public Item newPrice(Item item, double newPrice) {
-        double delta = calculateDelta(item.getLastPrice(), newPrice);
-        Price newPriceObj = new Price(newPrice, delta, LocalDateTime.now());
-        item.getPrices().add(newPriceObj);
-        return item;
+    public Item saveItem(Item item) {
+        return this.itemRepository.save(item);
     }
 
-    @Override
-    public void processParsedItem(ParsedItemDto parsedItemDto, Store store, Url url) {
-        if (parsedItemDto.isValid()) {
-
-            Item dbItem = findByUpc(parsedItemDto.getUpc());
-
-            if (dbItem == null) {
-                // if item has not been recorded yet
-                Item buildItem = buildItemOfParsedData(parsedItemDto, store, url);
-                save(buildItem);
-            } else if (dbItem.getLastPrice() > parsedItemDto.getPrice()) {
-                // if price has dropped since last time
-                newPrice(dbItem, parsedItemDto.getPrice());
-                save(dbItem);
-                Deal newDeal = new Deal(dbItem, dbItem.getCategories(), store, LocalDateTime.now(), true);
-                dealRepository.save(newDeal);
-            } else if (dbItem.getLastPrice() < parsedItemDto.getPrice()) {
-                // if price has risen since last time
-                newPrice(dbItem, parsedItemDto.getPrice());
-                save(dbItem);
-
-                Deal expiredDeal = dealRepository.findFirstByItem_IdAndAvailable(dbItem.getId(), true);
-                if (expiredDeal != null){
-                    expiredDeal.setAvailable(false);
-                    expiredDeal.setItem(dbItem);
-                    dealRepository.save(expiredDeal);
-                }
-            }
-        }
+    public List<Item> fetchItemsByDealLessThanZero(int pageNumber, int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return itemRepository.findAllByDeltaIsLessThanOrderByFoundTimeDesc(0.0, pageable);
     }
 }
