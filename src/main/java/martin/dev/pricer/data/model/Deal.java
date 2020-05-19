@@ -1,6 +1,5 @@
 package martin.dev.pricer.data.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +17,6 @@ public class Deal extends BaseEntity {
     private LocalDateTime foundTime;
     private boolean postedToDiscord;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;

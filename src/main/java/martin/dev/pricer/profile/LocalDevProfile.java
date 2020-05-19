@@ -140,19 +140,19 @@ public class LocalDevProfile {
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
-        new Scraper(subject, ArgosParser(), getSqlItemService());
-        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
-        new Scraper(subject, DebenhamsParser(), getSqlItemService());
-        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
-        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
-        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
-        new Scraper(subject, HSamuelParser(), getSqlItemService());
-        new Scraper(subject, SuperDrugParser(), getSqlItemService());
-        new Scraper(subject, TicWatchesParser(), getSqlItemService());
-        new Scraper(subject, WatchoParser(), getSqlItemService());
-        new Scraper(subject, WatchShopParser(), getSqlItemService());
-        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
+//        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
+//        new Scraper(subject, ArgosParser(), getSqlItemService());
+//        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
+//        new Scraper(subject, DebenhamsParser(), getSqlItemService());
+//        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
+//        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
+//        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
+//        new Scraper(subject, HSamuelParser(), getSqlItemService());
+//        new Scraper(subject, SuperDrugParser(), getSqlItemService());
+//        new Scraper(subject, TicWatchesParser(), getSqlItemService());
+//        new Scraper(subject, WatchoParser(), getSqlItemService());
+//        new Scraper(subject, WatchShopParser(), getSqlItemService());
+//        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
         return subject;
     }
 
