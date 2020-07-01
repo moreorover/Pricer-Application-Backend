@@ -21,15 +21,16 @@ public class DiscordService {
         this.api = api;
     }
 
-    public void sendMessage(String content) {
-        TextChannel channel = api.getTextChannelById(this.channelId);
-        if (channel != null) {
-            channel.sendMessage(content).queue();
+    public void sendMessage(Deal deal, long channelId) {
+        if (deal.getItem().getImg() != null && !deal.getItem().getImg().equals("")){
+            this.sendEmbeddedWithImage(deal, channelId);
+        } else {
+            this.sendEmbeddedWithoutImage(deal, channelId);
         }
     }
 
-    public void sendEmbeddedWithImage(Deal deal) {
-        TextChannel channel = api.getTextChannelById(this.channelId);
+    private void sendEmbeddedWithImage(Deal deal, long channelId) {
+        TextChannel channel = api.getTextChannelById(channelId);
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -46,8 +47,6 @@ public class DiscordService {
             try {
                 embedBuilder.setImage(deal.getItem().getImg());
             } catch (Exception e) {
-                System.out.println(deal.getItem().getImg());
-                System.out.println("img url invalid");
                 if (deal.getItem().getImg().startsWith("//")) {
                     embedBuilder.setImage("http://" + deal.getItem().getImg().replace("//", ""));
                 }
@@ -57,8 +56,8 @@ public class DiscordService {
         }
     }
 
-    public void sendEmbeddedWithoutImage(Deal deal) {
-        TextChannel channel = api.getTextChannelById(this.channelId);
+    private void sendEmbeddedWithoutImage(Deal deal, long channelId) {
+        TextChannel channel = api.getTextChannelById(channelId);
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
