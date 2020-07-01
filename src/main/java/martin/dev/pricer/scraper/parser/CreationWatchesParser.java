@@ -34,16 +34,18 @@ public class CreationWatchesParser extends AbstractParser {
     @Override
     public void parseMaxPageNum() {
         try {
-            Element countBox = getDocument().selectFirst("div[class=display-heading-box]").selectFirst("strong");
+            Element countBox = getDocument().selectFirst("div[class=display-heading-box]");
             getParserValidator().validate(countBox, 1, "parseMaxPageNum", this);
+            countBox = countBox.selectFirst("strong");
+            getParserValidator().validate(countBox, 2, "parseMaxPageNum", this);
             String[] stringArray = countBox.text().split("of");
-            getParserValidator().validate(stringArray, 2, "parseMaxPageNum", this);
+            getParserValidator().validate(stringArray, 3, "parseMaxPageNum", this);
             String countString = stringArray[1];
-            getParserValidator().validate(countString, 3, "parseMaxPageNum", this);
+            getParserValidator().validate(countString, 4, "parseMaxPageNum", this);
             Integer adsCount = parseIntegerFromString(countString);
-            getParserValidator().validate(adsCount, 4, "parseMaxPageNum", this);
+            getParserValidator().validate(adsCount, 5, "parseMaxPageNum", this);
             Integer maxPageNum = calculateTotalPages(adsCount);
-            getParserValidator().validate(maxPageNum, 5, "parseMaxPageNum", this);
+            getParserValidator().validate(maxPageNum, 6, "parseMaxPageNum", this);
             setMAX_PAGE_NUMBER(maxPageNum);
         } catch (ParserException e) {
             setMAX_PAGE_NUMBER(0);
