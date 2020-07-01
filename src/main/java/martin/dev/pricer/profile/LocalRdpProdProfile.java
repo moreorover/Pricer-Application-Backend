@@ -159,7 +159,7 @@ public class LocalRdpProdProfile {
     @Bean
     public DiscordService discordBot() {
         try {
-            JDA jda = JDABuilder.createDefault("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I").build();
+            JDA jda = JDABuilder.createDefault("NTU5NDg4NDM4OTQwNzI5MzQ1.XvuR8A.WLld3tKj25J1YiKVsAp8EIeGoB8").build();
             return new DiscordService(jda);
         } catch (LoginException e) {
             e.printStackTrace();

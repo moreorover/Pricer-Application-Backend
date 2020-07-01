@@ -142,7 +142,7 @@ public class LocalDevProfile {
         ScraperSubject subject = new ScraperSubject();
 //        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
 //        new Scraper(subject, ArgosParser(), getSqlItemService());
-//        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
+        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
 //        new Scraper(subject, DebenhamsParser(), getSqlItemService());
 //        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
 //        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
@@ -164,7 +164,7 @@ public class LocalDevProfile {
     @Bean
     public DiscordService discordBot() {
         try {
-            JDA jda = JDABuilder.createDefault("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I").build();
+            JDA jda = JDABuilder.createDefault("NTU5NDg4NDM4OTQwNzI5MzQ1.XvuR8A.WLld3tKj25J1YiKVsAp8EIeGoB8").build();
             return new DiscordService(jda);
         } catch (LoginException e) {
             e.printStackTrace();
