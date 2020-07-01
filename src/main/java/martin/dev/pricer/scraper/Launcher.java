@@ -47,7 +47,7 @@ public class Launcher {
                 });
     }
 
-//    @Scheduled(fixedRate = 30 * 1000, initialDelay = 6 * 1000)
+    @Scheduled(fixedRate = 30 * 1000, initialDelay = 2 * 1000)
     public void postDealsToDiscord() {
         List<Deal> dealsToPost = this.dealService.fetchDealsToPostToDiscord();
 
