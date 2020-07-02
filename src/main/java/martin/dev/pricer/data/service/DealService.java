@@ -32,6 +32,6 @@ public class DealService {
     }
 
     public Deal findDealById(Long id) {
-        return dealRepository.findDealById(id);
+        return dealRepository.findById(id).orElse(null);
     }
 }
