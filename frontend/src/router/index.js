@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import NProgress from 'nprogress'
+
+import dealRoutes from "./dealRoutes";
 
 Vue.use(VueRouter)
 
-  const routes = [
+  const baseRoutes = [
   {
     path: '/',
     name: 'Home',
@@ -20,10 +23,24 @@ Vue.use(VueRouter)
   }
 ]
 
+const routes = baseRoutes
+    .concat(
+        dealRoutes
+    )
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((routeTo, routeFrom, next) => {
+  NProgress.start()
+  next()
+})
+
+router.afterEach(() => {
+  NProgress.done()
 })
 
 export default router
