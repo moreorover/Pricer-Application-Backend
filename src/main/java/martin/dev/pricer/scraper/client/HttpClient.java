@@ -35,6 +35,7 @@ public class HttpClient {
                 }
                 in.close();
             } else {
+                log.error(target);
                 log.error("Response code invalid: " + con.getResponseCode());
                 log.error(con.getResponseMessage());
             }
