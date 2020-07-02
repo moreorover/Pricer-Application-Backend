@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/deals")
+@RequestMapping("/api/deal")
 @CrossOrigin
 public class DealController {
 
@@ -70,10 +70,10 @@ public class DealController {
 //        return new ResponseEntity<>(deal, HttpStatus.OK);
 //    }¬
 //
-    @GetMapping("{dealId}")
+    @GetMapping("/{dealId}")
     public ResponseEntity<DealDtoParent> findDealById(@PathVariable Long dealId) {
-        Optional<Deal> deal = Optional.ofNullable(this.dealService.findDealById(dealId));
-        DealDtoParent dealDtoParent = modelMapper.map(deal.get(), DealDtoParent.class);
+        Deal deal = this.dealService.findDealById(dealId);
+        DealDtoParent dealDtoParent = modelMapper.map(deal, DealDtoParent.class);
         return new ResponseEntity<>(dealDtoParent, HttpStatus.OK);
     }
 }
