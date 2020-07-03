@@ -2,7 +2,7 @@
     <v-card>
         <v-card-title class="justify-center">{{ deal.item.name }}</v-card-title>
         <v-card-text>
-            <LineChart :labels="prices.labels" :values="prices.priceValues" label="Price"></LineChart>
+            <LineChart :labels="prices.labels" :values="prices.priceValues" label="Price" :minY="minY"></LineChart>
             <LineChart :labels="prices.labels" :values="prices.deltaValues" label="Delta"></LineChart>
         </v-card-text>
     </v-card>
@@ -30,6 +30,11 @@
                     priceValues: pricesSorted.map(x => x.price),
                     deltaValues: pricesSorted.map(x => x.delta)
                 }
+            },
+            minY() {
+                let sortedPrices = _.sortBy(this.prices.priceValues)
+
+                return sortedPrices[0] * 0.98
             }
         }
     }
