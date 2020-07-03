@@ -16,6 +16,10 @@
             values: {
                 type: Array,
                 required: true
+            },
+            minY: {
+                type: Number,
+                required: false
             }
         },
         mounted () {
@@ -28,7 +32,17 @@
                         data: this.values
                     }
                 ]
-            }, {responsive: true, maintainAspectRatio: false})
+            }, {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: this.minY
+                        }
+                    }]
+                }
+            })
         }
     }
 </script>
