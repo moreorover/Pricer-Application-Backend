@@ -14,8 +14,6 @@ import java.util.stream.IntStream;
 
 public class DiscordService {
     private final JDA api;
-    //                             559492315371274272
-    private final long channelId = 559714207889621022L;
 
     public DiscordService(JDA api) {
         this.api = api;
@@ -34,8 +32,8 @@ public class DiscordService {
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-//            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/show/" + deal.getId())
-            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
+            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/deal/" + deal.getId())
+//            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
                     .setThumbnail(deal.getItem().getUrlObject().getStore().getLogo())
 //                    .setImage(deal.getItem().getImg())
                     .addField("Price", "" + deal.getItem().getLastPrice(), true)
@@ -61,8 +59,8 @@ public class DiscordService {
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-//            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/show/" + deal.getId())
-            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
+            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/deal/" + deal.getId())
+//            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
                     .setThumbnail(deal.getItem().getUrlObject().getStore().getLogo())
                     .addField("Price", "" + deal.getItem().getLastPrice(), true)
                     .addField("Delta", "" + deal.getItem().getLastDelta() + "%", true)
