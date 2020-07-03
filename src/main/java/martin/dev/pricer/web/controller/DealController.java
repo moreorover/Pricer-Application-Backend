@@ -1,5 +1,6 @@
 package martin.dev.pricer.web.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.Deal;
 import martin.dev.pricer.data.model.Item;
 import martin.dev.pricer.data.model.dto.parent.DealDtoParent;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/deal")
 @CrossOrigin
+@Slf4j
 public class DealController {
 
     @Autowired
