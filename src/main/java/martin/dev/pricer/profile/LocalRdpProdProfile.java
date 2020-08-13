@@ -25,7 +25,7 @@ public class LocalRdpProdProfile {
     private ParserErrorRepository parserErrorRepository;
     private DealRepository dealRepository;
 
-    @Value("${bot.api.key}")
+    @Value("${discord.api.key}")
     private String DiscordApiKey;
 
     public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
