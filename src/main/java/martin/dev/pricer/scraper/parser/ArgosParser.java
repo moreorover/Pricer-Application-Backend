@@ -37,7 +37,7 @@ public class ArgosParser extends AbstractParser {
     @Override
     public void parseMaxPageNum() {
         try {
-            Element searchResultsCount = getDocument().selectFirst("div[class*=search-results-count]");
+            Element searchResultsCount = getDocument().selectFirst("div[class^=styles__ResultsCount]");
             getParserValidator().validate(searchResultsCount, 1, "maxPageNum", this);
             String countString = searchResultsCount.attr("data-search-results");
             getParserValidator().validate(countString, 2, "maxPageNum", this);

@@ -14,4 +14,6 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
 
     List<Deal> findAllByOrderByFoundTimeAsc(Pageable pageable);
 
+    Deal findDealById(Long id);
+
 }

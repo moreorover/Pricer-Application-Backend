@@ -30,4 +30,8 @@ public class DealService {
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         return dealRepository.findAllByOrderByFoundTimeAsc(pageable);
     }
+
+    public Deal findDealById(Long id) {
+        return dealRepository.findById(id).orElse(null);
+    }
 }

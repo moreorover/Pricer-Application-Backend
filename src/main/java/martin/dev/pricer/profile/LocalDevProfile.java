@@ -12,6 +12,7 @@ import martin.dev.pricer.scraper.ScraperSubject;
 import martin.dev.pricer.scraper.parser.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -28,6 +29,9 @@ public class LocalDevProfile {
     private ItemRepository itemRepository;
     private ParserErrorRepository parserErrorRepository;
     private DealRepository dealRepository;
+
+    @Value("${bot.api.key}")
+    private String DiscordApiKey;
 
     public LocalDevProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
@@ -140,19 +144,19 @@ public class LocalDevProfile {
     @Bean
     public ScraperSubject getSubject() {
         ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
-        new Scraper(subject, ArgosParser(), getSqlItemService());
+//        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
+//        new Scraper(subject, ArgosParser(), getSqlItemService());
         new Scraper(subject, CreationWatchesParser(), getSqlItemService());
-        new Scraper(subject, DebenhamsParser(), getSqlItemService());
-        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
-        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
-        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
-        new Scraper(subject, HSamuelParser(), getSqlItemService());
-        new Scraper(subject, SuperDrugParser(), getSqlItemService());
-        new Scraper(subject, TicWatchesParser(), getSqlItemService());
-        new Scraper(subject, WatchoParser(), getSqlItemService());
-        new Scraper(subject, WatchShopParser(), getSqlItemService());
-        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
+//        new Scraper(subject, DebenhamsParser(), getSqlItemService());
+//        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
+//        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
+//        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
+//        new Scraper(subject, HSamuelParser(), getSqlItemService());
+//        new Scraper(subject, SuperDrugParser(), getSqlItemService());
+//        new Scraper(subject, TicWatchesParser(), getSqlItemService());
+//        new Scraper(subject, WatchoParser(), getSqlItemService());
+//        new Scraper(subject, WatchShopParser(), getSqlItemService());
+//        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
         return subject;
     }
 
@@ -164,7 +168,7 @@ public class LocalDevProfile {
     @Bean
     public DiscordService discordBot() {
         try {
-            JDA jda = JDABuilder.createDefault("NTU5NDg4NDM4OTQwNzI5MzQ1.XqYAkg.ydO0bxKt1xBSY5UQHi9VnPcFA1I").build();
+            JDA jda = JDABuilder.createDefault(DiscordApiKey).build();
             return new DiscordService(jda);
         } catch (LoginException e) {
             e.printStackTrace();

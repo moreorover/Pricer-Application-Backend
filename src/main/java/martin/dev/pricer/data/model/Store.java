@@ -1,6 +1,5 @@
 package martin.dev.pricer.data.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +16,6 @@ public class Store extends BaseEntity {
     private String url;
     private String logo;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "store")
     private Set<Url> urls;
 

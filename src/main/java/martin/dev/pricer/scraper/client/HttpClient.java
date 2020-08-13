@@ -35,13 +35,9 @@ public class HttpClient {
                 }
                 in.close();
             } else {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-                String inputLine;
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
+                log.error(target);
+                log.error("Response code invalid: " + con.getResponseCode());
+                log.error(con.getResponseMessage());
             }
         } catch (IOException e) {
             e.printStackTrace();

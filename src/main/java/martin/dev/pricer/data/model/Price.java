@@ -1,6 +1,5 @@
 package martin.dev.pricer.data.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +17,6 @@ public class Price extends BaseEntity {
     private double price;
     private double delta;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;

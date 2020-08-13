@@ -14,48 +14,60 @@ import java.util.stream.IntStream;
 
 public class DiscordService {
     private final JDA api;
-    //                             559492315371274272
-    private final long channelId = 559492315371274272L;
 
     public DiscordService(JDA api) {
         this.api = api;
     }
 
-    public void sendMessage(String content) {
-        TextChannel channel = api.getTextChannelById(this.channelId);
-        if (channel != null) {
-            channel.sendMessage(content).queue();
+    public void sendMessage(Deal deal, long channelId) {
+        if (deal.getItem().getImg() != null && !deal.getItem().getImg().equals("")){
+            this.sendEmbeddedWithImage(deal, channelId);
+        } else {
+            this.sendEmbeddedWithoutImage(deal, channelId);
         }
     }
 
-    public void sendEmbeddedWithImage(Deal deal) {
-        TextChannel channel = api.getTextChannelById(this.channelId);
+    private void sendEmbeddedWithImage(Deal deal, long channelId) {
+        TextChannel channel = api.getTextChannelById(channelId);
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8082/item/" + deal.getItem().getId())
+            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/deal/" + deal.getId())
+//            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
                     .setThumbnail(deal.getItem().getUrlObject().getStore().getLogo())
-                    .setImage(deal.getItem().getImg())
+//                    .setImage(deal.getItem().getImg())
                     .addField("Price", "" + deal.getItem().getLastPrice(), true)
                     .addField("Delta", "" + deal.getItem().getLastDelta() + "%", true)
                     .addField("Average Price", "" + deal.getItem().getAvgPrice(), true)
                     .addField("Max Price", "" + deal.getItem().getMaxPrice(), true)
                     .addField("Min Price", "" + deal.getItem().getMinPrice(), true);
+
+            try {
+                embedBuilder.setImage(deal.getItem().getImg());
+            } catch (Exception e) {
+                if (deal.getItem().getImg().startsWith("//")) {
+                    embedBuilder.setImage("http://" + deal.getItem().getImg().replace("//", ""));
+                }
+            }
+
+            channel.sendMessage(embedBuilder.build()).queue();
         }
     }
 
-    public void sendEmbeddedWithoutImage(Deal deal) {
-        TextChannel channel = api.getTextChannelById(this.channelId);
+    private void sendEmbeddedWithoutImage(Deal deal, long channelId) {
+        TextChannel channel = api.getTextChannelById(channelId);
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8082/item/" + deal.getItem().getId())
+            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/deal/" + deal.getId())
+//            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
                     .setThumbnail(deal.getItem().getUrlObject().getStore().getLogo())
                     .addField("Price", "" + deal.getItem().getLastPrice(), true)
                     .addField("Delta", "" + deal.getItem().getLastDelta() + "%", true)
                     .addField("Average Price", "" + deal.getItem().getAvgPrice(), true)
                     .addField("Max Price", "" + deal.getItem().getMaxPrice(), true)
                     .addField("Min Price", "" + deal.getItem().getMinPrice(), true);
+            channel.sendMessage(embedBuilder.build()).queue();
         }
     }
 
