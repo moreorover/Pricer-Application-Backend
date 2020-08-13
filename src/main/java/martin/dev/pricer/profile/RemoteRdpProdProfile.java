@@ -1,5 +1,6 @@
 package martin.dev.pricer.profile;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.repository.*;
 import martin.dev.pricer.data.service.*;
 import martin.dev.pricer.discord.DiscordService;
@@ -15,9 +16,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
 
-@Profile("local-rdp-prod")
+@Profile("remote-rdp-prod")
 @Configuration
-public class LocalRdpProdProfile {
+@Slf4j
+public class RemoteRdpProdProfile {
 
     private StatusRepository statusRepository;
     private UrlRepository urlRepository;
@@ -28,7 +30,7 @@ public class LocalRdpProdProfile {
     @Value("${bot.api.key}")
     private String DiscordApiKey;
 
-    public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
+    public RemoteRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
         this.urlRepository = urlRepository;
         this.itemRepository = itemRepository;

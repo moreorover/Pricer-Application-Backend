@@ -12,6 +12,7 @@ import martin.dev.pricer.scraper.ScraperSubject;
 import martin.dev.pricer.scraper.parser.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -28,6 +29,9 @@ public class LocalDevProfile {
     private ItemRepository itemRepository;
     private ParserErrorRepository parserErrorRepository;
     private DealRepository dealRepository;
+
+    @Value("${bot.api.key}")
+    private String DiscordApiKey;
 
     public LocalDevProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
@@ -164,7 +168,7 @@ public class LocalDevProfile {
     @Bean
     public DiscordService discordBot() {
         try {
-            JDA jda = JDABuilder.createDefault("NTU5NDg4NDM4OTQwNzI5MzQ1.XvuR8A.WLld3tKj25J1YiKVsAp8EIeGoB8").build();
+            JDA jda = JDABuilder.createDefault(DiscordApiKey).build();
             return new DiscordService(jda);
         } catch (LoginException e) {
             e.printStackTrace();
