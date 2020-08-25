@@ -7,7 +7,7 @@ import vuetify from './plugins/vuetify';
 import lodash from 'lodash'
 import 'nprogress/nprogress.css'
 
-axios.defaults.baseURL = '/api';
+axios.defaults.baseURL = 'http://51.178.240.249:8080/api';
 
 Vue.config.productionTip = false
 
