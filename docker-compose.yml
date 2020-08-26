@@ -14,6 +14,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/pricer
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: LyAGZympuR5yZfAX
+      DISCORD_API_KEY: YOUR-KEY
     networks:
       - backend
       - frontend
