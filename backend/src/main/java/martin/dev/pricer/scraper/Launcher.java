@@ -1,5 +1,6 @@
 package martin.dev.pricer.scraper;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.Deal;
 import martin.dev.pricer.data.model.Status;
 import martin.dev.pricer.data.model.Url;
@@ -7,11 +8,13 @@ import martin.dev.pricer.data.service.DealService;
 import martin.dev.pricer.data.service.StatusService;
 import martin.dev.pricer.data.service.UrlService;
 import martin.dev.pricer.discord.DiscordService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 public class Launcher {
 
     private StatusService statusService;
@@ -20,6 +23,9 @@ public class Launcher {
     private ScraperSubject scraperSubject;
 
     private DiscordService discordService;
+
+    @Value("${price.scraping.on}")
+    private boolean SCRAPING_ON;
 
     public Launcher(StatusService statusService, UrlService urlService, DealService dealService, ScraperSubject scraperSubject, DiscordService discordService) {
         this.statusService = statusService;
@@ -31,20 +37,25 @@ public class Launcher {
 
     @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
     public void scrape() {
-        Status statusReady = this.statusService.findStatusByStatus("Ready");
-        Status statusProcessing = this.statusService.findStatusByStatus("Processing");
-        Status statusDisabled = this.statusService.findStatusByStatus("Disabled");
+        if (SCRAPING_ON) {
+            Status statusReady = this.statusService.findStatusByStatus("Ready");
+            Status statusProcessing = this.statusService.findStatusByStatus("Processing");
+            Status statusDisabled = this.statusService.findStatusByStatus("Disabled");
 
-        LocalDateTime timeInPast = LocalDateTime.now().minusHours(2);
-        List<Url> urlsToScrape = this.urlService.fetchUrlByStatusAndCheckedAtBefore(statusReady, timeInPast);
-        urlsToScrape.stream()
-                .filter(Url::isReadyToScrape)
-                .forEach(url -> {
-                    this.urlService.updateUrlLastCheckedAtAndStatus(url, LocalDateTime.now(), statusProcessing);
-                    this.scraperSubject.setStoreAndUrl(url);
-                    this.scraperSubject.notifyAllObservers();
-                    this.urlService.updateUrlLastCheckedAtAndStatus(url, LocalDateTime.now(), statusReady);
-                });
+            LocalDateTime timeInPast = LocalDateTime.now().minusHours(2);
+            List<Url> urlsToScrape = this.urlService.fetchUrlByStatusAndCheckedAtBefore(statusReady, timeInPast);
+            urlsToScrape.stream()
+                    .filter(Url::isReadyToScrape)
+                    .forEach(url -> {
+                        this.urlService.updateUrlLastCheckedAtAndStatus(url, LocalDateTime.now(), statusProcessing);
+                        this.scraperSubject.setStoreAndUrl(url);
+                        this.scraperSubject.notifyAllObservers();
+                        this.urlService.updateUrlLastCheckedAtAndStatus(url, LocalDateTime.now(), statusReady);
+                    });
+        } else {
+            log.warn("Scraping is off righ now.");
+        }
+
     }
 
     @Scheduled(fixedRate = 30 * 1000, initialDelay = 2 * 1000)

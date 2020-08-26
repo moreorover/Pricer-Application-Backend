@@ -6,7 +6,7 @@ services:
       context: backend
       dockerfile: Dockerfile
     ports:
-    - "8080:8080"
+      - "8080:8080"
     restart: always
     depends_on:
       - db
@@ -15,6 +15,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: LyAGZympuR5yZfAX
       DISCORD_API_KEY: YOUR-KEY
+      PRICE_SCRAPING_ON: 'true'
     networks:
       - backend
       - frontend
