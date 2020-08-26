@@ -32,7 +32,7 @@ public class DiscordService {
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/deal/" + deal.getId())
+            embedBuilder.setTitle(deal.getItem().getName(), "http://51.178.240.249/deal/" + deal.getId())
 //            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
                     .setThumbnail(deal.getItem().getUrlObject().getStore().getLogo())
 //                    .setImage(deal.getItem().getImg())
@@ -59,7 +59,7 @@ public class DiscordService {
 
         if (channel != null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(deal.getItem().getName(), "http://51.83.87.167:8080/deal/" + deal.getId())
+            embedBuilder.setTitle(deal.getItem().getName(), "http://51.178.240.249/deal/" + deal.getId())
 //            embedBuilder.setTitle(deal.getItem().getName(), deal.getItem().getUrl())
                     .setThumbnail(deal.getItem().getUrlObject().getStore().getLogo())
                     .addField("Price", "" + deal.getItem().getLastPrice(), true)
