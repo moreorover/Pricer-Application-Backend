@@ -1,11 +1,13 @@
 #### Stage 1: Build the application
 FROM openjdk:11-jdk-slim as build
 
+RUN apt-get update && apt-get install -y dos2unix
 # Set the current working directory inside the image
 WORKDIR /app
 
 # Copy maven executable to the image
 COPY mvnw .
+RUN dos2unix mvnw
 COPY .mvn .mvn
 
 # Copy the pom.xml file
