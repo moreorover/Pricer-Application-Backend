@@ -32,3 +32,4 @@ build/
 /logs/logfile.log
 /charts/
 /lib/
+/database/
