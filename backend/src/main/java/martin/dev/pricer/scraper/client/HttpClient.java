@@ -13,6 +13,15 @@ import java.net.URL;
 @Slf4j
 public class HttpClient {
 
+    public static Document fetchUrlContent(String targetUrl) {
+        try {
+            return Jsoup.connect(targetUrl).get();
+        } catch (IOException e) {
+            log.error("Catching IO exception on: " + targetUrl);
+            return null;
+        }
+    }
+
     public static Document readContentInJsoupDocument(String target) {
         StringBuilder stingBuilderHtml = readHtmlContent(target);
         return Jsoup.parse(stingBuilderHtml.toString());

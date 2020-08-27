@@ -39,12 +39,14 @@ public class Scraper extends Observer implements ScraperInterface {
     public List<String> fetchUrlsToScrape() {
         parser.setCurrentPageUrl(scraperSubject.getUrl().getUrl());
         List<String> urlsToScrape = new ArrayList<>();
-        Document document = HttpClient.readContentInJsoupDocument(scraperSubject.getUrl().getUrl());
-        parser.setDocument(document);
-        parser.parseMaxPageNum();
-        for (int page_number = parser.getSTART_PAGE_NUMBER(); page_number <= parser.getMAX_PAGE_NUMBER(); page_number++) {
-            String url = parser.makeNextPageUrl(page_number);
-            urlsToScrape.add(url);
+        Document document = HttpClient.fetchUrlContent(scraperSubject.getUrl().getUrl());
+        if (document != null) {
+            parser.setDocument(document);
+            parser.parseMaxPageNum();
+            for (int page_number = parser.getSTART_PAGE_NUMBER(); page_number <= parser.getMAX_PAGE_NUMBER(); page_number++) {
+                String url = parser.makeNextPageUrl(page_number);
+                urlsToScrape.add(url);
+            }
         }
         return urlsToScrape;
     }
@@ -53,11 +55,13 @@ public class Scraper extends Observer implements ScraperInterface {
         urlsToScrape.forEach(url -> {
             parser.setCurrentPageUrl(url);
             log.info("Parsing: " + url);
-            Document document = HttpClient.readContentInJsoupDocument(url);
-            parser.setDocument(document);
-            parser.parseListOfAdElements();
-            List<ParsedItemDto> parsedItemModels = parser.parseItemModels();
-            parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItemDto(parsedItemDto));
+            Document document = HttpClient.fetchUrlContent(url);
+            if (document != null) {
+                parser.setDocument(document);
+                parser.parseListOfAdElements();
+                List<ParsedItemDto> parsedItemModels = parser.parseItemModels();
+                parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItemDto(parsedItemDto));
+            }
         });
     }
 }
