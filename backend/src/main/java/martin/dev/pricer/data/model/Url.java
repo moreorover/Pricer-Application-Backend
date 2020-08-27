@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 public class Url extends BaseEntity {
 
     private String url;
@@ -44,5 +43,15 @@ public class Url extends BaseEntity {
 
     public boolean isReadyToScrape() {
         return this.status.getStatus().equals("Ready") && (this.checkedAt == null || this.checkedAt.isBefore(LocalDateTime.now().minusHours(2)));
+    }
+
+    @Override
+    public String toString() {
+        return "Url{" +
+                "url='" + url + '\'' +
+                ", checkedAt=" + checkedAt +
+                ", store=" + store +
+                ", status=" + status +
+                '}';
     }
 }
