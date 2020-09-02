@@ -28,4 +28,12 @@ public class ParsedItemDto {
                 this.price <= 0
         );
     }
+
+    @Override
+    public String toString() {
+        return "ParsedItemDto{" +
+                "title='" + title + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

@@ -3,8 +3,11 @@ package martin.dev.pricer.profile;
 import martin.dev.pricer.data.repository.*;
 import martin.dev.pricer.data.service.*;
 import martin.dev.pricer.discord.DiscordService;
+import martin.dev.pricer.scraper.Scraper;
 import martin.dev.pricer.scraper.*;
+import martin.dev.pricer.scraper.parser.HSamuelParser;
 import martin.dev.pricer.scraper.parser.*;
+import martin.dev.pricer.state.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -174,5 +177,30 @@ public class LocalRdpProdProfile {
     @Bean
     public Launcher runner() {
         return new Launcher(getSqlStatusService(), getSqlUrlService(), getDealService(), getSubject(), discordBot());
+    }
+
+    @Bean
+    public ScraperReadingState scraperReadingState() {
+        return new ScraperReadingState(this.getSqlStatusService(), this.getSqlUrlService());
+    }
+
+    @Bean
+    public ScraperFetchingHtmlState scraperFetchingHtmlState() {
+        return new ScraperFetchingHtmlState();
+    }
+
+    @Bean
+    public ScraperParsingHtmlState scraperParsingHtmlState() {
+        return new ScraperParsingHtmlState();
+    }
+
+    @Bean
+    public ScraperProcessingState scraperProcessingState() {
+        return new ScraperProcessingState(this.getSqlItemService());
+    }
+
+    @Bean
+    public Begin begin() {
+        return new Begin(scraperReadingState(), scraperFetchingHtmlState(), scraperParsingHtmlState(), scraperProcessingState());
     }
 }
