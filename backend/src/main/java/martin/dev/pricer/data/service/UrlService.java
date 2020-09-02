@@ -22,8 +22,12 @@ public class UrlService {
         return this.urlRepository.findAllByStatus(status);
     }
 
-    public List<Url> fetchUrlByStatusAndCheckedAtBefore(Status status, LocalDateTime localDateTime) {
+    public List<Url> fetchUrlsByStatusAndCheckedAtBefore(Status status, LocalDateTime localDateTime) {
         return this.urlRepository.findAllByStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNull(status, localDateTime, status);
+    }
+
+    public Url fetchUrlByStatusAndCheckedAtBefore(Status status, LocalDateTime localDateTime) {
+        return this.urlRepository.findFirstByStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNullOrderByCheckedAtAsc(status, localDateTime, status);
     }
 
     public void updateUrlLastCheckedAtAndStatus(Url url, LocalDateTime checkedAt, Status status) {
