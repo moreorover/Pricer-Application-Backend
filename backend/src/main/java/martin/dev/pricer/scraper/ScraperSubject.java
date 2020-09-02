@@ -1,7 +1,6 @@
 package martin.dev.pricer.scraper;
 
 import martin.dev.pricer.data.model.Url;
-import martin.dev.pricer.scraper.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
