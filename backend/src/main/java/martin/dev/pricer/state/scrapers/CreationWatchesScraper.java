@@ -1,12 +1,7 @@
 package martin.dev.pricer.state.scrapers;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.AbstractParser;
-import martin.dev.pricer.scraper.ParserException;
-import martin.dev.pricer.scraper.ParserValidator;
 import martin.dev.pricer.state.*;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.Map;
 

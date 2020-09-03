@@ -1,9 +1,6 @@
 package martin.dev.pricer.state.scrapers;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.AbstractParser;
-import martin.dev.pricer.scraper.ParserException;
-import martin.dev.pricer.scraper.ParserValidator;
 import martin.dev.pricer.state.ScraperParser;
 import martin.dev.pricer.state.ScraperTools;
 import org.jsoup.helper.Validate;

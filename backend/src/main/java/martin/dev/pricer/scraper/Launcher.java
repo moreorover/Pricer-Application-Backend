@@ -9,7 +9,6 @@ import martin.dev.pricer.data.service.StatusService;
 import martin.dev.pricer.data.service.UrlService;
 import martin.dev.pricer.discord.DiscordService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class Launcher {
         this.discordService = discordService;
     }
 
-//    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
+    //    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
     public void scrape() {
         if (SCRAPING_ON) {
             Status statusReady = this.statusService.findStatusByStatus("Ready");
@@ -62,7 +61,7 @@ public class Launcher {
 
     }
 
-//    @Scheduled(fixedRate = 30 * 1000, initialDelay = 2 * 1000)
+    //    @Scheduled(fixedRate = 30 * 1000, initialDelay = 2 * 1000)
     public void postDealsToDiscord() {
         long amjwatches = 727982475971788862L;
         long argos = 727981213611983011L;

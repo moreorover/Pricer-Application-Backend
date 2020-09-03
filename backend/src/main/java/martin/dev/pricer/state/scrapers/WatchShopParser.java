@@ -1,17 +1,12 @@
 package martin.dev.pricer.state.scrapers;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.AbstractParser;
-import martin.dev.pricer.scraper.ParserException;
-import martin.dev.pricer.scraper.ParserValidator;
 import martin.dev.pricer.state.ScraperParser;
 import martin.dev.pricer.state.ScraperTools;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import static martin.dev.pricer.state.ScraperTools.parseIntegerFromString;
 
 @Slf4j
 public class WatchShopParser implements ScraperParser {
