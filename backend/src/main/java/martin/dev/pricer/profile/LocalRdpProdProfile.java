@@ -13,6 +13,7 @@ import martin.dev.pricer.scraper.parser.HSamuelParser;
 import martin.dev.pricer.scraper.parser.GoldSmithsParser;
 import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.scraper.parser.SimpkinsJewellersParser;
+import martin.dev.pricer.scraper.parser.SuperDrugParser;
 import martin.dev.pricer.scraper.parser.TicWatchesParser;
 import martin.dev.pricer.scraper.parser.WatchShopParser;
 import martin.dev.pricer.scraper.parser.WatchoParser;
@@ -291,6 +292,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper SuperDrugScraper() {
+        return new SuperDrugScraper("Superdrug", new martin.dev.pricer.state.scrapers.SuperDrugParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
@@ -303,6 +309,7 @@ public class LocalRdpProdProfile {
         scraperList.add(WatchoScraper());
         scraperList.add(SimpkinsJewellersScraper());
         scraperList.add(ArgosScraper());
+        scraperList.add(SuperDrugScraper());
         return scraperList;
     }
 
