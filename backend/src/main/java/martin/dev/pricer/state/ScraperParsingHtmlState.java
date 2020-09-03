@@ -64,6 +64,7 @@ public class ScraperParsingHtmlState extends ScraperState {
             scraper.fetchHtml();
         } else {
             log.info("That was the last page.");
+            scraper.changeState(State.ReadingDatabase);
         }
     }
 }
