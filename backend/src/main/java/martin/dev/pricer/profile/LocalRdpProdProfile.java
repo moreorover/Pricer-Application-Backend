@@ -1,22 +1,9 @@
 package martin.dev.pricer.profile;
 
+import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.repository.*;
 import martin.dev.pricer.data.service.*;
 import martin.dev.pricer.discord.DiscordService;
-import martin.dev.pricer.scraper.Scraper;
-import martin.dev.pricer.scraper.*;
-import martin.dev.pricer.scraper.parser.ArgosParser;
-import martin.dev.pricer.scraper.parser.CreationWatchesParser;
-import martin.dev.pricer.scraper.parser.ErnestJonesParser;
-import martin.dev.pricer.scraper.parser.FirstClassWatchesParser;
-import martin.dev.pricer.scraper.parser.HSamuelParser;
-import martin.dev.pricer.scraper.parser.GoldSmithsParser;
-import martin.dev.pricer.scraper.parser.*;
-import martin.dev.pricer.scraper.parser.SimpkinsJewellersParser;
-import martin.dev.pricer.scraper.parser.SuperDrugParser;
-import martin.dev.pricer.scraper.parser.TicWatchesParser;
-import martin.dev.pricer.scraper.parser.WatchShopParser;
-import martin.dev.pricer.scraper.parser.WatchoParser;
 import martin.dev.pricer.state.*;
 import martin.dev.pricer.state.scrapers.*;
 import net.dv8tion.jda.api.JDA;
@@ -25,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
@@ -35,6 +23,7 @@ import java.util.Map;
 
 @Profile("local-rdp-prod")
 @Configuration
+@Slf4j
 public class LocalRdpProdProfile {
 
     private final StatusRepository statusRepository;
@@ -45,6 +34,9 @@ public class LocalRdpProdProfile {
 
     @Value("${discord.api.key}")
     private String DiscordApiKey;
+
+    @Value("${price.scraping.on}")
+    private boolean SCRAPING_ON;
 
     public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
@@ -87,100 +79,6 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
-    public ScraperSubject scraperSubject() {
-        return new ScraperSubject();
-    }
-
-    @Bean
-    public AbstractParser AMJWatchesParser() {
-        return new AMJWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser ArgosParser() {
-        return new ArgosParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser CreationWatchesParser() {
-        return new CreationWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser DebenhamsParser() {
-        return new DebenhamsParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser ErnestJonesParser() {
-        return new ErnestJonesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser FirstClassWatchesParser() {
-        return new FirstClassWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser GoldSmithsParser() {
-        return new GoldSmithsParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser HSamuelParser() {
-        return new HSamuelParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser SuperDrugParser() {
-        return new SuperDrugParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser TicWatchesParser() {
-        return new TicWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser WatchoParser() {
-        return new WatchoParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser WatchShopParser() {
-        return new WatchShopParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser SimpkinsJewellersParser() {
-        return new SimpkinsJewellersParser(getParserValidator());
-    }
-
-    @Bean
-    public ScraperSubject getSubject() {
-        ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
-        new Scraper(subject, ArgosParser(), getSqlItemService());
-        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
-        new Scraper(subject, DebenhamsParser(), getSqlItemService());
-        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
-        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
-        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
-        new Scraper(subject, HSamuelParser(), getSqlItemService());
-        new Scraper(subject, SuperDrugParser(), getSqlItemService());
-        new Scraper(subject, TicWatchesParser(), getSqlItemService());
-        new Scraper(subject, WatchoParser(), getSqlItemService());
-        new Scraper(subject, WatchShopParser(), getSqlItemService());
-        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
-        return subject;
-    }
-
-    @Bean
-    public ParserValidator getParserValidator() {
-        return new JsoupValidator(getParserErrorService());
-    }
-
-    @Bean
     public DiscordService discordBot() {
         try {
             JDA jda = JDABuilder.createDefault(DiscordApiKey).build();
@@ -189,11 +87,6 @@ public class LocalRdpProdProfile {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Bean
-    public Launcher runner() {
-        return new Launcher(getSqlStatusService(), getSqlUrlService(), getDealService(), getSubject(), discordBot());
     }
 
     @Bean
@@ -313,8 +206,12 @@ public class LocalRdpProdProfile {
         return scraperList;
     }
 
-    @Bean
-    public Begin begin() {
-        return new Begin(scraperList());
+    @Scheduled(fixedRate = 40 * 1000)
+    public void nudgeScrapers() {
+        if (SCRAPING_ON) {
+            log.info("Notifying each scraper to fetch URL");
+            this.scraperList().forEach(martin.dev.pricer.state.Scraper::fetchUrl);
+        }
+
     }
 }
