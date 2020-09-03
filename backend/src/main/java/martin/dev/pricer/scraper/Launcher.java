@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +27,9 @@ public class Launcher {
 
     @Value("${price.scraping.on}")
     private boolean SCRAPING_ON;
+
+    @Value("${price.discord.posting.on}")
+    private boolean DISCORD_POSTING_ON;
 
     public Launcher(StatusService statusService, UrlService urlService, DealService dealService, ScraperSubject scraperSubject, DiscordService discordService) {
         this.statusService = statusService;
@@ -79,8 +83,13 @@ public class Launcher {
         long xl = 727983602658443345L;
         long seiko = 727990059831132190L;
 
+        List<Deal> dealsToPost;
 
-        List<Deal> dealsToPost = this.dealService.fetchDealsToPostToDiscord();
+        if (DISCORD_POSTING_ON) {
+            dealsToPost = this.dealService.fetchDealsToPostToDiscord();
+        } else {
+            dealsToPost = new ArrayList<>();
+        }
 
         dealsToPost.forEach(deal -> {
             if (deal.getItem().getLastDelta() <= -20 && deal.getItem().getLastDelta() > -30) {
