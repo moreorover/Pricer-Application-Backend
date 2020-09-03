@@ -60,6 +60,7 @@ public class ArgosParser implements ScraperParser {
 
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
+        //TODO webclient needs JS support to render image
 //        try {
 //            Element imgElement = adInJsoupHtml.selectFirst("div[class*=ImageWrapper]");
 //            imgElement = imgElement.selectFirst("picture");
