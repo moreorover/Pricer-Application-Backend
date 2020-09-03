@@ -17,6 +17,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Profile("local-rdp-prod")
 @Configuration
@@ -200,7 +204,29 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public Map<State, ScraperState> singleAdScraperStateFactory() {
+        Map<State, ScraperState> availableStates = new HashMap<>();
+        availableStates.put(State.ReadingDatabase, scraperReadingState());
+        availableStates.put(State.FetchingHtml, scraperFetchingHtmlState());
+        availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
+        availableStates.put(State.ProcessingAds, scraperProcessingState());
+        return availableStates;
+    }
+
+    @Bean
+    public martin.dev.pricer.state.Scraper HSamuelScraper() {
+        return new HSamuelScraper("H. Samuel", new martin.dev.pricer.state.HSamuelParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public List<martin.dev.pricer.state.Scraper> scraperList() {
+        List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
+        scraperList.add(HSamuelScraper());
+        return scraperList;
+    }
+
+    @Bean
     public Begin begin() {
-        return new Begin(scraperReadingState(), scraperFetchingHtmlState(), scraperParsingHtmlState(), scraperProcessingState());
+        return new Begin(scraperList());
     }
 }
