@@ -13,6 +13,8 @@ import java.util.Map;
 @Data
 public abstract class Scraper {
 
+    private String name;
+
     private ScraperParser scraperParser;
     private ScraperState scraperState;
     private Map<State, ScraperState> availableScraperStates;
@@ -24,7 +26,8 @@ public abstract class Scraper {
     private String currentPageUrl;
     private int currentPageNumber;
 
-    public Scraper(ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+    public Scraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+        this.name = name;
         this.scraperParser = scraperParser;
         this.scraperState = startingScraperState;
         this.availableScraperStates = availableScraperStates;
