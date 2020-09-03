@@ -16,7 +16,10 @@ public class ScraperProcessingState extends ScraperState {
     public void processItems(Scraper scraper) {
         log.info("Found this many valid items: " + scraper.getItems().size());
 
-        scraper.getItems().forEach(parsedItemDto -> itemService.processParsedItemDto(parsedItemDto));
+        scraper.getItems().forEach(parsedItemDto -> {
+            itemService.processParsedItemDto(parsedItemDto);
+//            System.out.println(parsedItemDto.toString());
+        });
         scraper.getItems().clear();
         scraper.changeState(State.ParsingHtml);
         scraper.nextPage();
