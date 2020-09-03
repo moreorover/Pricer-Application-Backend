@@ -8,6 +8,7 @@ import martin.dev.pricer.scraper.*;
 import martin.dev.pricer.scraper.parser.HSamuelParser;
 import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.state.*;
+import martin.dev.pricer.state.scrapers.HSamuelScraper;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -217,7 +218,7 @@ public class LocalRdpProdProfile {
 
     @Bean
     public martin.dev.pricer.state.Scraper HSamuelScraper() {
-        return new HSamuelScraper("H. Samuel", new martin.dev.pricer.state.HSamuelParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new HSamuelScraper("H. Samuel", new martin.dev.pricer.state.scrapers.HSamuelParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean

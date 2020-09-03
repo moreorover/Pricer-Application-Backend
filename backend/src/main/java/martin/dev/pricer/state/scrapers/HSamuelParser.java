@@ -1,5 +1,7 @@
-package martin.dev.pricer.state;
+package martin.dev.pricer.state.scrapers;
 
+import martin.dev.pricer.state.ScraperParser;
+import martin.dev.pricer.state.ScraperTools;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

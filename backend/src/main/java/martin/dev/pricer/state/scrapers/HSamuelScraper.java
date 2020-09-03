@@ -1,4 +1,6 @@
-package martin.dev.pricer.state;
+package martin.dev.pricer.state.scrapers;
+
+import martin.dev.pricer.state.*;
 
 import java.util.Map;
 
