@@ -9,6 +9,7 @@ import martin.dev.pricer.scraper.parser.CreationWatchesParser;
 import martin.dev.pricer.scraper.parser.ErnestJonesParser;
 import martin.dev.pricer.scraper.parser.FirstClassWatchesParser;
 import martin.dev.pricer.scraper.parser.HSamuelParser;
+import martin.dev.pricer.scraper.parser.GoldSmithsParser;
 import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.scraper.parser.WatchShopParser;
 import martin.dev.pricer.state.*;
@@ -246,6 +247,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper GoldSmithsScraper() {
+        return new GoldSmithsScraper("Gold Smiths", new martin.dev.pricer.state.scrapers.GoldSmithsParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
@@ -253,6 +259,7 @@ public class LocalRdpProdProfile {
         scraperList.add(FirstClassWatchesScraper());
         scraperList.add(ErnestJonesScraper());
         scraperList.add(WatchShopScraper());
+        scraperList.add(GoldSmithsScraper());
         return scraperList;
     }
 
