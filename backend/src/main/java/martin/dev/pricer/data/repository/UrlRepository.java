@@ -19,4 +19,6 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
 
     Url findFirstByStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNullOrderByCheckedAtAsc(Status status, LocalDateTime checkedAt, Status status2);
 
+    Url findFirstByStore_NameAndStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNullOrderByCheckedAtAsc(String store_name, Status status, LocalDateTime checkedAt, Status status2);
+
 }

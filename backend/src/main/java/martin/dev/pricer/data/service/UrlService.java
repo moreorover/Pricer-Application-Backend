@@ -30,6 +30,10 @@ public class UrlService {
         return this.urlRepository.findFirstByStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNullOrderByCheckedAtAsc(status, localDateTime, status);
     }
 
+    public Url fetchUrlByStoreNameAndStatusAndCheckedAtBefore(String storeName, Status status, LocalDateTime localDateTime) {
+        return this.urlRepository.findFirstByStore_NameAndStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNullOrderByCheckedAtAsc(storeName, status, localDateTime, status);
+    }
+
     public void updateUrlLastCheckedAtAndStatus(Url url, LocalDateTime checkedAt, Status status) {
         url.setCheckedAt(checkedAt);
         url.setStatus(status);

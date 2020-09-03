@@ -20,15 +20,15 @@ public class ScraperReadingState extends ScraperState {
     @Override
     public void fetchUrl(Scraper scraper) {
         Status statusReady = this.statusService.findStatusByStatus("Ready");
-//        Status statusProcessing = this.statusService.findStatusByStatus("Processing");
-//        Status statusDisabled = this.statusService.findStatusByStatus("Disabled");
 
         LocalDateTime timeInPast = LocalDateTime.now().minusHours(2);
 
-        Url url = this.urlService.fetchUrlByStatusAndCheckedAtBefore(statusReady, timeInPast);
-        scraper.setUrl(url);
-        scraper.setCurrentPageUrl(url.getUrl());
-        scraper.changeState(State.FetchingHtml);
-        scraper.fetchHtml();
+        Url url = this.urlService.fetchUrlByStoreNameAndStatusAndCheckedAtBefore(scraper.getName(), statusReady, timeInPast);
+        if (url != null) {
+            scraper.setUrl(url);
+            scraper.setCurrentPageUrl(url.getUrl());
+            scraper.changeState(State.FetchingHtml);
+            scraper.fetchHtml();
+        }
     }
 }
