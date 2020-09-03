@@ -5,13 +5,14 @@ import martin.dev.pricer.data.service.*;
 import martin.dev.pricer.discord.DiscordService;
 import martin.dev.pricer.scraper.Scraper;
 import martin.dev.pricer.scraper.*;
+import martin.dev.pricer.scraper.parser.CreationWatchesParser;
+import martin.dev.pricer.scraper.parser.ErnestJonesParser;
+import martin.dev.pricer.scraper.parser.FirstClassWatchesParser;
 import martin.dev.pricer.scraper.parser.HSamuelParser;
 import martin.dev.pricer.scraper.parser.*;
+import martin.dev.pricer.scraper.parser.WatchShopParser;
 import martin.dev.pricer.state.*;
-import martin.dev.pricer.state.scrapers.CreationWatchesScraper;
-import martin.dev.pricer.state.scrapers.ErnestJonesScraper;
-import martin.dev.pricer.state.scrapers.FirstClassWatchesScraper;
-import martin.dev.pricer.state.scrapers.HSamuelScraper;
+import martin.dev.pricer.state.scrapers.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -240,12 +241,18 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper WatchShopScraper() {
+        return new WatchShopScraper("Watch Shop", new martin.dev.pricer.state.scrapers.WatchShopParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
         scraperList.add(CreationWatchesScraper());
         scraperList.add(FirstClassWatchesScraper());
         scraperList.add(ErnestJonesScraper());
+        scraperList.add(WatchShopScraper());
         return scraperList;
     }
 
