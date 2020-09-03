@@ -5,6 +5,7 @@ import martin.dev.pricer.data.service.*;
 import martin.dev.pricer.discord.DiscordService;
 import martin.dev.pricer.scraper.Scraper;
 import martin.dev.pricer.scraper.*;
+import martin.dev.pricer.scraper.parser.ArgosParser;
 import martin.dev.pricer.scraper.parser.CreationWatchesParser;
 import martin.dev.pricer.scraper.parser.ErnestJonesParser;
 import martin.dev.pricer.scraper.parser.FirstClassWatchesParser;
@@ -285,6 +286,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper ArgosScraper() {
+        return new ArgosScraper("Argos", new martin.dev.pricer.state.scrapers.ArgosParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
@@ -296,6 +302,7 @@ public class LocalRdpProdProfile {
         scraperList.add(TicWatchesScraper());
         scraperList.add(WatchoScraper());
         scraperList.add(SimpkinsJewellersScraper());
+        scraperList.add(ArgosScraper());
         return scraperList;
     }
 
