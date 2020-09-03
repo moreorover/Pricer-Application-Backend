@@ -18,7 +18,7 @@ public class ScraperProcessingState extends ScraperState {
 
         scraper.getItems().forEach(parsedItemDto -> {
             itemService.processParsedItemDto(parsedItemDto);
-//            System.out.println(parsedItemDto.toString());
+            System.out.println(parsedItemDto.toString());
         });
         scraper.getItems().clear();
         scraper.changeState(State.ParsingHtml);
