@@ -80,7 +80,7 @@ public class ItemService {
         item.setUpc(parsedItemDto.getUpc());
         item.setName(parsedItemDto.getTitle());
         item.setUrl(parsedItemDto.getUrl());
-        if (!parsedItemDto.getImg().equals("")){
+        if (!parsedItemDto.getImg().equals("")) {
             item.setImg(parsedItemDto.getImg());
         }
         item.setFoundWhere(parsedItemDto.getUrlFound());
@@ -120,7 +120,7 @@ public class ItemService {
         return this.itemRepository.save(item);
     }
 
-    public List<Item> fetchItemsByDealLessThanZero(int pageNumber, int pageSize){
+    public List<Item> fetchItemsByDealLessThanZero(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
         return itemRepository.findAllByDeltaIsLessThanOrderByFoundTimeDesc(0.0, pageable);
     }

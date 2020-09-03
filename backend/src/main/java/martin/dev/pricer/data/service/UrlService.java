@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class UrlService {
 
-    private UrlRepository urlRepository;
+    private final UrlRepository urlRepository;
 
     public UrlService(UrlRepository urlRepository) {
         this.urlRepository = urlRepository;

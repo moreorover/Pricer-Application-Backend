@@ -30,7 +30,7 @@ public class DealController {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-//    private DealRepository dealRepository;
+    //    private DealRepository dealRepository;
 //
 //    public DealController(DealRepository dealRepository) {
 //        this.dealRepository = dealRepository;
@@ -38,10 +38,11 @@ public class DealController {
 //
     @GetMapping
     public ResponseEntity<List<DealDtoParent>> getDeals(@RequestParam(required = false, defaultValue = "1") int page,
-                                               @RequestParam(required = false, defaultValue = "50") int size) {
+                                                        @RequestParam(required = false, defaultValue = "50") int size) {
 
         List<Deal> deals = this.dealService.fetchAllDealsOderedByFounded(page, size);
-        Type listType = new TypeToken<List<DealDtoParent>>() {}.getType();
+        Type listType = new TypeToken<List<DealDtoParent>>() {
+        }.getType();
         List<DealDtoParent> dealDtos = modelMapper.map(deals, listType);
         return new ResponseEntity<>(dealDtos, HttpStatus.OK);
     }
@@ -55,7 +56,8 @@ public class DealController {
 //        List<DealDto> dealDtos = modelMapper.map(deals, listType);
         return new ResponseEntity<>(deals, HttpStatus.OK);
     }
-//
+
+    //
 //    @GetMapping("/store")
 //    public ResponseEntity<List<Deal>> getDealsByStore(@RequestParam(required = true) String storeId,
 //                                                      @RequestParam(required = false, defaultValue = "1") int page,

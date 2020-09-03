@@ -21,7 +21,7 @@ public class AppConfig implements SchedulingConfigurer {
         scheduledTaskRegistrar.setScheduler(taskExecutor());
     }
 
-    @Bean(destroyMethod="shutdown")
+    @Bean(destroyMethod = "shutdown")
     public Executor taskExecutor() {
         return Executors.newScheduledThreadPool(4);
     }

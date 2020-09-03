@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StatusService {
 
-    private StatusRepository statusRepository;
+    private final StatusRepository statusRepository;
 
     public StatusService(StatusRepository statusRepository) {
         this.statusRepository = statusRepository;

@@ -21,11 +21,11 @@ import javax.security.auth.login.LoginException;
 @Slf4j
 public class RemoteRdpProdProfile {
 
-    private StatusRepository statusRepository;
-    private UrlRepository urlRepository;
-    private ItemRepository itemRepository;
-    private ParserErrorRepository parserErrorRepository;
-    private DealRepository dealRepository;
+    private final StatusRepository statusRepository;
+    private final UrlRepository urlRepository;
+    private final ItemRepository itemRepository;
+    private final ParserErrorRepository parserErrorRepository;
+    private final DealRepository dealRepository;
 
     @Value("${discord.api.key}")
     private String DiscordApiKey;
@@ -66,7 +66,9 @@ public class RemoteRdpProdProfile {
     }
 
     @Bean
-    public DealService getDealService() { return new DealService(dealRepository); }
+    public DealService getDealService() {
+        return new DealService(dealRepository);
+    }
 
     @Bean
     public ScraperSubject scraperSubject() {

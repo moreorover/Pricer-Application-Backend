@@ -26,12 +26,12 @@ public class TicWatchesParser extends AbstractParser {
     @Override
     public void parseListOfAdElements() {
         try {
-        Elements parsedElements = getDocument().select("li[class^=col]");
-        getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
-        setElements(parsedElements);
-    } catch (ParserException e) {
-        setElements(new Elements());
-    }
+            Elements parsedElements = getDocument().select("li[class^=col]");
+            getParserValidator().validate(parsedElements, 1, "parseListOfAdElements", this);
+            setElements(parsedElements);
+        } catch (ParserException e) {
+            setElements(new Elements());
+        }
     }
 
     @Override
@@ -55,73 +55,73 @@ public class TicWatchesParser extends AbstractParser {
 
     @Override
     public String parseTitle(Element adInJsoupHtml) {
-    try {
-        Element titleElement = adInJsoupHtml.selectFirst("a");
-        getParserValidator().validate(titleElement, 1, "parseTitle", this);
-        String title = titleElement.attr("title");
-        getParserValidator().validate(title, 2, "parseTitle", this);
+        try {
+            Element titleElement = adInJsoupHtml.selectFirst("a");
+            getParserValidator().validate(titleElement, 1, "parseTitle", this);
+            String title = titleElement.attr("title");
+            getParserValidator().validate(title, 2, "parseTitle", this);
 
-        return title;
-    } catch (ParserException e) {
-        return "";
+            return title;
+        } catch (ParserException e) {
+            return "";
         }
     }
 
     @Override
     public String parseUpc(Element adInJsoupHtml) {
-    try{
-        Element upcElement = adInJsoupHtml.selectFirst("div");
-        getParserValidator().validate(upcElement, 1, "parseUpc", this);
-        String upc = upcElement.attr("data-infid");
-        getParserValidator().validate(upc, 2, "parseUpc", this);
+        try {
+            Element upcElement = adInJsoupHtml.selectFirst("div");
+            getParserValidator().validate(upcElement, 1, "parseUpc", this);
+            String upc = upcElement.attr("data-infid");
+            getParserValidator().validate(upc, 2, "parseUpc", this);
 
-        return getPREFIX() + upc;
+            return getPREFIX() + upc;
         } catch (ParserException e) {
-        return "";
+            return "";
         }
     }
 
     @Override
     public Double parsePrice(Element adInJsoupHtml) {
-    try{
-        Element priceElement = adInJsoupHtml.selectFirst("span[class=product-content__price--inc]");
-        getParserValidator().validate(priceElement, 1, "parsePrice", this);
-        String priceString = priceElement.text();
-        getParserValidator().validate(priceString, 2, "parsePrice", this);
-        Double price = parseDoubleFromString(priceString);
-        getParserValidator().validate(price, 3, "parsePrice", this);
+        try {
+            Element priceElement = adInJsoupHtml.selectFirst("span[class=product-content__price--inc]");
+            getParserValidator().validate(priceElement, 1, "parsePrice", this);
+            String priceString = priceElement.text();
+            getParserValidator().validate(priceString, 2, "parsePrice", this);
+            Double price = parseDoubleFromString(priceString);
+            getParserValidator().validate(price, 3, "parsePrice", this);
 
-        return price;
+            return price;
         } catch (ParserException e) {
-        return 0.0;
+            return 0.0;
         }
     }
 
     @Override
     public String parseImage(Element adInJsoupHtml) {
-    try{
-        Element imgElement = adInJsoupHtml.selectFirst("img");
-        getParserValidator().validate(imgElement, 1, "parseImage", this);
-        String imgSrc = imgElement.attr("data-src");
-        getParserValidator().validate(imgSrc, 2, "parseImage", this);
+        try {
+            Element imgElement = adInJsoupHtml.selectFirst("img");
+            getParserValidator().validate(imgElement, 1, "parseImage", this);
+            String imgSrc = imgElement.attr("data-src");
+            getParserValidator().validate(imgSrc, 2, "parseImage", this);
 
-        return getBASE_URL() + imgSrc;
+            return getBASE_URL() + imgSrc;
         } catch (ParserException e) {
-        return "";
+            return "";
         }
     }
 
     @Override
     public String parseUrl(Element adInJsoupHtml) {
-    try{
-        Element aElement = adInJsoupHtml.selectFirst("a");
-        getParserValidator().validate(aElement, 1, "parseUrl", this);
-        String url = aElement.attr("href");
-        getParserValidator().validate(url, 2, "parseUrl", this);
+        try {
+            Element aElement = adInJsoupHtml.selectFirst("a");
+            getParserValidator().validate(aElement, 1, "parseUrl", this);
+            String url = aElement.attr("href");
+            getParserValidator().validate(url, 2, "parseUrl", this);
 
-        return url;
+            return url;
         } catch (ParserException e) {
-        return "";
+            return "";
         }
     }
 }

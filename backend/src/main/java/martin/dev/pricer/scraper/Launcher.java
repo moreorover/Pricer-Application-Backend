@@ -18,12 +18,12 @@ import java.util.List;
 @Slf4j
 public class Launcher {
 
-    private StatusService statusService;
-    private UrlService urlService;
-    private DealService dealService;
-    private ScraperSubject scraperSubject;
+    private final StatusService statusService;
+    private final UrlService urlService;
+    private final DealService dealService;
+    private final ScraperSubject scraperSubject;
 
-    private DiscordService discordService;
+    private final DiscordService discordService;
 
     @Value("${price.scraping.on}")
     private boolean SCRAPING_ON;

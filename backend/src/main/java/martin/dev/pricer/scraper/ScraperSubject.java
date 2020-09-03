@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScraperSubject {
-    private List<Observer> observers = new ArrayList<Observer>();
+    private final List<Observer> observers = new ArrayList<Observer>();
 
     private Url url;
 

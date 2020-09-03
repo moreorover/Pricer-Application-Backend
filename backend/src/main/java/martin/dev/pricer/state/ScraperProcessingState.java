@@ -6,7 +6,7 @@ import martin.dev.pricer.data.service.ItemService;
 @Slf4j
 public class ScraperProcessingState extends ScraperState {
 
-    private ItemService itemService;
+    private final ItemService itemService;
 
     public ScraperProcessingState(ItemService itemService) {
         this.itemService = itemService;

@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 public class ScraperReadingState extends ScraperState {
 
-    private StatusService statusService;
-    private UrlService urlService;
+    private final StatusService statusService;
+    private final UrlService urlService;
 
     public ScraperReadingState(StatusService statusService, UrlService urlService) {
         this.statusService = statusService;

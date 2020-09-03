@@ -12,10 +12,10 @@ import java.util.List;
 @Slf4j
 public class Scraper extends Observer implements ScraperInterface {
 
-    private ScraperSubject scraperSubject;
+    private final ScraperSubject scraperSubject;
 
-    private AbstractParser parser;
-    private ItemService itemService;
+    private final AbstractParser parser;
+    private final ItemService itemService;
 
     public Scraper(ScraperSubject scraperSubject, AbstractParser parser, ItemService itemService) {
         this.scraperSubject = scraperSubject;

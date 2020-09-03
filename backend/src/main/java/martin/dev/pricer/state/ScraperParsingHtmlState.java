@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ScraperParsingHtmlState extends ScraperState {
 
-    private StatusService statusService;
-    private UrlService urlService;
+    private final StatusService statusService;
+    private final UrlService urlService;
 
     public ScraperParsingHtmlState(StatusService statusService, UrlService urlService) {
         this.statusService = statusService;

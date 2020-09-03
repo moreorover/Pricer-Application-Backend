@@ -19,11 +19,11 @@ import javax.security.auth.login.LoginException;
 @Configuration
 public class LocalDevProfile {
 
-    private StatusRepository statusRepository;
-    private UrlRepository urlRepository;
-    private ItemRepository itemRepository;
-    private ParserErrorRepository parserErrorRepository;
-    private DealRepository dealRepository;
+    private final StatusRepository statusRepository;
+    private final UrlRepository urlRepository;
+    private final ItemRepository itemRepository;
+    private final ParserErrorRepository parserErrorRepository;
+    private final DealRepository dealRepository;
 
     @Value("${discord.api.key}")
     private String DiscordApiKey;
@@ -64,7 +64,9 @@ public class LocalDevProfile {
     }
 
     @Bean
-    public DealService getDealService() { return new DealService(dealRepository); }
+    public DealService getDealService() {
+        return new DealService(dealRepository);
+    }
 
     @Bean
     public ScraperSubject scraperSubject() {

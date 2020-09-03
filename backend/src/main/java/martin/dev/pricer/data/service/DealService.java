@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class DealService {
 
-    private DealRepository dealRepository;
+    private final DealRepository dealRepository;
 
     public DealService(DealRepository dealRepository) {
         this.dealRepository = dealRepository;
