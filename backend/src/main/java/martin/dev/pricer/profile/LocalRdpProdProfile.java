@@ -9,6 +9,7 @@ import martin.dev.pricer.scraper.parser.HSamuelParser;
 import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.state.*;
 import martin.dev.pricer.state.scrapers.CreationWatchesScraper;
+import martin.dev.pricer.state.scrapers.ErnestJonesScraper;
 import martin.dev.pricer.state.scrapers.FirstClassWatchesScraper;
 import martin.dev.pricer.state.scrapers.HSamuelScraper;
 import net.dv8tion.jda.api.JDA;
@@ -234,11 +235,17 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper ErnestJonesScraper() {
+        return new ErnestJonesScraper("Ernest Jones", new martin.dev.pricer.state.scrapers.ErnestJonesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
         scraperList.add(CreationWatchesScraper());
         scraperList.add(FirstClassWatchesScraper());
+        scraperList.add(ErnestJonesScraper());
         return scraperList;
     }
 
