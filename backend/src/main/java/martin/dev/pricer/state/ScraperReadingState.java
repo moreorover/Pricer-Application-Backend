@@ -20,11 +20,13 @@ public class ScraperReadingState extends ScraperState {
     @Override
     public void fetchUrl(Scraper scraper) {
         Status statusReady = this.statusService.findStatusByStatus("Ready");
+        Status statusProcessing = this.statusService.findStatusByStatus("Processing");
 
         LocalDateTime timeInPast = LocalDateTime.now().minusHours(2);
 
         Url url = this.urlService.fetchUrlByStoreNameAndStatusAndCheckedAtBefore(scraper.getName(), statusReady, timeInPast);
         if (url != null) {
+            this.urlService.updateUrlLastCheckedAtAndStatus(url, url.getCheckedAt(), statusProcessing);
             scraper.setUrl(url);
             scraper.setCurrentPageUrl(url.getUrl());
             scraper.changeState(State.FetchingHtml);

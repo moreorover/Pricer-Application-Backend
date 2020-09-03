@@ -1,6 +1,9 @@
 package martin.dev.pricer.state;
 
 import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.data.model.Status;
+import martin.dev.pricer.data.service.StatusService;
+import martin.dev.pricer.data.service.UrlService;
 import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
@@ -12,6 +15,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ScraperParsingHtmlState extends ScraperState {
+
+    private StatusService statusService;
+    private UrlService urlService;
+
+    public ScraperParsingHtmlState(StatusService statusService, UrlService urlService) {
+        this.statusService = statusService;
+        this.urlService = urlService;
+    }
 
     @Override
     public void validateResponse(Scraper scraper) {
@@ -64,6 +75,8 @@ public class ScraperParsingHtmlState extends ScraperState {
             scraper.fetchHtml();
         } else {
             log.info("That was the last page.");
+            Status statusReady = this.statusService.findStatusByStatus("Ready");
+            this.urlService.updateUrlLastCheckedAtAndStatus(scraper.getUrl(), LocalDateTime.now(), statusReady);
             scraper.changeState(State.ReadingDatabase);
         }
     }
