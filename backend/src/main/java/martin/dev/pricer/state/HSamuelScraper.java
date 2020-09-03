@@ -4,8 +4,8 @@ import java.util.Map;
 
 public class HSamuelScraper extends Scraper {
 
-    public HSamuelScraper(ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(scraperParser, startingScraperState, availableScraperStates);
+    public HSamuelScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+        super(name, scraperParser, startingScraperState, availableScraperStates);
     }
 
     @Override
