@@ -1,16 +1,41 @@
 package martin.dev.pricer.state;
 
-public interface ScraperState {
+import lombok.extern.slf4j.Slf4j;
 
-    void fetchUrl(Scraper scraper);
-    void fetchHtml(Scraper scraper);
-    void validateResponse(Scraper scraper);
-    void parseResponseToAds(Scraper scraper);
-    void validateAds(Scraper scraper);
-    void parseAdsToItems(Scraper scraper);
-    void validateItems(Scraper scraper);
-    void processItems(Scraper scraper);
-    void writeItems(Scraper scraper);
-    void sendItems(Scraper scraper);
-    void nextPage(Scraper scraper);
+@Slf4j
+public abstract class ScraperState {
+
+    void fetchUrl(Scraper scraper) {
+        log.error("Calling an empty fetchUrl method!");
+    };
+    void fetchHtml(Scraper scraper) {
+        log.error("Calling an empty fetchHtml method!");
+    };
+    void validateResponse(Scraper scraper) {
+        log.error("Calling an empty validateResponse method!");
+    };
+    void parseResponseToAds(Scraper scraper) {
+        log.error("Calling an empty parseResponseToAds method!");
+    };
+    void validateAds(Scraper scraper) {
+        log.error("Calling an empty validateAds method!");
+    };
+    void parseAdsToItems(Scraper scraper) {
+        log.error("Calling an empty parseAdsToItems method!");
+    };
+    void validateItems(Scraper scraper) {
+        log.error("Calling an empty validateItems method!");
+    };
+    void processItems(Scraper scraper) {
+        log.error("Calling an empty processItems method!");
+    };
+    void writeItems(Scraper scraper) {
+        log.error("Calling an empty writeItems method!");
+    };
+    void sendItems(Scraper scraper) {
+        log.error("Calling an empty sendItems method!");
+    };
+    void nextPage(Scraper scraper) {
+        log.error("Calling an empty nextPage method!");
+    };
 }

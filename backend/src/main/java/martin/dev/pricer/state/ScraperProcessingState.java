@@ -4,47 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.service.ItemService;
 
 @Slf4j
-public class ScraperProcessingState implements ScraperState {
+public class ScraperProcessingState extends ScraperState {
 
     private ItemService itemService;
 
     public ScraperProcessingState(ItemService itemService) {
         this.itemService = itemService;
-    }
-
-    @Override
-    public void fetchUrl(Scraper scraper) {
-
-    }
-
-    @Override
-    public void fetchHtml(Scraper scraper) {
-
-    }
-
-    @Override
-    public void validateResponse(Scraper scraper) {
-
-    }
-
-    @Override
-    public void parseResponseToAds(Scraper scraper) {
-
-    }
-
-    @Override
-    public void validateAds(Scraper scraper) {
-
-    }
-
-    @Override
-    public void parseAdsToItems(Scraper scraper) {
-
-    }
-
-    @Override
-    public void validateItems(Scraper scraper) {
-
     }
 
     @Override
@@ -55,20 +20,5 @@ public class ScraperProcessingState implements ScraperState {
         scraper.getItems().clear();
         scraper.changeState(State.ParsingHtml);
         scraper.nextPage();
-    }
-
-    @Override
-    public void writeItems(Scraper scraper) {
-
-    }
-
-    @Override
-    public void sendItems(Scraper scraper) {
-
-    }
-
-    @Override
-    public void nextPage(Scraper scraper) {
-
     }
 }

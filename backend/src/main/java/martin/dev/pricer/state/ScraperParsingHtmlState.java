@@ -11,16 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class ScraperParsingHtmlState implements ScraperState {
-    @Override
-    public void fetchUrl(Scraper scraper) {
-
-    }
-
-    @Override
-    public void fetchHtml(Scraper scraper) {
-
-    }
+public class ScraperParsingHtmlState extends ScraperState {
 
     @Override
     public void validateResponse(Scraper scraper) {
@@ -62,26 +53,6 @@ public class ScraperParsingHtmlState implements ScraperState {
         scraper.getItems().addAll(parsedItemDtos);
         scraper.changeState(State.ProcessingAds);
         scraper.processItems();
-    }
-
-    @Override
-    public void validateItems(Scraper scraper) {
-
-    }
-
-    @Override
-    public void processItems(Scraper scraper) {
-
-    }
-
-    @Override
-    public void writeItems(Scraper scraper) {
-
-    }
-
-    @Override
-    public void sendItems(Scraper scraper) {
-
     }
 
     @Override
