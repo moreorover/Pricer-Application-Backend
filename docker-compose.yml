@@ -2,6 +2,7 @@ version: '3'
 
 services:
   backend:
+    container_name: pricer-backend
     build:
       context: backend
       dockerfile: Dockerfile
@@ -14,13 +15,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/pricer
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: LyAGZympuR5yZfAX
+      SPRING_DATASOURCE_PLATFORM: mariadb
       DISCORD_API_KEY: YOUR-KEY
       PRICE_SCRAPING_ON: 'true'
+      PRICE_DISCORD_POSTING_ON: 'true'
     networks:
       - backend
       - frontend
 
   frontend:
+    container_name: pricer-frontend
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -33,6 +37,7 @@ services:
       - frontend
 
   db:
+    container_name: pricer-db
     image: linuxserver/mariadb
     environment:
       - PUID=1000
