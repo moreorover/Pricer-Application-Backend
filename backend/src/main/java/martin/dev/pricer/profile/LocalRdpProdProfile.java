@@ -13,6 +13,7 @@ import martin.dev.pricer.scraper.parser.GoldSmithsParser;
 import martin.dev.pricer.scraper.parser.*;
 import martin.dev.pricer.scraper.parser.TicWatchesParser;
 import martin.dev.pricer.scraper.parser.WatchShopParser;
+import martin.dev.pricer.scraper.parser.WatchoParser;
 import martin.dev.pricer.state.*;
 import martin.dev.pricer.state.scrapers.*;
 import net.dv8tion.jda.api.JDA;
@@ -273,6 +274,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper WatchoScraper() {
+        return new WatchShopScraper("Watcho", new martin.dev.pricer.state.scrapers.WatchoParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
@@ -282,6 +288,7 @@ public class LocalRdpProdProfile {
         scraperList.add(WatchShopScraper());
         scraperList.add(GoldSmithsScraper());
         scraperList.add(TicWatchesScraper());
+        scraperList.add(WatchoScraper());
         return scraperList;
     }
 
