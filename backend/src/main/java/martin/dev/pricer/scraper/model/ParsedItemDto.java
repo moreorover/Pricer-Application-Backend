@@ -31,9 +31,11 @@ public class ParsedItemDto {
 
     @Override
     public String toString() {
-        return "ParsedItemDto{" +
+        return "ParsedItemDto{\n" +
                 "title='" + title + '\'' +
-                ", price=" + price +
+                "\nurl='" + url + '\'' +
+                "\nimg='" + img + '\'' +
+                "\nprice=" + price +
                 '}';
     }
 }
