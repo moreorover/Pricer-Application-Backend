@@ -23,6 +23,6 @@ public class AppConfig implements SchedulingConfigurer {
 
     @Bean(destroyMethod="shutdown")
     public Executor taskExecutor() {
-        return Executors.newScheduledThreadPool(2);
+        return Executors.newScheduledThreadPool(4);
     }
 }
