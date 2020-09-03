@@ -11,6 +11,7 @@ import martin.dev.pricer.scraper.parser.FirstClassWatchesParser;
 import martin.dev.pricer.scraper.parser.HSamuelParser;
 import martin.dev.pricer.scraper.parser.GoldSmithsParser;
 import martin.dev.pricer.scraper.parser.*;
+import martin.dev.pricer.scraper.parser.TicWatchesParser;
 import martin.dev.pricer.scraper.parser.WatchShopParser;
 import martin.dev.pricer.state.*;
 import martin.dev.pricer.state.scrapers.*;
@@ -197,6 +198,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public ScraperFetchingHtmlAndJsState scraperFetchingHtmlAndJsState() {
+        return new ScraperFetchingHtmlAndJsState();
+    }
+
+    @Bean
     public ScraperFetchingHtmlState scraperFetchingHtmlState() {
         return new ScraperFetchingHtmlState();
     }
@@ -216,6 +222,16 @@ public class LocalRdpProdProfile {
         Map<State, ScraperState> availableStates = new HashMap<>();
         availableStates.put(State.ReadingDatabase, scraperReadingState());
         availableStates.put(State.FetchingHtml, scraperFetchingHtmlState());
+        availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
+        availableStates.put(State.ProcessingAds, scraperProcessingState());
+        return availableStates;
+    }
+
+    @Bean
+    public Map<State, ScraperState> singleAdScraperAndJsStateFactory() {
+        Map<State, ScraperState> availableStates = new HashMap<>();
+        availableStates.put(State.ReadingDatabase, scraperReadingState());
+        availableStates.put(State.FetchingHtml, scraperFetchingHtmlAndJsState());
         availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
         availableStates.put(State.ProcessingAds, scraperProcessingState());
         return availableStates;
@@ -252,6 +268,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper TicWatchesScraper() {
+        return new TicWatchesScraper("Tic Watches", new martin.dev.pricer.state.scrapers.TicWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
@@ -260,6 +281,7 @@ public class LocalRdpProdProfile {
         scraperList.add(ErnestJonesScraper());
         scraperList.add(WatchShopScraper());
         scraperList.add(GoldSmithsScraper());
+        scraperList.add(TicWatchesScraper());
         return scraperList;
     }
 
