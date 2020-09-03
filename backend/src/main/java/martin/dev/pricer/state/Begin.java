@@ -1,33 +1,29 @@
 package martin.dev.pricer.state;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
+@Slf4j
 public class Begin {
 
-    private ScraperReadingState scraperReadingState;
-    private ScraperFetchingHtmlState scraperFetchingHtmlState;
-    private ScraperParsingHtmlState scraperParsingHtmlState;
-    private ScraperProcessingState scraperProcessingState;
+    private final List<Scraper> scrapers;
 
-    public Begin(ScraperReadingState scraperReadingState, ScraperFetchingHtmlState scraperFetchingHtmlState, ScraperParsingHtmlState scraperParsingHtmlState, ScraperProcessingState scraperProcessingState) {
-        this.scraperReadingState = scraperReadingState;
-        this.scraperFetchingHtmlState = scraperFetchingHtmlState;
-        this.scraperParsingHtmlState = scraperParsingHtmlState;
-        this.scraperProcessingState = scraperProcessingState;
+    @Value("${price.scraping.on}")
+    private boolean SCRAPING_ON;
+
+    public Begin(List<Scraper> scrapers) {
+        this.scrapers = scrapers;
     }
 
-    @Scheduled(fixedRate = 60 * 1000, initialDelay = 5 * 1000)
+    @Scheduled(fixedRate = 40 * 1000, initialDelay = 5 * 1000)
     public void begin() {
-        System.out.println("Beginning to scrape");
-        Map<State, ScraperState> availableStates = new HashMap<>();
-        availableStates.put(State.ReadingDatabase, scraperReadingState);
-        availableStates.put(State.FetchingHtml, scraperFetchingHtmlState);
-        availableStates.put(State.ParsingHtml, scraperParsingHtmlState);
-        availableStates.put(State.ProcessingAds, scraperProcessingState);
-        Scraper hSamuelScraper = new HSamuelScraper(new HSamuelParser(), this.scraperReadingState, availableStates);
-        hSamuelScraper.fetchUrl();
+        if (SCRAPING_ON) {
+            log.info("Notifying each scraper to fetch URL");
+            scrapers.forEach(Scraper::fetchUrl);
+        }
+
     }
 }
