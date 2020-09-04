@@ -101,7 +101,7 @@ public class LocalRdpProdProfile {
 
     @Bean
     public ScraperFetchingHtmlState scraperFetchingHtmlState() {
-        return new ScraperFetchingHtmlState();
+        return new ScraperFetchingHtmlState(this.getSqlStatusService(), this.getSqlUrlService());
     }
 
     @Bean
@@ -190,6 +190,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public martin.dev.pricer.state.Scraper DebenhamsScraper() {
+        return new DebenhamsScraper("Debenhams", new martin.dev.pricer.state.scrapers.DebenhamsParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
+    }
+
+    @Bean
     public List<martin.dev.pricer.state.Scraper> scraperList() {
         List<martin.dev.pricer.state.Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
@@ -203,6 +208,7 @@ public class LocalRdpProdProfile {
         scraperList.add(SimpkinsJewellersScraper());
         scraperList.add(ArgosScraper());
         scraperList.add(SuperDrugScraper());
+        scraperList.add(DebenhamsScraper());
         return scraperList;
     }
 
