@@ -101,7 +101,7 @@ public class LocalRdpProdProfile {
 
     @Bean
     public ScraperFetchingHtmlState scraperFetchingHtmlState() {
-        return new ScraperFetchingHtmlState(this.getSqlStatusService(), this.getSqlUrlService());
+        return new ScraperFetchingHtmlState();
     }
 
     @Bean

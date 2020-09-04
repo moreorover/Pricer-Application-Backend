@@ -2,6 +2,7 @@ package martin.dev.pricer.state;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
@@ -13,7 +14,12 @@ public class ScraperFetchingHtmlState extends ScraperState {
         while (true) {
             try {
                 log.info("Attempting to fetch Html for:\n" + scraper.getCurrentPageUrl());
-                scraper.setPageHtmlDocument(Jsoup.connect(scraper.getCurrentPageUrl()).get());
+                Document d = Jsoup
+                        .connect(scraper.getCurrentPageUrl())
+//                        .proxy("127.0.0.1", 8888)
+                        .get();
+
+                scraper.setPageHtmlDocument(d);
                 break;
             } catch (IOException e) {
                 log.error("Catching IO Exception on: " + scraper.getCurrentPageUrl());
