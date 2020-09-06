@@ -8,6 +8,10 @@ import martin.dev.pricer.state.*;
 import martin.dev.pricer.state.scrapers.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +20,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +43,9 @@ public class LocalRdpProdProfile {
 
     @Value("${price.scraping.on}")
     private boolean SCRAPING_ON;
+
+    @Value("${price.remote.browser}")
+    private String remoteBrowserUrl;
 
     public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
@@ -96,7 +105,17 @@ public class LocalRdpProdProfile {
 
     @Bean
     public ScraperFetchingHtmlSeleniumState scraperFetchingHtmlSeleniumState() {
-        return new ScraperFetchingHtmlSeleniumState();
+        URL remoteAddress = null;
+        try {
+            remoteAddress = new URL(remoteBrowserUrl);
+        } catch (MalformedURLException e) {
+            log.info(e.getMessage());
+        }
+        Capabilities desiredCapabilities = DesiredCapabilities.chrome();
+
+        WebDriver webDriver = new RemoteWebDriver(remoteAddress, desiredCapabilities);
+
+        return new ScraperFetchingHtmlSeleniumState(webDriver);
     }
 
     @Bean
