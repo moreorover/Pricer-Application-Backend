@@ -100,6 +100,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public ScraperFetchingHtmlSeleniumState scraperFetchingHtmlSeleniumState() {
+        return new ScraperFetchingHtmlSeleniumState();
+    }
+
+    @Bean
     public ScraperFetchingHtmlState scraperFetchingHtmlState() {
         return new ScraperFetchingHtmlState();
     }
@@ -128,7 +133,7 @@ public class LocalRdpProdProfile {
     public Map<State, ScraperState> singleAdScraperAndJsStateFactory() {
         Map<State, ScraperState> availableStates = new HashMap<>();
         availableStates.put(State.ReadingDatabase, scraperReadingState());
-        availableStates.put(State.FetchingHtml, scraperFetchingHtmlAndJsState());
+        availableStates.put(State.FetchingHtml, scraperFetchingHtmlSeleniumState());
         availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
         availableStates.put(State.ProcessingAds, scraperProcessingState());
         return availableStates;
@@ -191,7 +196,7 @@ public class LocalRdpProdProfile {
 
     @Bean
     public martin.dev.pricer.state.Scraper DebenhamsScraper() {
-        return new DebenhamsScraper("Debenhams", new martin.dev.pricer.state.scrapers.DebenhamsParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
+        return new DebenhamsScraper("Debenhams", new martin.dev.pricer.state.scrapers.DebenhamsParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
     }
 
     @Bean
