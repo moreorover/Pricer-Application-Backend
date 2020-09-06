@@ -60,13 +60,20 @@ public class DebenhamsParser implements ScraperParser {
 
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
-        // Not parsing images as these are loaded dynamically with JSS when scrolling.
-        return "";
+        try {
+            Element imgElement = adInJsoupHtml.selectFirst("div[class^=dbh-image]");
+            imgElement = imgElement.selectFirst("img");
+            String imgString = imgElement.attr("abs:src");
+            return imgString;
+        } catch (NullPointerException e) {
+            return "";
+        }
     }
 
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
+            adInJsoupHtml.setBaseUri("https://www.debenhams.com");
             Element aElement = adInJsoupHtml.selectFirst("a");
             String url = aElement.attr("abs:href");
             return url;
@@ -77,7 +84,8 @@ public class DebenhamsParser implements ScraperParser {
 
     @Override
     public boolean nextPageAvailable(Document document) {
-        Element element = document.selectFirst("div[class=browse__pagination-and-infinity-scroll]");
-        return element.childNodes().toString().contains("rel=\"next\"");
+        Element element = document.selectFirst("div[class=c-product-control-bar__pagination-wrapper]");
+        element = element.selectFirst("button[class*=pw-pagination__next]");
+        return !element.outerHtml().contains("button disabled class");
     }
 }
