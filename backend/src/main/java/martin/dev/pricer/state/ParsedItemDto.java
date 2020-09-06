@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.model;
+package martin.dev.pricer.state;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

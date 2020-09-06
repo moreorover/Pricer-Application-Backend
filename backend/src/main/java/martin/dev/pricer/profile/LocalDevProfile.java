@@ -3,8 +3,6 @@ package martin.dev.pricer.profile;
 import martin.dev.pricer.data.repository.*;
 import martin.dev.pricer.data.service.*;
 import martin.dev.pricer.discord.DiscordService;
-import martin.dev.pricer.scraper.*;
-import martin.dev.pricer.scraper.parser.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,100 +67,6 @@ public class LocalDevProfile {
     }
 
     @Bean
-    public ScraperSubject scraperSubject() {
-        return new ScraperSubject();
-    }
-
-    @Bean
-    public AbstractParser AMJWatchesParser() {
-        return new AMJWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser ArgosParser() {
-        return new ArgosParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser CreationWatchesParser() {
-        return new CreationWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser DebenhamsParser() {
-        return new DebenhamsParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser ErnestJonesParser() {
-        return new ErnestJonesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser FirstClassWatchesParser() {
-        return new FirstClassWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser GoldSmithsParser() {
-        return new GoldSmithsParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser HSamuelParser() {
-        return new HSamuelParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser SuperDrugParser() {
-        return new SuperDrugParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser TicWatchesParser() {
-        return new TicWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser WatchoParser() {
-        return new WatchoParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser WatchShopParser() {
-        return new WatchShopParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser SimpkinsJewellersParser() {
-        return new SimpkinsJewellersParser(getParserValidator());
-    }
-
-    @Bean
-    public ScraperSubject getSubject() {
-        ScraperSubject subject = new ScraperSubject();
-//        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
-//        new Scraper(subject, ArgosParser(), getSqlItemService());
-        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
-//        new Scraper(subject, DebenhamsParser(), getSqlItemService());
-//        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
-//        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
-//        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
-//        new Scraper(subject, HSamuelParser(), getSqlItemService());
-//        new Scraper(subject, SuperDrugParser(), getSqlItemService());
-//        new Scraper(subject, TicWatchesParser(), getSqlItemService());
-//        new Scraper(subject, WatchoParser(), getSqlItemService());
-//        new Scraper(subject, WatchShopParser(), getSqlItemService());
-//        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
-        return subject;
-    }
-
-    @Bean
-    public ParserValidator getParserValidator() {
-        return new JsoupValidator(getParserErrorService());
-    }
-
-    @Bean
     public DiscordService discordBot() {
         try {
             JDA jda = JDABuilder.createDefault(DiscordApiKey).build();
@@ -171,10 +75,5 @@ public class LocalDevProfile {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Bean
-    public Launcher runner() {
-        return new Launcher(getSqlStatusService(), getSqlUrlService(), getDealService(), getSubject(), discordBot());
     }
 }

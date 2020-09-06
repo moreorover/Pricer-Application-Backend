@@ -2,7 +2,6 @@ package martin.dev.pricer.state;
 
 import lombok.Data;
 import martin.dev.pricer.data.model.Url;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 

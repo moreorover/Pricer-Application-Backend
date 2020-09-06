@@ -2,7 +2,7 @@ package martin.dev.pricer.data.service;
 
 import martin.dev.pricer.data.model.ParserError;
 import martin.dev.pricer.data.repository.ParserErrorRepository;
-import martin.dev.pricer.scraper.AbstractParser;
+import martin.dev.pricer.state.AbstractParser;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
