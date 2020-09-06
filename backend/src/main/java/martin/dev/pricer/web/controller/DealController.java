@@ -22,13 +22,11 @@ import java.util.List;
 @Slf4j
 public class DealController {
 
+    private final ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private DealService dealService;
-
     @Autowired
     private ItemService itemService;
-
-    private final ModelMapper modelMapper = new ModelMapper();
 
     //    private DealRepository dealRepository;
 //

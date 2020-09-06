@@ -2,7 +2,7 @@ package martin.dev.pricer.data.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import martin.dev.pricer.state.ParsedItemDto;
+import martin.dev.pricer.scraper.ParsedItemDto;
 
 import javax.persistence.*;
 import java.text.DecimalFormat;

@@ -4,7 +4,7 @@ import martin.dev.pricer.data.model.Deal;
 import martin.dev.pricer.data.model.Item;
 import martin.dev.pricer.data.model.Price;
 import martin.dev.pricer.data.repository.ItemRepository;
-import martin.dev.pricer.state.ParsedItemDto;
+import martin.dev.pricer.scraper.ParsedItemDto;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@ import martin.dev.pricer.data.model.Deal;
 import martin.dev.pricer.data.model.Item;
 import martin.dev.pricer.data.model.Url;
 import martin.dev.pricer.data.repository.UrlRepository;
-import martin.dev.pricer.state.ParsedItemDto;
+import martin.dev.pricer.scraper.ParsedItemDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
