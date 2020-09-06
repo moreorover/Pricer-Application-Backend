@@ -11,6 +11,7 @@ services:
     restart: always
     depends_on:
       - db
+      - chrome
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/pricer
       SPRING_DATASOURCE_USERNAME: root
@@ -19,6 +20,7 @@ services:
       DISCORD_API_KEY: YOUR-KEY
       PRICE_SCRAPING_ON: 'true'
       PRICE_DISCORD_POSTING_ON: 'true'
+      PRICE_REMOTE_BROWSER: "http://chrome:4444/wd/hub"
     networks:
       - backend
       - frontend
@@ -49,6 +51,15 @@ services:
     ports:
       - 3306:3306
     restart: always
+    networks:
+      - backend
+  chrome:
+    container_name: chrome
+    image: selenium/standalone-chrome:4.0.0-alpha-7-prerelease-20200905
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+    - "4444:4444"
     networks:
       - backend
 
