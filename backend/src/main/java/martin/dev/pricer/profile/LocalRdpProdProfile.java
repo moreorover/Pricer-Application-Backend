@@ -95,11 +95,6 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
-    public ScraperFetchingHtmlAndJsState scraperFetchingHtmlAndJsState() {
-        return new ScraperFetchingHtmlAndJsState();
-    }
-
-    @Bean
     public ScraperFetchingHtmlSeleniumState scraperFetchingHtmlSeleniumState() {
         return new ScraperFetchingHtmlSeleniumState();
     }
