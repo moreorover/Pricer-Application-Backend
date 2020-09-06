@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.model.Status;
 import martin.dev.pricer.data.service.StatusService;
 import martin.dev.pricer.data.service.UrlService;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -77,7 +76,8 @@ public class ScraperParsingHtmlState extends ScraperState {
             log.info("That was the last page.");
             Status statusReady = this.statusService.findStatusByStatus("Ready");
             this.urlService.updateUrlLastCheckedAtAndStatus(scraper.getUrl(), LocalDateTime.now(), statusReady);
-            scraper.changeState(State.ReadingDatabase);
+            scraper.changeState(State.SendingAds);
+            scraper.sendItems();
         }
     }
 }
