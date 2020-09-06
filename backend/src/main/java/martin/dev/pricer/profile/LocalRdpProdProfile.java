@@ -104,6 +104,11 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
+    public ScraperSendingState scraperSendingState() {
+        return new ScraperSendingState(this.getDealService(), this.discordBot());
+    }
+
+    @Bean
     public ScraperFetchingHtmlSeleniumState scraperFetchingHtmlSeleniumState() {
         URL remoteAddress = null;
         try {
@@ -140,6 +145,7 @@ public class LocalRdpProdProfile {
         availableStates.put(State.FetchingHtml, scraperFetchingHtmlState());
         availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
         availableStates.put(State.ProcessingAds, scraperProcessingState());
+        availableStates.put(State.SendingAds, scraperSendingState());
         return availableStates;
     }
 
@@ -150,6 +156,7 @@ public class LocalRdpProdProfile {
         availableStates.put(State.FetchingHtml, scraperFetchingHtmlSeleniumState());
         availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
         availableStates.put(State.ProcessingAds, scraperProcessingState());
+        availableStates.put(State.SendingAds, scraperSendingState());
         return availableStates;
     }
 
