@@ -20,17 +20,15 @@ public class LocalDevProfile {
     private final StatusRepository statusRepository;
     private final UrlRepository urlRepository;
     private final ItemRepository itemRepository;
-    private final ParserErrorRepository parserErrorRepository;
     private final DealRepository dealRepository;
 
     @Value("${discord.api.key}")
     private String DiscordApiKey;
 
-    public LocalDevProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
+    public LocalDevProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
         this.urlRepository = urlRepository;
         this.itemRepository = itemRepository;
-        this.parserErrorRepository = parserErrorRepository;
         this.dealRepository = dealRepository;
     }
 
@@ -54,11 +52,6 @@ public class LocalDevProfile {
     @Bean
     public UrlService getSqlUrlService() {
         return new UrlService(urlRepository);
-    }
-
-    @Bean
-    public ParserErrorService getParserErrorService() {
-        return new ParserErrorService(parserErrorRepository);
     }
 
     @Bean

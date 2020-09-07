@@ -35,7 +35,6 @@ public class LocalRdpProdProfile {
     private final StatusRepository statusRepository;
     private final UrlRepository urlRepository;
     private final ItemRepository itemRepository;
-    private final ParserErrorRepository parserErrorRepository;
     private final DealRepository dealRepository;
 
     @Value("${discord.api.key}")
@@ -47,11 +46,10 @@ public class LocalRdpProdProfile {
     @Value("${price.remote.browser}")
     private String remoteBrowserUrl;
 
-    public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
+    public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
         this.urlRepository = urlRepository;
         this.itemRepository = itemRepository;
-        this.parserErrorRepository = parserErrorRepository;
         this.dealRepository = dealRepository;
     }
 
@@ -75,11 +73,6 @@ public class LocalRdpProdProfile {
     @Bean
     public UrlService getSqlUrlService() {
         return new UrlService(urlRepository);
-    }
-
-    @Bean
-    public ParserErrorService getParserErrorService() {
-        return new ParserErrorService(parserErrorRepository);
     }
 
     @Bean
