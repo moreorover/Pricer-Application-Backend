@@ -24,9 +24,9 @@ public class ScraperFetchingHtmlSeleniumState extends ScraperState {
                 log.info("Attempting to fetch Html for:\n" + scraper.getCurrentPageUrl());
                 this.webDriver.get(scraper.getCurrentPageUrl());
 //                webClient.getOptions().setProxyConfig(proxyConfig);
-                WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
-                wait.until((ExpectedCondition<Boolean>) wd ->
-                        ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+//                WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
+//                wait.until((ExpectedCondition<Boolean>) wd ->
+//                        ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
                 String source = webDriver.getPageSource();
                 Document d = Jsoup.parse(source);
                 scraper.setPageHtmlDocument(d);
