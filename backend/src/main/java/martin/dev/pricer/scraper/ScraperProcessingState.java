@@ -17,13 +17,11 @@ public class ScraperProcessingState extends ScraperState {
     @Override
     public void processItems(Scraper scraper) {
         log.info("Found this many valid items: " + scraper.getItems().size());
-        Random r = new Random();
-        scraper.getItems().forEach(parsedItemDto -> {
-            itemService.processParsedItemDto(parsedItemDto);
-            if (1 + r.nextInt((10 - 1) + 1) <= 2) {
-                System.out.println(parsedItemDto.toString());
-            }
-        });
+//        Random r = new Random();
+//        if (1 + r.nextInt((10 - 1) + 1) <= 2) {
+//            System.out.println(parsedItemDto.toString());
+//        }
+        scraper.getItems().forEach(itemService::processParsedItemDto);
         scraper.getItems().clear();
         scraper.changeState(State.ParsingHtml);
         scraper.nextPage();
