@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,9 +110,11 @@ public class LocalRdpProdProfile {
         } catch (MalformedURLException e) {
             log.info(e.getMessage());
         }
-        Capabilities desiredCapabilities = DesiredCapabilities.chrome();
+//        Capabilities desiredCapabilities = DesiredCapabilities.chrome();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setHeadless(true);
 
-        WebDriver webDriver = new RemoteWebDriver(remoteAddress, desiredCapabilities);
+        WebDriver webDriver = new RemoteWebDriver(remoteAddress, chromeOptions);
 
         return new ScraperFetchingHtmlSeleniumState(webDriver);
     }
