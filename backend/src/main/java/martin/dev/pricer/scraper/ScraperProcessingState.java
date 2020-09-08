@@ -3,8 +3,6 @@ package martin.dev.pricer.scraper;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.data.service.ItemService;
 
-import java.util.Random;
-
 @Slf4j
 public class ScraperProcessingState extends ScraperState {
 

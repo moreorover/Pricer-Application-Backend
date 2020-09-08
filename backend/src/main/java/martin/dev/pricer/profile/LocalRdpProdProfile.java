@@ -1,8 +1,14 @@
 package martin.dev.pricer.profile;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.repository.*;
-import martin.dev.pricer.data.service.*;
+import martin.dev.pricer.data.repository.DealRepository;
+import martin.dev.pricer.data.repository.ItemRepository;
+import martin.dev.pricer.data.repository.StatusRepository;
+import martin.dev.pricer.data.repository.UrlRepository;
+import martin.dev.pricer.data.service.DealService;
+import martin.dev.pricer.data.service.ItemService;
+import martin.dev.pricer.data.service.StatusService;
+import martin.dev.pricer.data.service.UrlService;
 import martin.dev.pricer.discord.DiscordService;
 import martin.dev.pricer.scraper.*;
 import martin.dev.pricer.scraper.scrapers.*;
@@ -134,62 +140,62 @@ public class LocalRdpProdProfile {
 
     @Bean
     public martin.dev.pricer.scraper.Scraper HSamuelScraper() {
-        return new HSamuelScraper("H. Samuel", new martin.dev.pricer.scraper.scrapers.HSamuelParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new HSamuelScraper("H. Samuel", new HSamuelParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper CreationWatchesScraper() {
-        return new CreationWatchesScraper("Creation Watches", new martin.dev.pricer.scraper.scrapers.CreationWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new CreationWatchesScraper("Creation Watches", new CreationWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper FirstClassWatchesScraper() {
-        return new FirstClassWatchesScraper("First Class Watches", new martin.dev.pricer.scraper.scrapers.FirstClassWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new FirstClassWatchesScraper("First Class Watches", new FirstClassWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper ErnestJonesScraper() {
-        return new ErnestJonesScraper("Ernest Jones", new martin.dev.pricer.scraper.scrapers.ErnestJonesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new ErnestJonesScraper("Ernest Jones", new ErnestJonesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper WatchShopScraper() {
-        return new WatchShopScraper("Watch Shop", new martin.dev.pricer.scraper.scrapers.WatchShopParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new WatchShopScraper("Watch Shop", new WatchShopParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper GoldSmithsScraper() {
-        return new GoldSmithsScraper("Gold Smiths", new martin.dev.pricer.scraper.scrapers.GoldSmithsParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new GoldSmithsScraper("Gold Smiths", new GoldSmithsParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper TicWatchesScraper() {
-        return new TicWatchesScraper("Tic Watches", new martin.dev.pricer.scraper.scrapers.TicWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new TicWatchesScraper("Tic Watches", new TicWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper WatchoScraper() {
-        return new WatchShopScraper("Watcho", new martin.dev.pricer.scraper.scrapers.WatchoParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new WatchShopScraper("Watcho", new WatchoParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper SimpkinsJewellersScraper() {
-        return new SimpkinsJewellersScraper("Simpkins Jewellers", new martin.dev.pricer.scraper.scrapers.SimpkinsJewellersParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new SimpkinsJewellersScraper("Simpkins Jewellers", new SimpkinsJewellersParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper ArgosScraper() {
-        return new ArgosScraper("Argos", new martin.dev.pricer.scraper.scrapers.ArgosParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new ArgosScraper("Argos", new ArgosParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper SuperDrugScraper() {
-        return new SuperDrugScraper("Superdrug", new martin.dev.pricer.scraper.scrapers.SuperDrugParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new SuperDrugScraper("Superdrug", new SuperDrugParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
     }
 
     @Bean
     public martin.dev.pricer.scraper.Scraper DebenhamsScraper() {
-        return new DebenhamsScraper("Debenhams", new martin.dev.pricer.scraper.scrapers.DebenhamsParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
+        return new DebenhamsScraper("Debenhams", new DebenhamsParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
     }
 
     @Bean
