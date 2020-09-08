@@ -213,7 +213,7 @@ public class LocalRdpProdProfile {
         return scraperList;
     }
 
-    @Scheduled(fixedRate = 40 * 1000)
+    @Scheduled(fixedRate = 40 * 1000, initialDelay = 5 * 1000)
     public void nudgeScrapers() {
         if (SCRAPING_ON) {
             log.info("Notifying each scraper to fetch URL");
