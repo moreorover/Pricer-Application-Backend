@@ -190,7 +190,7 @@ public class LocalRdpProdProfile {
 
     @Bean
     public martin.dev.pricer.scraper.Scraper SuperDrugScraper() {
-        return new SuperDrugScraper("Superdrug", new SuperDrugParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+        return new SuperDrugScraper("Superdrug", new SuperDrugParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
     }
 
     @Bean
