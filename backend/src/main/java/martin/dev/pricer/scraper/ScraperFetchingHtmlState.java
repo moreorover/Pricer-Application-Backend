@@ -23,6 +23,7 @@ public class ScraperFetchingHtmlState extends ScraperState {
                 break;
             } catch (IOException e) {
                 log.error("Catching IO Exception on: " + scraper.getCurrentPageUrl());
+                log.error(e.getMessage());
             }
         }
         scraper.changeState(State.ParsingHtml);
