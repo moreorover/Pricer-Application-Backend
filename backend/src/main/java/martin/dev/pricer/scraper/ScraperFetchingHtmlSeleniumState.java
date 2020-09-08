@@ -52,6 +52,7 @@ public class ScraperFetchingHtmlSeleniumState extends ScraperState {
                         ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
                 String source = this.webDriver.getPageSource();
 //                this.webDriver.close();
+                log.info("Title: " + this.webDriver.getTitle());
                 this.webDriver.quit();
                 Document d = Jsoup.parse(source);
                 scraper.setPageHtmlDocument(d);
