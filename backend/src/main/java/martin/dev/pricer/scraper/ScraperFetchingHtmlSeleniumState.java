@@ -32,7 +32,7 @@ public class ScraperFetchingHtmlSeleniumState extends ScraperState {
         }
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--whitelisted-ips");
-        chromeOptions.setHeadless(true);
+//        chromeOptions.setHeadless(true);
 
         this.webDriver = new RemoteWebDriver(remoteAddress, chromeOptions);
     }
