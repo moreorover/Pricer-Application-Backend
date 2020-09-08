@@ -8,27 +8,18 @@ import martin.dev.pricer.scraper.*;
 import martin.dev.pricer.scraper.scrapers.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Profile("local-rdp-prod")
 @Configuration
 @Slf4j
 public class LocalRdpProdProfile {
@@ -104,19 +95,7 @@ public class LocalRdpProdProfile {
 
     @Bean
     public ScraperFetchingHtmlSeleniumState scraperFetchingHtmlSeleniumState() {
-        URL remoteAddress = null;
-        try {
-            remoteAddress = new URL(remoteBrowserUrl);
-        } catch (MalformedURLException e) {
-            log.info(e.getMessage());
-        }
-//        Capabilities desiredCapabilities = DesiredCapabilities.chrome();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(true);
-
-        WebDriver webDriver = new RemoteWebDriver(remoteAddress, chromeOptions);
-
-        return new ScraperFetchingHtmlSeleniumState(webDriver);
+        return new ScraperFetchingHtmlSeleniumState();
     }
 
     @Bean
