@@ -35,9 +35,6 @@ public class LocalRdpProdProfile {
     @Value("${price.scraping.on}")
     private boolean SCRAPING_ON;
 
-    @Value("${price.remote.browser}")
-    private String remoteBrowserUrl;
-
     public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
         this.urlRepository = urlRepository;
