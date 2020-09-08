@@ -214,10 +214,7 @@ public class LocalRdpProdProfile {
     public void nudgeScrapers() {
         if (SCRAPING_ON) {
             log.info("Notifying each scraper to fetch URL");
-            this.scraperList().forEach(scraper -> {
-                log.info("Nudging scraper -> " + scraper.getName());
-                scraper.fetchUrl();
-            });
+            this.scraperList().forEach(martin.dev.pricer.scraper.Scraper::fetchUrl);
         }
 
     }
