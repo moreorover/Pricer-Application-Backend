@@ -27,7 +27,7 @@ public class DebenhamsParser implements ScraperParser {
             Element titleElement = adInJsoupHtml.selectFirst("h2[class^=c-product-item-title]");
             String title = titleElement.text();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -41,7 +41,7 @@ public class DebenhamsParser implements ScraperParser {
             String upc = upcTextArray[1];
 
             return "DBH_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -53,7 +53,7 @@ public class DebenhamsParser implements ScraperParser {
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -77,7 +77,7 @@ public class DebenhamsParser implements ScraperParser {
             Element aElement = adInJsoupHtml.selectFirst("a");
             String url = aElement.attr("abs:href");
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
