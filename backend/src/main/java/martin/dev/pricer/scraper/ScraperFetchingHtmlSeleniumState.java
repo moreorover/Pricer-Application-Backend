@@ -11,11 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Slf4j
 public class ScraperFetchingHtmlSeleniumState extends ScraperState {
@@ -55,12 +52,11 @@ public class ScraperFetchingHtmlSeleniumState extends ScraperState {
                         ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
                 String source = this.webDriver.getPageSource();
 //                this.webDriver.close();
-                Files.writeString(Paths.get("/home/debian10/source"), source);
                 this.webDriver.quit();
                 Document d = Jsoup.parse(source);
                 scraper.setPageHtmlDocument(d);
                 break;
-            } catch (NoSuchSessionException | IOException e) {
+            } catch (NoSuchSessionException e) {
                 log.info("Catching No Such Session Exception.");
                 this.getWebDriver();
                 log.info(e.getMessage());
