@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchSessionException;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -30,7 +30,7 @@ public class ScraperFetchingHtmlSeleniumState extends ScraperState {
         } catch (MalformedURLException e) {
             log.info(e.getMessage());
         }
-        FirefoxOptions chromeOptions = new FirefoxOptions();
+        ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--whitelisted-ips");
         chromeOptions.setHeadless(true);
 
