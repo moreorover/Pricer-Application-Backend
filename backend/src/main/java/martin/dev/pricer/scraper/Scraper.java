@@ -1,67 +1,84 @@
 package martin.dev.pricer.scraper;
 
-import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.data.service.ItemService;
-import martin.dev.pricer.scraper.client.HttpClient;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
+import lombok.Data;
+import martin.dev.pricer.data.model.Url;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-@Slf4j
-public class Scraper extends Observer implements ScraperInterface {
+@Data
+public abstract class Scraper {
 
-    private ScraperSubject scraperSubject;
+    private String name;
 
-    private AbstractParser parser;
-    private ItemService itemService;
+    private ScraperParser scraperParser;
+    private ScraperState scraperState;
+    private Map<State, ScraperState> availableScraperStates;
 
-    public Scraper(ScraperSubject scraperSubject, AbstractParser parser, ItemService itemService) {
-        this.scraperSubject = scraperSubject;
-        this.scraperSubject.attach(this);
-        this.parser = parser;
-        this.itemService = itemService;
+    private Url url;
+    private Document pageHtmlDocument;
+    private Elements ads;
+    private List<ParsedItemDto> items = new ArrayList<>();
+    private String currentPageUrl;
+    private int currentPageNumber;
+
+    public Scraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+        this.name = name;
+        this.scraperParser = scraperParser;
+        this.scraperState = startingScraperState;
+        this.availableScraperStates = availableScraperStates;
     }
 
-    @Override
-    public void update() {
-        this.parser.setUrlObject(scraperSubject.getUrl());
-        List<String> urlsToScrape = fetchUrlsToScrape();
-        scrapeUrls(urlsToScrape);
+    public void fetchUrl() {
+        this.scraperState.fetchUrl(this);
     }
 
-    @Override
-    public String getName() {
-        return parser.getNAME();
+    public void fetchHtml() {
+        this.scraperState.fetchHtml(this);
     }
 
-    public List<String> fetchUrlsToScrape() {
-        parser.setCurrentPageUrl(scraperSubject.getUrl().getUrl());
-        List<String> urlsToScrape = new ArrayList<>();
-        Document document = HttpClient.fetchUrlContent(scraperSubject.getUrl().getUrl());
-        if (document != null) {
-            parser.setDocument(document);
-            parser.parseMaxPageNum();
-            for (int page_number = parser.getSTART_PAGE_NUMBER(); page_number <= parser.getMAX_PAGE_NUMBER(); page_number++) {
-                String url = parser.makeNextPageUrl(page_number);
-                urlsToScrape.add(url);
-            }
-        }
-        return urlsToScrape;
+    public void validateResponse() {
+        this.scraperState.validateResponse(this);
     }
 
-    public void scrapeUrls(List<String> urlsToScrape) {
-        urlsToScrape.forEach(url -> {
-            parser.setCurrentPageUrl(url);
-            log.info("Parsing: " + url);
-            Document document = HttpClient.fetchUrlContent(url);
-            if (document != null) {
-                parser.setDocument(document);
-                parser.parseListOfAdElements();
-                List<ParsedItemDto> parsedItemModels = parser.parseItemModels();
-                parsedItemModels.forEach(parsedItemDto -> itemService.processParsedItemDto(parsedItemDto));
-            }
-        });
+    public void parseResponseToAds() {
+        this.scraperState.parseResponseToAds(this);
+    }
+
+    public void validateAds() {
+        this.scraperState.validateAds(this);
+    }
+
+    public void parseAdsToItems() {
+        this.scraperState.parseAdsToItems(this);
+    }
+
+    public void validateItems() {
+        this.scraperState.validateItems(this);
+    }
+
+    public void processItems() {
+        this.scraperState.processItems(this);
+    }
+
+    public void writeItems() {
+        this.scraperState.writeItems(this);
+    }
+
+    public void sendItems() {
+        this.scraperState.sendItems(this);
+    }
+
+    public void nextPage() {
+        this.scraperState.nextPage(this);
+    }
+
+    public abstract void nextPageUrl();
+
+    public void changeState(State state) {
+        this.scraperState = this.availableScraperStates.get(state);
     }
 }

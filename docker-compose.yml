@@ -2,6 +2,7 @@ version: '3'
 
 services:
   backend:
+    container_name: pricer-backend
     build:
       context: backend
       dockerfile: Dockerfile
@@ -10,17 +11,22 @@ services:
     restart: always
     depends_on:
       - db
+      - chrome
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/pricer
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: LyAGZympuR5yZfAX
+      SPRING_DATASOURCE_PLATFORM: mariadb
       DISCORD_API_KEY: YOUR-KEY
       PRICE_SCRAPING_ON: 'true'
+      PRICE_DISCORD_POSTING_ON: 'true'
+      PRICE_REMOTE_BROWSER: "http://chrome:4444/wd/hub"
     networks:
       - backend
       - frontend
 
   frontend:
+    container_name: pricer-frontend
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -33,6 +39,7 @@ services:
       - frontend
 
   db:
+    container_name: pricer-db
     image: linuxserver/mariadb
     environment:
       - PUID=1000
@@ -44,6 +51,18 @@ services:
     ports:
       - 3306:3306
     restart: always
+    networks:
+      - backend
+
+  chrome:
+    container_name: pricer-chrome
+    image: selenium/standalone-chrome:4.0.0-alpha-7-prerelease-20200907
+    environment:
+      - START_XVFB=false
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+    - "4444:4444"
     networks:
       - backend
 

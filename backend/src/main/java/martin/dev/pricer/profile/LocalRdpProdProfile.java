@@ -1,45 +1,57 @@
 package martin.dev.pricer.profile;
 
-import martin.dev.pricer.data.repository.*;
-import martin.dev.pricer.data.service.*;
+import lombok.extern.slf4j.Slf4j;
+import martin.dev.pricer.data.repository.DealRepository;
+import martin.dev.pricer.data.repository.ItemRepository;
+import martin.dev.pricer.data.repository.StatusRepository;
+import martin.dev.pricer.data.repository.UrlRepository;
+import martin.dev.pricer.data.service.DealService;
+import martin.dev.pricer.data.service.ItemService;
+import martin.dev.pricer.data.service.StatusService;
+import martin.dev.pricer.data.service.UrlService;
 import martin.dev.pricer.discord.DiscordService;
 import martin.dev.pricer.scraper.*;
-import martin.dev.pricer.scraper.parser.*;
+import martin.dev.pricer.scraper.scrapers.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Profile("local-rdp-prod")
 @Configuration
+@Slf4j
 public class LocalRdpProdProfile {
 
-    private StatusRepository statusRepository;
-    private UrlRepository urlRepository;
-    private ItemRepository itemRepository;
-    private ParserErrorRepository parserErrorRepository;
-    private DealRepository dealRepository;
+    private final StatusRepository statusRepository;
+    private final UrlRepository urlRepository;
+    private final ItemRepository itemRepository;
+    private final DealRepository dealRepository;
 
     @Value("${discord.api.key}")
     private String DiscordApiKey;
 
-    public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, ParserErrorRepository parserErrorRepository, DealRepository dealRepository) {
+    @Value("${price.scraping.on}")
+    private boolean SCRAPING_ON;
+
+    public LocalRdpProdProfile(StatusRepository statusRepository, UrlRepository urlRepository, ItemRepository itemRepository, DealRepository dealRepository) {
         this.statusRepository = statusRepository;
         this.urlRepository = urlRepository;
         this.itemRepository = itemRepository;
-        this.parserErrorRepository = parserErrorRepository;
         this.dealRepository = dealRepository;
     }
 
     @Bean
     public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-        threadPoolTaskScheduler.setPoolSize(2);
+        threadPoolTaskScheduler.setPoolSize(1);
         return threadPoolTaskScheduler;
     }
 
@@ -59,105 +71,8 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
-    public ParserErrorService getParserErrorService() {
-        return new ParserErrorService(parserErrorRepository);
-    }
-
-    @Bean
-    public DealService getDealService() { return new DealService(dealRepository); }
-
-    @Bean
-    public ScraperSubject scraperSubject() {
-        return new ScraperSubject();
-    }
-
-    @Bean
-    public AbstractParser AMJWatchesParser() {
-        return new AMJWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser ArgosParser() {
-        return new ArgosParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser CreationWatchesParser() {
-        return new CreationWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser DebenhamsParser() {
-        return new DebenhamsParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser ErnestJonesParser() {
-        return new ErnestJonesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser FirstClassWatchesParser() {
-        return new FirstClassWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser GoldSmithsParser() {
-        return new GoldSmithsParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser HSamuelParser() {
-        return new HSamuelParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser SuperDrugParser() {
-        return new SuperDrugParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser TicWatchesParser() {
-        return new TicWatchesParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser WatchoParser() {
-        return new WatchoParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser WatchShopParser() {
-        return new WatchShopParser(getParserValidator());
-    }
-
-    @Bean
-    public AbstractParser SimpkinsJewellersParser() {
-        return new SimpkinsJewellersParser(getParserValidator());
-    }
-
-    @Bean
-    public ScraperSubject getSubject() {
-        ScraperSubject subject = new ScraperSubject();
-        new Scraper(subject, AMJWatchesParser(), getSqlItemService());
-        new Scraper(subject, ArgosParser(), getSqlItemService());
-        new Scraper(subject, CreationWatchesParser(), getSqlItemService());
-        new Scraper(subject, DebenhamsParser(), getSqlItemService());
-        new Scraper(subject, ErnestJonesParser(), getSqlItemService());
-        new Scraper(subject, FirstClassWatchesParser(), getSqlItemService());
-        new Scraper(subject, GoldSmithsParser(), getSqlItemService());
-        new Scraper(subject, HSamuelParser(), getSqlItemService());
-        new Scraper(subject, SuperDrugParser(), getSqlItemService());
-        new Scraper(subject, TicWatchesParser(), getSqlItemService());
-        new Scraper(subject, WatchoParser(), getSqlItemService());
-        new Scraper(subject, WatchShopParser(), getSqlItemService());
-        new Scraper(subject, SimpkinsJewellersParser(), getSqlItemService());
-        return subject;
-    }
-
-    @Bean
-    public ParserValidator getParserValidator() {
-        return new JsoupValidator(getParserErrorService());
+    public DealService getDealService() {
+        return new DealService(dealRepository);
     }
 
     @Bean
@@ -172,7 +87,141 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
-    public Launcher runner() {
-        return new Launcher(getSqlStatusService(), getSqlUrlService(), getDealService(), getSubject(), discordBot());
+    public ScraperReadingState scraperReadingState() {
+        return new ScraperReadingState(this.getSqlStatusService(), this.getSqlUrlService());
+    }
+
+    @Bean
+    public ScraperSendingState scraperSendingState() {
+        return new ScraperSendingState(this.getDealService(), this.discordBot());
+    }
+
+    @Bean
+    public ScraperFetchingHtmlSeleniumState scraperFetchingHtmlSeleniumState() {
+        return new ScraperFetchingHtmlSeleniumState();
+    }
+
+    @Bean
+    public ScraperFetchingHtmlState scraperFetchingHtmlState() {
+        return new ScraperFetchingHtmlState();
+    }
+
+    @Bean
+    public ScraperParsingHtmlState scraperParsingHtmlState() {
+        return new ScraperParsingHtmlState(this.getSqlStatusService(), this.getSqlUrlService());
+    }
+
+    @Bean
+    public ScraperProcessingState scraperProcessingState() {
+        return new ScraperProcessingState(this.getSqlItemService());
+    }
+
+    @Bean
+    public Map<State, ScraperState> singleAdScraperStateFactory() {
+        Map<State, ScraperState> availableStates = new HashMap<>();
+        availableStates.put(State.ReadingDatabase, scraperReadingState());
+        availableStates.put(State.FetchingHtml, scraperFetchingHtmlState());
+        availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
+        availableStates.put(State.ProcessingAds, scraperProcessingState());
+        availableStates.put(State.SendingAds, scraperSendingState());
+        return availableStates;
+    }
+
+    @Bean
+    public Map<State, ScraperState> singleAdScraperAndJsStateFactory() {
+        Map<State, ScraperState> availableStates = new HashMap<>();
+        availableStates.put(State.ReadingDatabase, scraperReadingState());
+        availableStates.put(State.FetchingHtml, scraperFetchingHtmlSeleniumState());
+        availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
+        availableStates.put(State.ProcessingAds, scraperProcessingState());
+        availableStates.put(State.SendingAds, scraperSendingState());
+        return availableStates;
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper HSamuelScraper() {
+        return new HSamuelScraper("H. Samuel", new HSamuelParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper CreationWatchesScraper() {
+        return new CreationWatchesScraper("Creation Watches", new CreationWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper FirstClassWatchesScraper() {
+        return new FirstClassWatchesScraper("First Class Watches", new FirstClassWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper ErnestJonesScraper() {
+        return new ErnestJonesScraper("Ernest Jones", new ErnestJonesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper WatchShopScraper() {
+        return new WatchShopScraper("Watch Shop", new WatchShopParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper GoldSmithsScraper() {
+        return new GoldSmithsScraper("Gold Smiths", new GoldSmithsParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper TicWatchesScraper() {
+        return new TicWatchesScraper("Tic Watches", new TicWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper WatchoScraper() {
+        return new WatchShopScraper("Watcho", new WatchoParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper SimpkinsJewellersScraper() {
+        return new SimpkinsJewellersScraper("Simpkins Jewellers", new SimpkinsJewellersParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper ArgosScraper() {
+        return new ArgosScraper("Argos", new ArgosParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper SuperDrugScraper() {
+        return new SuperDrugScraper("Superdrug", new SuperDrugParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
+    }
+
+    @Bean
+    public martin.dev.pricer.scraper.Scraper DebenhamsScraper() {
+        return new DebenhamsScraper("Debenhams", new DebenhamsParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
+    }
+
+    @Bean
+    public List<martin.dev.pricer.scraper.Scraper> scraperList() {
+        List<martin.dev.pricer.scraper.Scraper> scraperList = new ArrayList<>();
+        scraperList.add(HSamuelScraper());
+        scraperList.add(CreationWatchesScraper());
+        scraperList.add(FirstClassWatchesScraper());
+        scraperList.add(ErnestJonesScraper());
+        scraperList.add(WatchShopScraper());
+        scraperList.add(GoldSmithsScraper());
+        scraperList.add(TicWatchesScraper());
+        scraperList.add(WatchoScraper());
+        scraperList.add(SimpkinsJewellersScraper());
+        scraperList.add(ArgosScraper());
+        scraperList.add(SuperDrugScraper());
+        scraperList.add(DebenhamsScraper());
+        return scraperList;
+    }
+
+    @Scheduled(fixedRate = 40 * 1000, initialDelay = 5 * 1000)
+    public void nudgeScrapers() {
+        if (SCRAPING_ON) {
+            log.info("Notifying each scraper to fetch URL");
+            this.scraperList().forEach(martin.dev.pricer.scraper.Scraper::fetchUrl);
+        }
+
     }
 }

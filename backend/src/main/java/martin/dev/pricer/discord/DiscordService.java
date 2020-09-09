@@ -20,7 +20,7 @@ public class DiscordService {
     }
 
     public void sendMessage(Deal deal, long channelId) {
-        if (deal.getItem().getImg() != null && !deal.getItem().getImg().equals("")){
+        if (deal.getItem().getImg() != null && !deal.getItem().getImg().equals("")) {
             this.sendEmbeddedWithImage(deal, channelId);
         } else {
             this.sendEmbeddedWithoutImage(deal, channelId);

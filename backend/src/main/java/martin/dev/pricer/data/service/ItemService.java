@@ -4,7 +4,7 @@ import martin.dev.pricer.data.model.Deal;
 import martin.dev.pricer.data.model.Item;
 import martin.dev.pricer.data.model.Price;
 import martin.dev.pricer.data.repository.ItemRepository;
-import martin.dev.pricer.scraper.model.ParsedItemDto;
+import martin.dev.pricer.scraper.ParsedItemDto;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -80,7 +80,7 @@ public class ItemService {
         item.setUpc(parsedItemDto.getUpc());
         item.setName(parsedItemDto.getTitle());
         item.setUrl(parsedItemDto.getUrl());
-        if (!parsedItemDto.getImg().equals("")){
+        if (!parsedItemDto.getImg().equals("")) {
             item.setImg(parsedItemDto.getImg());
         }
         item.setFoundWhere(parsedItemDto.getUrlFound());
@@ -120,7 +120,7 @@ public class ItemService {
         return this.itemRepository.save(item);
     }
 
-    public List<Item> fetchItemsByDealLessThanZero(int pageNumber, int pageSize){
+    public List<Item> fetchItemsByDealLessThanZero(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
         return itemRepository.findAllByDeltaIsLessThanOrderByFoundTimeDesc(0.0, pageable);
     }

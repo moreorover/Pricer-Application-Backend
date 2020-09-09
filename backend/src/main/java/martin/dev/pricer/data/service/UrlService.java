@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class UrlService {
 
-    private UrlRepository urlRepository;
+    private final UrlRepository urlRepository;
 
     public UrlService(UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
@@ -22,8 +22,16 @@ public class UrlService {
         return this.urlRepository.findAllByStatus(status);
     }
 
-    public List<Url> fetchUrlByStatusAndCheckedAtBefore(Status status, LocalDateTime localDateTime) {
+    public List<Url> fetchUrlsByStatusAndCheckedAtBefore(Status status, LocalDateTime localDateTime) {
         return this.urlRepository.findAllByStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNull(status, localDateTime, status);
+    }
+
+    public Url fetchUrlByStatusAndCheckedAtBefore(Status status, LocalDateTime localDateTime) {
+        return this.urlRepository.findFirstByStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNullOrderByCheckedAtAsc(status, localDateTime, status);
+    }
+
+    public Url fetchUrlByStoreNameAndStatusAndCheckedAtBefore(String storeName, Status status, LocalDateTime localDateTime) {
+        return this.urlRepository.findFirstByStore_NameAndStatusAndCheckedAtIsBeforeOrStatusAndCheckedAtIsNullOrderByCheckedAtAsc(storeName, status, localDateTime, status);
     }
 
     public void updateUrlLastCheckedAtAndStatus(Url url, LocalDateTime checkedAt, Status status) {

@@ -33,3 +33,5 @@ build/
 /charts/
 /lib/
 /database/
+
+/scrapoxy/
