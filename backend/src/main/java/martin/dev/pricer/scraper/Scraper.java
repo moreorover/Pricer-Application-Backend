@@ -4,6 +4,7 @@ import lombok.Data;
 import martin.dev.pricer.data.model.Url;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,12 @@ import java.util.Map;
 public abstract class Scraper {
 
     private String name;
+
+    private WebClient webClient;
+    private DataReader dataReader;
+    private Parser parser;
+    private DataProcessor dataProcessor;
+    private DataWriter dataWriter;
 
     private ScraperParser scraperParser;
     private ScraperState scraperState;
