@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class ErnestJonesScraper extends Scraper {
 
-    public ErnestJonesScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, scraperParser, startingScraperState, availableScraperStates);
+    public ErnestJonesScraper(String name, Parser parser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+        super(name, parser, startingScraperState, availableScraperStates);
     }
 
     @Override

@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class SimpkinsJewellersScraper extends Scraper {
 
-    public SimpkinsJewellersScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, scraperParser, startingScraperState, availableScraperStates);
+    public SimpkinsJewellersScraper(String name, Parser parser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+        super(name, parser, startingScraperState, availableScraperStates);
     }
 
     @Override

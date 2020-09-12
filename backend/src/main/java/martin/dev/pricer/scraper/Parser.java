@@ -4,7 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public interface ScraperParser {
+public interface Parser {
     Elements parseListOfAdElements(Document document);
 
     String parseAdTitle(Element adInJsoupHtml);

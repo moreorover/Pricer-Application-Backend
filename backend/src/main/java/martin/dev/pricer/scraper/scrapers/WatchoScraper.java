@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class WatchoScraper extends Scraper {
 
-    public WatchoScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, scraperParser, startingScraperState, availableScraperStates);
+    public WatchoScraper(String name, Parser parser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+        super(name, parser, startingScraperState, availableScraperStates);
     }
 
     @Override

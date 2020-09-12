@@ -8,8 +8,8 @@ import java.util.Map;
 @Slf4j
 public class GoldSmithsScraper extends Scraper {
 
-    public GoldSmithsScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, scraperParser, startingScraperState, availableScraperStates);
+    public GoldSmithsScraper(String name, Parser parser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+        super(name, parser, startingScraperState, availableScraperStates);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package martin.dev.pricer.scraper.scrapers;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.ScraperParser;
+import martin.dev.pricer.scraper.Parser;
 import martin.dev.pricer.scraper.ScraperTools;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
@@ -9,7 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class SimpkinsJewellersParser implements ScraperParser {
+public class SimpkinsJewellersParser implements Parser {
     @Override
     public Elements parseListOfAdElements(Document document) {
         try {

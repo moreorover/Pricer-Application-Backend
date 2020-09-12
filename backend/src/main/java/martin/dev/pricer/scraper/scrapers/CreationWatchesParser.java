@@ -1,13 +1,13 @@
 package martin.dev.pricer.scraper.scrapers;
 
-import martin.dev.pricer.scraper.ScraperParser;
+import martin.dev.pricer.scraper.Parser;
 import martin.dev.pricer.scraper.ScraperTools;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class CreationWatchesParser implements ScraperParser {
+public class CreationWatchesParser implements Parser {
 
     @Override
     public Elements parseListOfAdElements(Document document) {

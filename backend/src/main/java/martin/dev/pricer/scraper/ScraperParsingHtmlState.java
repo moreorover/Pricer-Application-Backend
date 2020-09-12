@@ -31,7 +31,7 @@ public class ScraperParsingHtmlState extends ScraperState {
 
     @Override
     public void parseResponseToAds(Scraper scraper) {
-        scraper.setAds(scraper.getScraperParser().parseListOfAdElements(scraper.getPageHtmlDocument()));
+        scraper.setAds(scraper.getParser().parseListOfAdElements(scraper.getPageHtmlDocument()));
         scraper.validateAds();
     }
 
@@ -48,11 +48,11 @@ public class ScraperParsingHtmlState extends ScraperState {
                 .map(element -> {
                     ParsedItemDto parsedItemDto = new ParsedItemDto();
                     parsedItemDto.setFoundTime(LocalDateTime.now());
-                    parsedItemDto.setTitle(scraper.getScraperParser().parseAdTitle(element));
-                    parsedItemDto.setUrl(scraper.getScraperParser().parseAdUrl(element));
-                    parsedItemDto.setImg(scraper.getScraperParser().parseAdImage(element));
-                    parsedItemDto.setUpc(scraper.getScraperParser().parseAdUpc(element));
-                    parsedItemDto.setPrice(scraper.getScraperParser().parseAdPrice(element));
+                    parsedItemDto.setTitle(scraper.getParser().parseAdTitle(element));
+                    parsedItemDto.setUrl(scraper.getParser().parseAdUrl(element));
+                    parsedItemDto.setImg(scraper.getParser().parseAdImage(element));
+                    parsedItemDto.setUpc(scraper.getParser().parseAdUpc(element));
+                    parsedItemDto.setPrice(scraper.getParser().parseAdPrice(element));
                     parsedItemDto.setUrlFound(scraper.getCurrentPageUrl());
                     parsedItemDto.setUrlObject(scraper.getUrl());
                     return parsedItemDto;
@@ -68,7 +68,7 @@ public class ScraperParsingHtmlState extends ScraperState {
     @Override
     public void nextPage(Scraper scraper) {
         Document doc = scraper.getPageHtmlDocument();
-        if (scraper.getScraperParser().nextPageAvailable(doc)) {
+        if (scraper.getParser().nextPageAvailable(doc)) {
             scraper.nextPageUrl();
             scraper.changeState(State.FetchingHtml);
             scraper.fetchHtml();
