@@ -11,21 +11,21 @@ import java.io.IOException;
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
 @Data
-public class JsoupWebClient extends WebClient<Document> {
+public class JsoupWebClient extends WebClient {
 
     @Override
-    public void fetchSourceHtml(String url) {
-        log.info("Attempting to fetch Html for:\n" + url);
-        Document d = null;
+    public void fetchSourceHtml(Scraper scraper) {
+        log.info("Attempting to fetch Html for:\n" + scraper.getCurrentPageUrl());
         try {
-            d = Jsoup
-                    .connect(url)
-    //                        .proxy("127.0.0.1", 8888)
+            Document d = Jsoup
+                    .connect(scraper.getCurrentPageUrl())
+//                    .proxy("127.0.0.1", 8888)
                     .get();
+            scraper.setPageHtmlDocument(d);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
 
-        this.setPageSource(d);
+
     }
 }

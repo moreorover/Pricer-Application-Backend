@@ -18,7 +18,7 @@ import java.net.URL;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Slf4j
-public class SeleniumWebClient extends WebClient<Document> {
+public class SeleniumWebClient extends WebClient {
 
     private RemoteWebDriver webDriver;
 
@@ -40,18 +40,18 @@ public class SeleniumWebClient extends WebClient<Document> {
     }
 
     @Override
-    public void fetchSourceHtml(String pageUrl) {
+    public void fetchSourceHtml(Scraper scraper) {
         if (this.webDriver == null || this.webDriver.getSessionId() == null) {
             log.error("Start the web browser first.");
         }
 
-        log.info("Attempting to fetch Html for:\n" + pageUrl);
-        this.webDriver.get(pageUrl);
+        log.info("Attempting to fetch Html for:\n" + scraper.getCurrentPageUrl());
+        this.webDriver.get(scraper.getCurrentPageUrl());
         WebDriverWait wait = new WebDriverWait(this.webDriver, 10);
         wait.until((ExpectedCondition<Boolean>) wd ->
                 ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
         String source = this.webDriver.getPageSource();
-        this.setPageSource(Jsoup.parse(source));
+        scraper.setPageHtmlDocument(Jsoup.parse(source));
 
     }
 
