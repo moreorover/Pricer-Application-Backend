@@ -22,9 +22,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 @Slf4j
@@ -87,120 +85,93 @@ public class LocalRdpProdProfile {
     }
 
     @Bean
-    public ScraperReadingState scraperReadingState() {
-        return new ScraperReadingState(this.getSqlStatusService(), this.getSqlUrlService());
+    public DataReader getRepoDataReader() {
+        return new RepoDataReader(this.getSqlStatusService(), this.getSqlUrlService());
     }
 
     @Bean
-    public ScraperSendingState scraperSendingState() {
-        return new ScraperSendingState(this.getDealService(), this.discordBot());
+    DataProcessor getSimpleDataProcessor() {
+        return new SimpleDataProcessor(this.getSqlItemService());
     }
 
     @Bean
-    public ScraperFetchingHtmlSeleniumState scraperFetchingHtmlSeleniumState() {
-        return new ScraperFetchingHtmlSeleniumState();
+    DataWriter getDataWriter() {
+        return new RepoDataWriter(this.getSqlStatusService(), this.getSqlUrlService());
     }
 
     @Bean
-    public ScraperFetchingHtmlState scraperFetchingHtmlState() {
-        return new ScraperFetchingHtmlState();
+    WebClient getJsoupWebClient() {
+        return new JsoupWebClient();
     }
 
     @Bean
-    public ScraperParsingHtmlState scraperParsingHtmlState() {
-        return new ScraperParsingHtmlState(this.getSqlStatusService(), this.getSqlUrlService());
+    WebClient getSeleniumWebClient() {
+        return new SeleniumWebClient(false);
     }
 
     @Bean
-    public ScraperProcessingState scraperProcessingState() {
-        return new ScraperProcessingState(this.getSqlItemService());
+    public Scraper HSamuelScraper() {
+        return new HSamuelScraper(this.getJsoupWebClient(), getRepoDataReader(), new HSamuelParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public Map<State, ScraperState> singleAdScraperStateFactory() {
-        Map<State, ScraperState> availableStates = new HashMap<>();
-        availableStates.put(State.ReadingDatabase, scraperReadingState());
-        availableStates.put(State.FetchingHtml, scraperFetchingHtmlState());
-        availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
-        availableStates.put(State.ProcessingAds, scraperProcessingState());
-        availableStates.put(State.SendingAds, scraperSendingState());
-        return availableStates;
+    public Scraper CreationWatchesScraper() {
+        return new CreationWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new CreationWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public Map<State, ScraperState> singleAdScraperAndJsStateFactory() {
-        Map<State, ScraperState> availableStates = new HashMap<>();
-        availableStates.put(State.ReadingDatabase, scraperReadingState());
-        availableStates.put(State.FetchingHtml, scraperFetchingHtmlSeleniumState());
-        availableStates.put(State.ParsingHtml, scraperParsingHtmlState());
-        availableStates.put(State.ProcessingAds, scraperProcessingState());
-        availableStates.put(State.SendingAds, scraperSendingState());
-        return availableStates;
+    public Scraper FirstClassWatchesScraper() {
+        return new FirstClassWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new FirstClassWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper HSamuelScraper() {
-        return new HSamuelScraper("H. Samuel", new HSamuelParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper ErnestJonesScraper() {
+        return new ErnestJonesScraper(this.getJsoupWebClient(), getRepoDataReader(), new ErnestJonesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper CreationWatchesScraper() {
-        return new CreationWatchesScraper("Creation Watches", new CreationWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper WatchShopScraper() {
+        return new WatchShopScraper(this.getJsoupWebClient(), getRepoDataReader(), new WatchShopParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper FirstClassWatchesScraper() {
-        return new FirstClassWatchesScraper("First Class Watches", new FirstClassWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper GoldSmithsScraper() {
+        return new GoldSmithsScraper(this.getJsoupWebClient(), getRepoDataReader(), new GoldSmithsParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper ErnestJonesScraper() {
-        return new ErnestJonesScraper("Ernest Jones", new ErnestJonesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper TicWatchesScraper() {
+        return new TicWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new TicWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper WatchShopScraper() {
-        return new WatchShopScraper("Watch Shop", new WatchShopParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper WatchoScraper() {
+        return new WatchoScraper(this.getJsoupWebClient(), getRepoDataReader(), new WatchoParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper GoldSmithsScraper() {
-        return new GoldSmithsScraper("Gold Smiths", new GoldSmithsParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper SimpkinsJewellersScraper() {
+        return new SimpkinsJewellersScraper(this.getJsoupWebClient(), getRepoDataReader(), new SimpkinsJewellersParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper TicWatchesScraper() {
-        return new TicWatchesScraper("Tic Watches", new TicWatchesParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper ArgosScraper() {
+        return new ArgosScraper(this.getJsoupWebClient(), getRepoDataReader(), new ArgosParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper WatchoScraper() {
-        return new WatchShopScraper("Watcho", new WatchoParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper SuperDrugScraper() {
+        return new SuperDrugScraper(this.getSeleniumWebClient(), getRepoDataReader(), new SuperDrugParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper SimpkinsJewellersScraper() {
-        return new SimpkinsJewellersScraper("Simpkins Jewellers", new SimpkinsJewellersParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
+    public Scraper DebenhamsScraper() {
+        return new DebenhamsScraper(this.getSeleniumWebClient(), getRepoDataReader(), new DebenhamsParser(), this.getSimpleDataProcessor(), this.getDataWriter());
     }
 
     @Bean
-    public martin.dev.pricer.scraper.Scraper ArgosScraper() {
-        return new ArgosScraper("Argos", new ArgosParser(), singleAdScraperStateFactory().get(State.ReadingDatabase), singleAdScraperStateFactory());
-    }
-
-    @Bean
-    public martin.dev.pricer.scraper.Scraper SuperDrugScraper() {
-        return new SuperDrugScraper("Superdrug", new SuperDrugParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
-    }
-
-    @Bean
-    public martin.dev.pricer.scraper.Scraper DebenhamsScraper() {
-        return new DebenhamsScraper("Debenhams", new DebenhamsParser(), singleAdScraperAndJsStateFactory().get(State.ReadingDatabase), singleAdScraperAndJsStateFactory());
-    }
-
-    @Bean
-    public List<martin.dev.pricer.scraper.Scraper> scraperList() {
-        List<martin.dev.pricer.scraper.Scraper> scraperList = new ArrayList<>();
+    public List<Scraper> scraperList() {
+        List<Scraper> scraperList = new ArrayList<>();
         scraperList.add(HSamuelScraper());
         scraperList.add(CreationWatchesScraper());
         scraperList.add(FirstClassWatchesScraper());
@@ -220,7 +191,7 @@ public class LocalRdpProdProfile {
     public void nudgeScrapers() {
         if (SCRAPING_ON) {
             log.info("Notifying each scraper to fetch URL");
-            this.scraperList().forEach(martin.dev.pricer.scraper.Scraper::fetchUrl);
+            this.scraperList().forEach(Scraper::fetchUrl);
         }
 
     }

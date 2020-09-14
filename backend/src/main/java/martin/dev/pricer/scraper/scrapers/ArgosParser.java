@@ -1,7 +1,8 @@
 package martin.dev.pricer.scraper.scrapers;
 
 import lombok.extern.slf4j.Slf4j;
-import martin.dev.pricer.scraper.ScraperParser;
+import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.Scraper;
 import martin.dev.pricer.scraper.ScraperTools;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
@@ -10,15 +11,15 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class ArgosParser implements ScraperParser {
+public class ArgosParser implements Parser {
     @Override
-    public Elements parseListOfAdElements(Document document) {
+    public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = document.select("div[class^=ProductCardstyles__Wrapper-]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class^=ProductCardstyles__Wrapper-]");
             Validate.notNull(parsedElements, "Elements should not be null");
-            return parsedElements;
+            scraper.setAds(parsedElements);
         } catch (IllegalArgumentException e) {
-            return null;
+            log.error(e.getMessage());
         }
     }
 

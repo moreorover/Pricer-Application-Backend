@@ -2,12 +2,10 @@ package martin.dev.pricer.scraper.scrapers;
 
 import martin.dev.pricer.scraper.*;
 
-import java.util.Map;
-
 public class WatchShopScraper extends Scraper {
 
-    public WatchShopScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, scraperParser, startingScraperState, availableScraperStates);
+    public WatchShopScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
+        super("Watch Shop", webClient, dataReader, parser, dataProcessor, dataWriter);
     }
 
     @Override

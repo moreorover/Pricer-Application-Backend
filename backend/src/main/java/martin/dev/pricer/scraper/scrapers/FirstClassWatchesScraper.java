@@ -3,13 +3,11 @@ package martin.dev.pricer.scraper.scrapers;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.*;
 
-import java.util.Map;
-
 @Slf4j
 public class FirstClassWatchesScraper extends Scraper {
 
-    public FirstClassWatchesScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, scraperParser, startingScraperState, availableScraperStates);
+    public FirstClassWatchesScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
+        super("First Class Watches", webClient, dataReader, parser, dataProcessor, dataWriter);
     }
 
     @Override

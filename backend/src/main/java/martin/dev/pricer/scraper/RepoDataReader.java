@@ -7,12 +7,12 @@ import martin.dev.pricer.data.service.UrlService;
 
 import java.time.LocalDateTime;
 
-public class ScraperReadingState extends ScraperState {
+public class RepoDataReader extends DataReader {
 
     private final StatusService statusService;
     private final UrlService urlService;
 
-    public ScraperReadingState(StatusService statusService, UrlService urlService) {
+    public RepoDataReader(StatusService statusService, UrlService urlService) {
         this.statusService = statusService;
         this.urlService = urlService;
     }
@@ -29,7 +29,6 @@ public class ScraperReadingState extends ScraperState {
             this.urlService.updateUrlLastCheckedAtAndStatus(url, url.getCheckedAt(), statusProcessing);
             scraper.setUrl(url);
             scraper.setCurrentPageUrl(url.getUrl());
-            scraper.changeState(State.FetchingHtml);
             scraper.fetchHtml();
         }
     }

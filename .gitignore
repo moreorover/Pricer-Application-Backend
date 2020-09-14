@@ -35,3 +35,4 @@ build/
 /database/
 
 /scrapoxy/
+/docker-compose.local.yml

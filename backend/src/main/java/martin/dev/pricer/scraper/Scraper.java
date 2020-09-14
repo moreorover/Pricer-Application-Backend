@@ -7,16 +7,17 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Data
 public abstract class Scraper {
 
     private String name;
 
-    private ScraperParser scraperParser;
-    private ScraperState scraperState;
-    private Map<State, ScraperState> availableScraperStates;
+    private WebClient webClient;
+    private DataReader dataReader;
+    private Parser parser;
+    private DataProcessor dataProcessor;
+    private DataWriter dataWriter;
 
     private Url url;
     private Document pageHtmlDocument;
@@ -25,60 +26,57 @@ public abstract class Scraper {
     private String currentPageUrl;
     private int currentPageNumber;
 
-    public Scraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
+    public Scraper(String name, WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
         this.name = name;
-        this.scraperParser = scraperParser;
-        this.scraperState = startingScraperState;
-        this.availableScraperStates = availableScraperStates;
+        this.webClient = webClient;
+        this.dataReader = dataReader;
+        this.parser = parser;
+        this.dataProcessor = dataProcessor;
+        this.dataWriter = dataWriter;
     }
 
     public void fetchUrl() {
-        this.scraperState.fetchUrl(this);
+        this.dataReader.fetchUrl(this);
     }
 
     public void fetchHtml() {
-        this.scraperState.fetchHtml(this);
-    }
-
-    public void validateResponse() {
-        this.scraperState.validateResponse(this);
+        this.webClient.fetchSourceHtml(this);
     }
 
     public void parseResponseToAds() {
-        this.scraperState.parseResponseToAds(this);
+        this.parser.parseListOfAdElements(this);
+        this.parseAdsToItems();
     }
 
     public void validateAds() {
-        this.scraperState.validateAds(this);
     }
 
     public void parseAdsToItems() {
-        this.scraperState.parseAdsToItems(this);
+        this.dataProcessor.processAdsToItems(this);
     }
 
     public void validateItems() {
-        this.scraperState.validateItems(this);
     }
 
     public void processItems() {
-        this.scraperState.processItems(this);
+        this.dataProcessor.processItems(this);
     }
 
     public void writeItems() {
-        this.scraperState.writeItems(this);
     }
 
     public void sendItems() {
-        this.scraperState.sendItems(this);
     }
 
     public void nextPage() {
-        this.scraperState.nextPage(this);
+        if (this.parser.nextPageAvailable(this.pageHtmlDocument)) {
+            this.nextPageUrl();
+            this.fetchHtml();
+        } else {
+            this.webClient.closeWebDriver();
+            this.dataWriter.write(this);
+        }
     }
 
     public abstract void nextPageUrl();
-
-    public void changeState(State state) {
-        this.scraperState = this.availableScraperStates.get(state);
-    }
 }

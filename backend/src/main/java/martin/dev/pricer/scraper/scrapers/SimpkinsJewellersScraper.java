@@ -2,12 +2,10 @@ package martin.dev.pricer.scraper.scrapers;
 
 import martin.dev.pricer.scraper.*;
 
-import java.util.Map;
-
 public class SimpkinsJewellersScraper extends Scraper {
-
-    public SimpkinsJewellersScraper(String name, ScraperParser scraperParser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, scraperParser, startingScraperState, availableScraperStates);
+    public SimpkinsJewellersScraper(WebClient webClient, DataReader dataReader, Parser
+            parser, DataProcessor dataProcessor, DataWriter dataWriter) {
+        super("Simpkins Jewellers", webClient, dataReader, parser, dataProcessor, dataWriter);
     }
 
     @Override
