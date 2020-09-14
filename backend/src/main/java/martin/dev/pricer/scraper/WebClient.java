@@ -6,4 +6,6 @@ import lombok.Data;
 public abstract class WebClient {
 
     public abstract void fetchSourceHtml(Scraper scraper);
+    public void closeWebDriver() {
+    };
 }

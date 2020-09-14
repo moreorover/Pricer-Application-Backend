@@ -22,6 +22,7 @@ public class JsoupWebClient extends WebClient {
 //                    .proxy("127.0.0.1", 8888)
                     .get();
             scraper.setPageHtmlDocument(d);
+            scraper.parseResponseToAds();
         } catch (IOException e) {
             log.error(e.getMessage());
         }

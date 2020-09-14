@@ -3,13 +3,11 @@ package martin.dev.pricer.scraper.scrapers;
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.*;
 
-import java.util.Map;
-
 @Slf4j
 public class SuperDrugScraper extends Scraper {
 
-    public SuperDrugScraper(String name, Parser parser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, parser, startingScraperState, availableScraperStates);
+    public SuperDrugScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
+        super("Superdrug", webClient, dataReader, parser, dataProcessor, dataWriter);
     }
 
     @Override

@@ -2,6 +2,7 @@ package martin.dev.pricer.scraper.scrapers;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
+import martin.dev.pricer.scraper.Scraper;
 import martin.dev.pricer.scraper.ScraperTools;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
@@ -12,13 +13,13 @@ import org.jsoup.select.Elements;
 public class FirstClassWatchesParser implements Parser {
 
     @Override
-    public Elements parseListOfAdElements(Document document) {
+    public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = document.select("a[class=listingproduct]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("a[class=listingproduct]");
             Validate.notNull(parsedElements, "Elements should not be null");
-            return parsedElements;
+            scraper.setAds(parsedElements);
         } catch (IllegalArgumentException e) {
-            return null;
+            log.error(e.getMessage());
         }
     }
 

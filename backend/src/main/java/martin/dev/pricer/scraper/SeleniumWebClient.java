@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -21,11 +20,16 @@ import java.net.URL;
 public class SeleniumWebClient extends WebClient {
 
     private RemoteWebDriver webDriver;
+    private boolean headless;
 
     @Value("${price.remote.browser}")
     private String remoteBrowserUrl;
 
-    public void startWebDriver(boolean headless) {
+    public SeleniumWebClient(boolean headless) {
+        this.headless = headless;
+    }
+
+    private void startWebDriver() {
         log.info("Trying to create new WebDriver session!");
         URL remoteAddress = null;
         try {
@@ -34,7 +38,7 @@ public class SeleniumWebClient extends WebClient {
             log.info(e.getMessage());
         }
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(headless);
+        chromeOptions.setHeadless(this.headless);
 
         this.webDriver = new RemoteWebDriver(remoteAddress, chromeOptions);
     }
@@ -42,7 +46,8 @@ public class SeleniumWebClient extends WebClient {
     @Override
     public void fetchSourceHtml(Scraper scraper) {
         if (this.webDriver == null || this.webDriver.getSessionId() == null) {
-            log.error("Start the web browser first.");
+            log.error("Session not found, creating a session!");
+            this.startWebDriver();
         }
 
         log.info("Attempting to fetch Html for:\n" + scraper.getCurrentPageUrl());
@@ -52,10 +57,12 @@ public class SeleniumWebClient extends WebClient {
                 ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
         String source = this.webDriver.getPageSource();
         scraper.setPageHtmlDocument(Jsoup.parse(source));
-
+        scraper.parseResponseToAds();
     }
 
+    @Override
     public void closeWebDriver() {
+        log.info("Closing a Web Driver session. " + this.webDriver.getSessionId().toString());
         this.getWebDriver().quit();
     }
 }

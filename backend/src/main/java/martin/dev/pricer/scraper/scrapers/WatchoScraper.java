@@ -2,12 +2,10 @@ package martin.dev.pricer.scraper.scrapers;
 
 import martin.dev.pricer.scraper.*;
 
-import java.util.Map;
-
 public class WatchoScraper extends Scraper {
 
-    public WatchoScraper(String name, Parser parser, ScraperState startingScraperState, Map<State, ScraperState> availableScraperStates) {
-        super(name, parser, startingScraperState, availableScraperStates);
+    public WatchoScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
+        super("Watcho", webClient, dataReader, parser, dataProcessor, dataWriter);
     }
 
     @Override
