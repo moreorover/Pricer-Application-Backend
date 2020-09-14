@@ -6,8 +6,8 @@ import martin.dev.pricer.scraper.*;
 @Slf4j
 public class DebenhamsScraper extends Scraper {
 
-    public DebenhamsScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Debenhams", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public DebenhamsScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Debenhams", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

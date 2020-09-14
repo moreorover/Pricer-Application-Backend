@@ -4,8 +4,8 @@ import martin.dev.pricer.scraper.*;
 
 public class ErnestJonesScraper extends Scraper {
 
-    public ErnestJonesScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Ernest Jones", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public ErnestJonesScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Ernest Jones", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

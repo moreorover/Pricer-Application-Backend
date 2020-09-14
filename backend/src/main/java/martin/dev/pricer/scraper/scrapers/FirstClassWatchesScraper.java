@@ -6,8 +6,8 @@ import martin.dev.pricer.scraper.*;
 @Slf4j
 public class FirstClassWatchesScraper extends Scraper {
 
-    public FirstClassWatchesScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("First Class Watches", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public FirstClassWatchesScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("First Class Watches", webClient, dataReader, parser, dataProcessor, dataWriter,dataSender);
     }
 
     @Override

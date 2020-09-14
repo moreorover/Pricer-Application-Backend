@@ -4,8 +4,8 @@ import martin.dev.pricer.scraper.*;
 
 public class WatchShopScraper extends Scraper {
 
-    public WatchShopScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Watch Shop", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public WatchShopScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Watch Shop", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

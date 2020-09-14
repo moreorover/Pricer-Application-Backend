@@ -109,64 +109,68 @@ public class LocalRdpProdProfile {
         return new SeleniumWebClient(false);
     }
 
+    @Bean DataSender getDataSender() {
+        return new DiscordDataSender(this.getDealService(), this.discordBot());
+    }
+
     @Bean
     public Scraper HSamuelScraper() {
-        return new HSamuelScraper(this.getJsoupWebClient(), getRepoDataReader(), new HSamuelParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new HSamuelScraper(this.getJsoupWebClient(), getRepoDataReader(), new HSamuelParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper CreationWatchesScraper() {
-        return new CreationWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new CreationWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new CreationWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new CreationWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper FirstClassWatchesScraper() {
-        return new FirstClassWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new FirstClassWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new FirstClassWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new FirstClassWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper ErnestJonesScraper() {
-        return new ErnestJonesScraper(this.getJsoupWebClient(), getRepoDataReader(), new ErnestJonesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new ErnestJonesScraper(this.getJsoupWebClient(), getRepoDataReader(), new ErnestJonesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper WatchShopScraper() {
-        return new WatchShopScraper(this.getJsoupWebClient(), getRepoDataReader(), new WatchShopParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new WatchShopScraper(this.getJsoupWebClient(), getRepoDataReader(), new WatchShopParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper GoldSmithsScraper() {
-        return new GoldSmithsScraper(this.getJsoupWebClient(), getRepoDataReader(), new GoldSmithsParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new GoldSmithsScraper(this.getJsoupWebClient(), getRepoDataReader(), new GoldSmithsParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper TicWatchesScraper() {
-        return new TicWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new TicWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new TicWatchesScraper(this.getJsoupWebClient(), getRepoDataReader(), new TicWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper WatchoScraper() {
-        return new WatchoScraper(this.getJsoupWebClient(), getRepoDataReader(), new WatchoParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new WatchoScraper(this.getJsoupWebClient(), getRepoDataReader(), new WatchoParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper SimpkinsJewellersScraper() {
-        return new SimpkinsJewellersScraper(this.getJsoupWebClient(), getRepoDataReader(), new SimpkinsJewellersParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new SimpkinsJewellersScraper(this.getJsoupWebClient(), getRepoDataReader(), new SimpkinsJewellersParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper ArgosScraper() {
-        return new ArgosScraper(this.getJsoupWebClient(), getRepoDataReader(), new ArgosParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new ArgosScraper(this.getJsoupWebClient(), getRepoDataReader(), new ArgosParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper SuperDrugScraper() {
-        return new SuperDrugScraper(this.getSeleniumWebClient(), getRepoDataReader(), new SuperDrugParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new SuperDrugScraper(this.getSeleniumWebClient(), getRepoDataReader(), new SuperDrugParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper DebenhamsScraper() {
-        return new DebenhamsScraper(this.getSeleniumWebClient(), getRepoDataReader(), new DebenhamsParser(), this.getSimpleDataProcessor(), this.getDataWriter());
+        return new DebenhamsScraper(this.getSeleniumWebClient(), getRepoDataReader(), new DebenhamsParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean

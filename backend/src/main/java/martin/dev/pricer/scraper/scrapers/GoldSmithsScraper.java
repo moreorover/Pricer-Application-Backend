@@ -6,8 +6,8 @@ import martin.dev.pricer.scraper.*;
 @Slf4j
 public class GoldSmithsScraper extends Scraper {
 
-    public GoldSmithsScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Gold Smiths", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public GoldSmithsScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Gold Smiths", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

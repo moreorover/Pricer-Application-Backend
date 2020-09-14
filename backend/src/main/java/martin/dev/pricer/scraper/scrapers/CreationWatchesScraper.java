@@ -6,8 +6,8 @@ import martin.dev.pricer.scraper.*;
 @Slf4j
 public class CreationWatchesScraper extends Scraper {
 
-    public CreationWatchesScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Creation Watches", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public CreationWatchesScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Creation Watches", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

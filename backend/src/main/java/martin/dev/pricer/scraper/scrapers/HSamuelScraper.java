@@ -4,8 +4,8 @@ import martin.dev.pricer.scraper.*;
 
 public class HSamuelScraper extends Scraper {
 
-    public HSamuelScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("H. Samuel", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public HSamuelScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("H. Samuel", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

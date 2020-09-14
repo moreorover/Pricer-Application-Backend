@@ -6,8 +6,8 @@ import martin.dev.pricer.scraper.*;
 @Slf4j
 public class SuperDrugScraper extends Scraper {
 
-    public SuperDrugScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Superdrug", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public SuperDrugScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Superdrug", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

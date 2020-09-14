@@ -4,8 +4,8 @@ import martin.dev.pricer.scraper.*;
 
 public class ArgosScraper extends Scraper {
 
-    public ArgosScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Argos", webClient, dataReader, parser, dataProcessor, dataWriter);
+    public ArgosScraper(WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Argos", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override

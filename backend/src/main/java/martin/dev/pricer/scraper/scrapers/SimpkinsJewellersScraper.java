@@ -4,8 +4,8 @@ import martin.dev.pricer.scraper.*;
 
 public class SimpkinsJewellersScraper extends Scraper {
     public SimpkinsJewellersScraper(WebClient webClient, DataReader dataReader, Parser
-            parser, DataProcessor dataProcessor, DataWriter dataWriter) {
-        super("Simpkins Jewellers", webClient, dataReader, parser, dataProcessor, dataWriter);
+            parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
+        super("Simpkins Jewellers", webClient, dataReader, parser, dataProcessor, dataWriter, dataSender);
     }
 
     @Override
