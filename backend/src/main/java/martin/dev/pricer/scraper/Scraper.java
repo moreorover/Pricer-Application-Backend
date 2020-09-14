@@ -18,6 +18,7 @@ public abstract class Scraper {
     private Parser parser;
     private DataProcessor dataProcessor;
     private DataWriter dataWriter;
+    private DataSender dataSender;
 
     private Url url;
     private Document pageHtmlDocument;
@@ -26,13 +27,14 @@ public abstract class Scraper {
     private String currentPageUrl;
     private int currentPageNumber;
 
-    public Scraper(String name, WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter) {
+    public Scraper(String name, WebClient webClient, DataReader dataReader, Parser parser, DataProcessor dataProcessor, DataWriter dataWriter, DataSender dataSender) {
         this.name = name;
         this.webClient = webClient;
         this.dataReader = dataReader;
         this.parser = parser;
         this.dataProcessor = dataProcessor;
         this.dataWriter = dataWriter;
+        this.dataSender = dataSender;
     }
 
     public void fetchUrl() {
@@ -75,6 +77,7 @@ public abstract class Scraper {
         } else {
             this.webClient.closeWebDriver();
             this.dataWriter.write(this);
+            this.dataSender.send();
         }
     }
 
