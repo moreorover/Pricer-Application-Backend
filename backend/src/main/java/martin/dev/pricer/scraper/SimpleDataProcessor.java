@@ -31,7 +31,7 @@ public class SimpleDataProcessor extends DataProcessor {
                     return parsedItemDto;
                 })
                 .filter(ParsedItemDto::isValid)
-                .collect(Collectors.toCollection(scraper::getItems));
+                .forEachOrdered(scraper.getItems()::add);
     }
 
     @Override
