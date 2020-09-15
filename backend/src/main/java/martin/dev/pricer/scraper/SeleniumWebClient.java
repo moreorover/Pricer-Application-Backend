@@ -46,7 +46,6 @@ public class SeleniumWebClient extends WebClient {
     @Override
     public void fetchSourceHtml(Scraper scraper) {
         if (this.webDriver == null || this.webDriver.getSessionId() == null) {
-            log.error("Session not found, creating a session!");
             this.startWebDriver();
         }
 
@@ -63,6 +62,8 @@ public class SeleniumWebClient extends WebClient {
     @Override
     public void closeWebDriver() {
         log.info("Closing a Web Driver session. " + this.webDriver.getSessionId().toString());
-        this.getWebDriver().quit();
+        if (this.webDriver != null) {
+            this.webDriver.quit();
+        }
     }
 }
