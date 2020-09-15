@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -95,5 +95,13 @@ public class SimpkinsJewellersParser implements Parser {
             return false;
         }
         return !element.childNodes().get(element.childNodeSize() - 1).attr("class").equals("active");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("page=");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "page=" + pageNumber);
     }
 }

@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -10,11 +10,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class WatchShopParser implements Parser {
+public class HSamuelParser implements Parser {
     @Override
     public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class*=product-container]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("li[class^=product-tile-list__item]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
         } catch (NullPointerException e) {
@@ -26,8 +26,8 @@ public class WatchShopParser implements Parser {
     @Override
     public String parseAdTitle(Element adInJsoupHtml) {
         try {
-            Element titleElement = adInJsoupHtml.selectFirst("meta[itemprop=name]");
-            String title = titleElement.attr("content").trim();
+            Element titleElement = adInJsoupHtml.selectFirst("p[class=product-tile__description]");
+            String title = titleElement.text();
             return title;
         } catch (NullPointerException e) {
             return "";
@@ -37,21 +37,25 @@ public class WatchShopParser implements Parser {
     @Override
     public String parseAdUpc(Element adInJsoupHtml) {
         try {
-            Element upcElement = adInJsoupHtml.selectFirst("meta[itemprop=sku]");
-            String upc = upcElement.attr("content");
-            return "WS_" + upc;
+            String url = parseAdUrl(adInJsoupHtml);
+            String[] strings = url.split("/d/");
+            strings = strings[1].split("/");
+            String upc = strings[0];
+
+            return "HS_" + upc;
         } catch (NullPointerException e) {
             return "";
         }
+
     }
 
     @Override
     public Double parseAdPrice(Element adInJsoupHtml) {
         try {
-            Element priceElement = adInJsoupHtml.selectFirst("div[class=product-price]");
-            priceElement = priceElement.selectFirst("strong");
+            Element priceElement = adInJsoupHtml.selectFirst("p[class*=current-price]");
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
+
             return price;
         } catch (NullPointerException e) {
             return 0.0;
@@ -61,13 +65,10 @@ public class WatchShopParser implements Parser {
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
         try {
-            Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
-            imgElement = imgElement.selectFirst("img");
-            String imgSrc = imgElement.attr("src");
-            if (imgSrc.endsWith("loader_border.gif")) {
-                return "";
-            }
-            return imgSrc;
+            // adInJsoupHtml.select("noscript").select("img").attr("src")
+            Element imgElement = adInJsoupHtml.selectFirst("img");
+            String imgUrl = imgElement.attr("src");
+            return imgUrl;
         } catch (NullPointerException e) {
             return "";
         }
@@ -76,11 +77,10 @@ public class WatchShopParser implements Parser {
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
-            Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
-            imgElement = imgElement.selectFirst("a");
-            String url = imgElement.attr("abs:href");
+            Element aElement = adInJsoupHtml.select("a").first();
+            String url = aElement.attr("href");
 
-            return url;
+            return "https://www.hsamuel.co.uk" + url;
         } catch (NullPointerException e) {
             return "";
         }
@@ -88,7 +88,15 @@ public class WatchShopParser implements Parser {
 
     @Override
     public boolean nextPageAvailable(Document document) {
-        Element element = document.selectFirst("div[class=controls-top]");
-        return element.childNodes().toString().contains("title=\"Next page\"");
+        Element element = document.selectFirst("div[class=browse__pagination-and-infinity-scroll]");
+        return element.childNodes().toString().contains("rel=\"next\"");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("Pg=");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "Pg=" + pageNumber);
     }
 }

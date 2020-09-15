@@ -11,7 +11,7 @@ import martin.dev.pricer.data.service.StatusService;
 import martin.dev.pricer.data.service.UrlService;
 import martin.dev.pricer.discord.DiscordService;
 import martin.dev.pricer.scraper.*;
-import martin.dev.pricer.scraper.scrapers.*;
+import martin.dev.pricer.scraper.parser.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,62 +115,62 @@ public class LocalRdpProdProfile {
 
     @Bean
     public Scraper HSamuelScraper() {
-        return new HSamuelScraper(this.getSeleniumWebClient(), getRepoDataReader(), new HSamuelParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("H. Samuel", this.getSeleniumWebClient(), getRepoDataReader(), new HSamuelParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper CreationWatchesScraper() {
-        return new CreationWatchesScraper(this.getSeleniumWebClient(), getRepoDataReader(), new CreationWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Creation Watches", this.getSeleniumWebClient(), getRepoDataReader(), new CreationWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper FirstClassWatchesScraper() {
-        return new FirstClassWatchesScraper(this.getSeleniumWebClient(), getRepoDataReader(), new FirstClassWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("First Class Watches", this.getSeleniumWebClient(), getRepoDataReader(), new FirstClassWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper ErnestJonesScraper() {
-        return new ErnestJonesScraper(this.getSeleniumWebClient(), getRepoDataReader(), new ErnestJonesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Ernest Jones", this.getSeleniumWebClient(), getRepoDataReader(), new ErnestJonesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper WatchShopScraper() {
-        return new WatchShopScraper(this.getSeleniumWebClient(), getRepoDataReader(), new WatchShopParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Watch Shop", this.getSeleniumWebClient(), getRepoDataReader(), new WatchShopParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper GoldSmithsScraper() {
-        return new GoldSmithsScraper(this.getSeleniumWebClient(), getRepoDataReader(), new GoldSmithsParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Gold Smiths", this.getSeleniumWebClient(), getRepoDataReader(), new GoldSmithsParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper TicWatchesScraper() {
-        return new TicWatchesScraper(this.getSeleniumWebClient(), getRepoDataReader(), new TicWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Tic Watches", this.getSeleniumWebClient(), getRepoDataReader(), new TicWatchesParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper WatchoScraper() {
-        return new WatchoScraper(this.getSeleniumWebClient(), getRepoDataReader(), new WatchoParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Watcho", this.getSeleniumWebClient(), getRepoDataReader(), new WatchoParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper SimpkinsJewellersScraper() {
-        return new SimpkinsJewellersScraper(this.getSeleniumWebClient(), getRepoDataReader(), new SimpkinsJewellersParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Simpkins Jewellers", this.getSeleniumWebClient(), getRepoDataReader(), new SimpkinsJewellersParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper ArgosScraper() {
-        return new ArgosScraper(this.getSeleniumWebClient(), getRepoDataReader(), new ArgosParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Argos", this.getSeleniumWebClient(), getRepoDataReader(), new ArgosParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper SuperDrugScraper() {
-        return new SuperDrugScraper(this.getSeleniumWebClient(), getRepoDataReader(), new SuperDrugParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Superdrug", this.getSeleniumWebClient(), getRepoDataReader(), new SuperDrugParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean
     public Scraper DebenhamsScraper() {
-        return new DebenhamsScraper(this.getSeleniumWebClient(), getRepoDataReader(), new DebenhamsParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
+        return new Scraper("Debenhams", this.getSeleniumWebClient(), getRepoDataReader(), new DebenhamsParser(), this.getSimpleDataProcessor(), this.getDataWriter(), this.getDataSender());
     }
 
     @Bean

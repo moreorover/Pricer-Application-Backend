@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -90,5 +90,13 @@ public class ArgosParser implements Parser {
         }
         Node e = element.child(element.childNodeSize() - 1);
         return !e.outerHtml().contains("div disabled class=");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("opt/page:");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "opt/page:" + pageNumber + "/");
     }
 }

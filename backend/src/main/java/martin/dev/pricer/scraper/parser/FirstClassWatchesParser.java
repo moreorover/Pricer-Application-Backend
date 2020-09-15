@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -10,11 +10,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class DebenhamsParser implements Parser {
+public class FirstClassWatchesParser implements Parser {
+
     @Override
     public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class^=c-product-item]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("a[class=listingproduct]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
         } catch (NullPointerException e) {
@@ -26,8 +27,7 @@ public class DebenhamsParser implements Parser {
     @Override
     public String parseAdTitle(Element adInJsoupHtml) {
         try {
-            Element titleElement = adInJsoupHtml.selectFirst("h2[class^=c-product-item-title]");
-            String title = titleElement.text();
+            String title = adInJsoupHtml.attr("title").trim();
             return title;
         } catch (NullPointerException e) {
             return "";
@@ -37,12 +37,8 @@ public class DebenhamsParser implements Parser {
     @Override
     public String parseAdUpc(Element adInJsoupHtml) {
         try {
-            Element aElement = adInJsoupHtml.selectFirst("a");
-            String upcText = aElement.attr("href");
-            String[] upcTextArray = upcText.split("prod_");
-            String upc = upcTextArray[1];
-
-            return "DBH_" + upc;
+            String upc = adInJsoupHtml.attr("data-id");
+            return "FCW_" + upc;
         } catch (NullPointerException e) {
             return "";
         }
@@ -51,9 +47,9 @@ public class DebenhamsParser implements Parser {
     @Override
     public Double parseAdPrice(Element adInJsoupHtml) {
         try {
-            Element priceElement = adInJsoupHtml.selectFirst("span[itemprop=price]");
-            String priceString = priceElement.text();
+            String priceString = adInJsoupHtml.attr("data-price");
             Double price = ScraperTools.parseDoubleFromString(priceString);
+
             return price;
         } catch (NullPointerException e) {
             return 0.0;
@@ -63,10 +59,12 @@ public class DebenhamsParser implements Parser {
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
         try {
-            Element imgElement = adInJsoupHtml.selectFirst("div[class^=dbh-image]");
-            imgElement = imgElement.selectFirst("img");
-            String imgString = imgElement.attr("abs:src");
-            return imgString;
+            Element imgElement = adInJsoupHtml.selectFirst("div[class=image]").selectFirst("img");
+            String imgUrl = imgElement.attr("src");
+            if (imgUrl.endsWith("loader_border.gif")) {
+                return "";
+            }
+            return imgUrl;
         } catch (NullPointerException e) {
             return "";
         }
@@ -75,9 +73,7 @@ public class DebenhamsParser implements Parser {
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
-            adInJsoupHtml.setBaseUri("https://www.debenhams.com");
-            Element aElement = adInJsoupHtml.selectFirst("a");
-            String url = aElement.attr("abs:href");
+            String url = adInJsoupHtml.attr("href");
             return url;
         } catch (NullPointerException e) {
             return "";
@@ -86,8 +82,15 @@ public class DebenhamsParser implements Parser {
 
     @Override
     public boolean nextPageAvailable(Document document) {
-        Element element = document.selectFirst("div[class=c-product-control-bar__pagination-wrapper]");
-        element = element.selectFirst("button[class*=pw-pagination__next]");
-        return !element.outerHtml().contains("button disabled class");
+        Element element = document.selectFirst("div[class=listingpagination]");
+        return element.childNodes().toString().contains("class=\"next\"");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("&page=");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "&page=" + pageNumber);
     }
 }

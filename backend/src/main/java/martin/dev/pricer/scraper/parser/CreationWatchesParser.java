@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -10,22 +10,24 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class SuperDrugParser implements Parser {
+public class CreationWatchesParser implements Parser {
+
     @Override
     public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class=item__content]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class=product-box]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
         } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
     @Override
     public String parseAdTitle(Element adInJsoupHtml) {
         try {
-            Element titleElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
+            Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
             String title = titleElement.text();
             return title;
         } catch (NullPointerException e) {
@@ -36,10 +38,12 @@ public class SuperDrugParser implements Parser {
     @Override
     public String parseAdUpc(Element adInJsoupHtml) {
         try {
-            String url = parseAdUrl(adInJsoupHtml);
-            String[] strings = url.split("/p/");
-            String upc = strings[1];
-            return "SD_" + upc;
+            Element modelElement = adInJsoupHtml.selectFirst("p[class=product-model-no]");
+            String upcText = modelElement.text();
+            String[] stringArray = upcText.split(": ");
+            String upc = stringArray[1];
+
+            return "CW_" + upc;
         } catch (NullPointerException e) {
             return "";
         }
@@ -48,9 +52,10 @@ public class SuperDrugParser implements Parser {
     @Override
     public Double parseAdPrice(Element adInJsoupHtml) {
         try {
-            Element priceElement = adInJsoupHtml.selectFirst("span[class*=item__price--now]");
-            String priceString = priceElement.text();
+            Element titleElement = adInJsoupHtml.selectFirst("p[class=product-price]").selectFirst("span");
+            String priceString = titleElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
+
             return price;
         } catch (NullPointerException e) {
             return 0.0;
@@ -60,15 +65,10 @@ public class SuperDrugParser implements Parser {
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
         try {
-            Element imgElement = adInJsoupHtml.selectFirst("img");
+            Element titleElement = adInJsoupHtml.selectFirst("div[class=product-img-box]").selectFirst("img");
+            String imgUrl = titleElement.attr("src");
 
-            if (!imgElement.attr("src").equals("")) {
-                String imgElementText = imgElement.attr("src");
-                return "https://www.superdrug.com" + imgElementText;
-            } else {
-                String imgElementText = imgElement.attr("data-src");
-                return "https://www.superdrug.com" + imgElementText;
-            }
+            return imgUrl;
         } catch (NullPointerException e) {
             return "";
         }
@@ -77,9 +77,10 @@ public class SuperDrugParser implements Parser {
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
-            Element aElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
-            String url = aElement.attr("href");
-            return "https://www.superdrug.com" + url;
+            Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
+            String url = titleElement.attr("href");
+
+            return url;
         } catch (NullPointerException e) {
             return "";
         }
@@ -87,7 +88,16 @@ public class SuperDrugParser implements Parser {
 
     @Override
     public boolean nextPageAvailable(Document document) {
-        Element element = document.selectFirst("ul[class=pagination__list]");
-        return !element.childNodes().toString().contains("next pagination__item direction hidden");
+        Element element = document.selectFirst("div[class=fr pagina]");
+        return element.childNodes().toString().contains("Next Page");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("/index-");
+        String[] y = x[1].split("-5d");
+        int pageNumber = ScraperTools.parseIntegerFromString(y[0]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "/index-" + pageNumber + "-5d.html?currency=GBP");
     }
 }

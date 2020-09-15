@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public abstract class Scraper {
+public class Scraper {
 
     private String name;
 
@@ -86,5 +86,7 @@ public abstract class Scraper {
         }
     }
 
-    public abstract void nextPageUrl();
+    public void nextPageUrl() {
+        this.parser.nextPageUrl(this);
+    };
 }

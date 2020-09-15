@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -83,5 +83,13 @@ public class WatchoParser implements Parser {
     public boolean nextPageAvailable(Document document) {
         Element element = document.selectFirst("li[class=pagination-item pagination-item--next]");
         return element != null;
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("page=");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "page=" + pageNumber);
     }
 }

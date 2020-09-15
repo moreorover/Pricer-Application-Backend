@@ -18,4 +18,6 @@ public interface Parser {
     String parseAdUrl(Element adInJsoupHtml);
 
     boolean nextPageAvailable(Document document);
+
+    void nextPageUrl(Scraper scraper);
 }

@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -10,11 +10,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class GoldSmithsParser implements Parser {
+public class WatchShopParser implements Parser {
     @Override
     public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class=product]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class*=product-container]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
         } catch (NullPointerException e) {
@@ -26,8 +26,8 @@ public class GoldSmithsParser implements Parser {
     @Override
     public String parseAdTitle(Element adInJsoupHtml) {
         try {
-            Element titleElement = adInJsoupHtml.selectFirst("div[class=product-title]");
-            String title = titleElement.text();
+            Element titleElement = adInJsoupHtml.selectFirst("meta[itemprop=name]");
+            String title = titleElement.attr("content").trim();
             return title;
         } catch (NullPointerException e) {
             return "";
@@ -37,9 +37,9 @@ public class GoldSmithsParser implements Parser {
     @Override
     public String parseAdUpc(Element adInJsoupHtml) {
         try {
-            Element aElement = adInJsoupHtml.selectFirst("a");
-            String upc = aElement.attr("id");
-            return "GS_" + upc;
+            Element upcElement = adInJsoupHtml.selectFirst("meta[itemprop=sku]");
+            String upc = upcElement.attr("content");
+            return "WS_" + upc;
         } catch (NullPointerException e) {
             return "";
         }
@@ -48,7 +48,8 @@ public class GoldSmithsParser implements Parser {
     @Override
     public Double parseAdPrice(Element adInJsoupHtml) {
         try {
-            Element priceElement = adInJsoupHtml.selectFirst("div[class=prodPrice]");
+            Element priceElement = adInJsoupHtml.selectFirst("div[class=product-price]");
+            priceElement = priceElement.selectFirst("strong");
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
@@ -60,12 +61,13 @@ public class GoldSmithsParser implements Parser {
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
         try {
-            Element imgElement = adInJsoupHtml.selectFirst("img");
+            Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
+            imgElement = imgElement.selectFirst("img");
             String imgSrc = imgElement.attr("src");
-            if (imgSrc.endsWith(".jpg")) {
-                return imgSrc;
+            if (imgSrc.endsWith("loader_border.gif")) {
+                return "";
             }
-            return "";
+            return imgSrc;
         } catch (NullPointerException e) {
             return "";
         }
@@ -74,8 +76,9 @@ public class GoldSmithsParser implements Parser {
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
-            Element aElement = adInJsoupHtml.selectFirst("a");
-            String url = aElement.attr("abs:href");
+            Element imgElement = adInJsoupHtml.selectFirst("div[class=product-img]");
+            imgElement = imgElement.selectFirst("a");
+            String url = imgElement.attr("abs:href");
 
             return url;
         } catch (NullPointerException e) {
@@ -85,7 +88,15 @@ public class GoldSmithsParser implements Parser {
 
     @Override
     public boolean nextPageAvailable(Document document) {
-        Element element = document.selectFirst("ul[class=sort-pagination unstyled clearfix]");
-        return element.childNodes().toString().contains("class=\"next\"");
+        Element element = document.selectFirst("div[class=controls-top]");
+        return element.childNodes().toString().contains("title=\"Next page\"");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("page=");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "page=" + pageNumber);
     }
 }

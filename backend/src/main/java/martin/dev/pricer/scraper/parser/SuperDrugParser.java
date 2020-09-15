@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -10,23 +10,22 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class HSamuelParser implements Parser {
+public class SuperDrugParser implements Parser {
     @Override
     public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = scraper.getPageHtmlDocument().select("li[class^=product-tile-list__item]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("div[class=item__content]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
         } catch (NullPointerException e) {
             log.error(e.getMessage());
-            scraper.setAds(new Elements());
         }
     }
 
     @Override
     public String parseAdTitle(Element adInJsoupHtml) {
         try {
-            Element titleElement = adInJsoupHtml.selectFirst("p[class=product-tile__description]");
+            Element titleElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
             String title = titleElement.text();
             return title;
         } catch (NullPointerException e) {
@@ -38,24 +37,20 @@ public class HSamuelParser implements Parser {
     public String parseAdUpc(Element adInJsoupHtml) {
         try {
             String url = parseAdUrl(adInJsoupHtml);
-            String[] strings = url.split("/d/");
-            strings = strings[1].split("/");
-            String upc = strings[0];
-
-            return "HS_" + upc;
+            String[] strings = url.split("/p/");
+            String upc = strings[1];
+            return "SD_" + upc;
         } catch (NullPointerException e) {
             return "";
         }
-
     }
 
     @Override
     public Double parseAdPrice(Element adInJsoupHtml) {
         try {
-            Element priceElement = adInJsoupHtml.selectFirst("p[class*=current-price]");
+            Element priceElement = adInJsoupHtml.selectFirst("span[class*=item__price--now]");
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
-
             return price;
         } catch (NullPointerException e) {
             return 0.0;
@@ -65,10 +60,15 @@ public class HSamuelParser implements Parser {
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
         try {
-            // adInJsoupHtml.select("noscript").select("img").attr("src")
             Element imgElement = adInJsoupHtml.selectFirst("img");
-            String imgUrl = imgElement.attr("src");
-            return imgUrl;
+
+            if (!imgElement.attr("src").equals("")) {
+                String imgElementText = imgElement.attr("src");
+                return "https://www.superdrug.com" + imgElementText;
+            } else {
+                String imgElementText = imgElement.attr("data-src");
+                return "https://www.superdrug.com" + imgElementText;
+            }
         } catch (NullPointerException e) {
             return "";
         }
@@ -77,10 +77,9 @@ public class HSamuelParser implements Parser {
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
-            Element aElement = adInJsoupHtml.select("a").first();
+            Element aElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
             String url = aElement.attr("href");
-
-            return "https://www.hsamuel.co.uk" + url;
+            return "https://www.superdrug.com" + url;
         } catch (NullPointerException e) {
             return "";
         }
@@ -88,7 +87,17 @@ public class HSamuelParser implements Parser {
 
     @Override
     public boolean nextPageAvailable(Document document) {
-        Element element = document.selectFirst("div[class=browse__pagination-and-infinity-scroll]");
-        return element.childNodes().toString().contains("rel=\"next\"");
+        Element element = document.selectFirst("ul[class=pagination__list]");
+        return !element.childNodes().toString().contains("next pagination__item direction hidden");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        // https://www.superdrug.com/Fragrance/Perfume-For-Women/c/fragranceforher?q=%3AbestBiz%3AinStockFlag%3Atrue&page=0&resultsForPage=60&sort=bestBiz
+        String[] x = scraper.getCurrentPageUrl().split("&page=");
+        String[] y = x[1].split("&resultsFor");
+        int pageNumber = ScraperTools.parseIntegerFromString(y[0]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "&page=" + pageNumber + "&resultsForPage=60&sort=bestBiz");
     }
 }

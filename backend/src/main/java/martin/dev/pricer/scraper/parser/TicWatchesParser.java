@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -83,5 +83,14 @@ public class TicWatchesParser implements Parser {
     public boolean nextPageAvailable(Document document) {
         Element element = document.selectFirst("a[class=next-page page-arrow page_num ico icon-right]");
         return element != null && element.attr("href").length() > 1;
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        // https://www.ticwatches.co.uk/womens-watches-c2?page=1
+        String[] x = scraper.getCurrentPageUrl().split("page=");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "page=" + pageNumber);
     }
 }

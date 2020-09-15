@@ -1,4 +1,4 @@
-package martin.dev.pricer.scraper.scrapers;
+package martin.dev.pricer.scraper.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import martin.dev.pricer.scraper.Parser;
@@ -10,24 +10,25 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 @Slf4j
-public class FirstClassWatchesParser implements Parser {
-
+public class ErnestJonesParser implements Parser {
     @Override
     public void parseListOfAdElements(Scraper scraper) {
         try {
-            Elements parsedElements = scraper.getPageHtmlDocument().select("a[class=listingproduct]");
+            Elements parsedElements = scraper.getPageHtmlDocument().select("li[class^=product-tile-list__item]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
         } catch (NullPointerException e) {
             log.error(e.getMessage());
             scraper.setAds(new Elements());
         }
+
     }
 
     @Override
     public String parseAdTitle(Element adInJsoupHtml) {
         try {
-            String title = adInJsoupHtml.attr("title").trim();
+            Element titleElement = adInJsoupHtml.selectFirst("p[class=product-tile__description]");
+            String title = titleElement.text();
             return title;
         } catch (NullPointerException e) {
             return "";
@@ -37,8 +38,11 @@ public class FirstClassWatchesParser implements Parser {
     @Override
     public String parseAdUpc(Element adInJsoupHtml) {
         try {
-            String upc = adInJsoupHtml.attr("data-id");
-            return "FCW_" + upc;
+            String url = parseAdUrl(adInJsoupHtml);
+            String[] strings = url.split("/d/");
+            strings = strings[1].split("/");
+            String upc = strings[0];
+            return "EJ_" + upc;
         } catch (NullPointerException e) {
             return "";
         }
@@ -47,9 +51,9 @@ public class FirstClassWatchesParser implements Parser {
     @Override
     public Double parseAdPrice(Element adInJsoupHtml) {
         try {
-            String priceString = adInJsoupHtml.attr("data-price");
+            Element priceElement = adInJsoupHtml.selectFirst("p[class*=current-price]");
+            String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
-
             return price;
         } catch (NullPointerException e) {
             return 0.0;
@@ -59,11 +63,8 @@ public class FirstClassWatchesParser implements Parser {
     @Override
     public String parseAdImage(Element adInJsoupHtml) {
         try {
-            Element imgElement = adInJsoupHtml.selectFirst("div[class=image]").selectFirst("img");
-            String imgUrl = imgElement.attr("src");
-            if (imgUrl.endsWith("loader_border.gif")) {
-                return "";
-            }
+            Element imgElement = adInJsoupHtml.selectFirst("img[class^=product-tile__image]");
+            String imgUrl = imgElement.attr("data-src");
             return imgUrl;
         } catch (NullPointerException e) {
             return "";
@@ -73,7 +74,8 @@ public class FirstClassWatchesParser implements Parser {
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
-            String url = adInJsoupHtml.attr("href");
+            Element aElement = adInJsoupHtml.select("a").first();
+            String url = aElement.attr("abs:href");
             return url;
         } catch (NullPointerException e) {
             return "";
@@ -82,7 +84,15 @@ public class FirstClassWatchesParser implements Parser {
 
     @Override
     public boolean nextPageAvailable(Document document) {
-        Element element = document.selectFirst("div[class=listingpagination]");
-        return element.childNodes().toString().contains("class=\"next\"");
+        Element element = document.selectFirst("div[class=browse__pagination-and-infinity-scroll]");
+        return element.childNodes().toString().contains("rel=\"next\"");
+    }
+
+    @Override
+    public void nextPageUrl(Scraper scraper) {
+        String[] x = scraper.getCurrentPageUrl().split("Pg=");
+        int pageNumber = ScraperTools.parseIntegerFromString(x[1]) + 1;
+        scraper.setCurrentPageNumber(pageNumber);
+        scraper.setCurrentPageUrl(x[0] + "Pg=" + pageNumber);
     }
 }
