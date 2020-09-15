@@ -61,8 +61,8 @@ public class SeleniumWebClient extends WebClient {
 
     @Override
     public void closeWebDriver() {
-        log.info("Closing a Web Driver session. " + this.webDriver.getSessionId().toString());
         if (this.webDriver != null) {
+            log.info("Closing a Web Driver session. " + this.webDriver.getSessionId().toString());
             this.webDriver.quit();
         }
     }
