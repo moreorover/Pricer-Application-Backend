@@ -39,10 +39,12 @@ public abstract class Scraper {
 
     public void fetchUrl() {
         this.dataReader.fetchUrl(this);
+        this.fetchHtml();
     }
 
     public void fetchHtml() {
         this.webClient.fetchSourceHtml(this);
+        this.parseResponseToAds();
     }
 
     public void parseResponseToAds() {
@@ -55,6 +57,7 @@ public abstract class Scraper {
 
     public void parseAdsToItems() {
         this.dataProcessor.processAdsToItems(this);
+        this.processItems();
     }
 
     public void validateItems() {
@@ -62,6 +65,7 @@ public abstract class Scraper {
 
     public void processItems() {
         this.dataProcessor.processItems(this);
+        this.nextPage();
     }
 
     public void writeItems() {

@@ -29,7 +29,6 @@ public class RepoDataReader extends DataReader {
             this.urlService.updateUrlLastCheckedAtAndStatus(url, url.getCheckedAt(), statusProcessing);
             scraper.setUrl(url);
             scraper.setCurrentPageUrl(url.getUrl());
-            scraper.fetchHtml();
         }
     }
 }

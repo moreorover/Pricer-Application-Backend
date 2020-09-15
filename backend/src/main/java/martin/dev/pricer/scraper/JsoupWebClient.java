@@ -20,7 +20,6 @@ public class JsoupWebClient extends WebClient {
             Connection connection = Jsoup.connect(scraper.getCurrentPageUrl());
             if (connection.response().statusCode() < 400) {
                 scraper.setPageHtmlDocument(connection.get());
-                scraper.parseResponseToAds();
             } else {
                 throw new RuntimeException("Response code above: " + connection.response().statusCode());
             }

@@ -32,7 +32,6 @@ public class SimpleDataProcessor extends DataProcessor {
                 })
                 .filter(ParsedItemDto::isValid)
                 .collect(Collectors.toCollection(scraper::getItems));
-        scraper.processItems();
     }
 
     @Override
@@ -44,6 +43,5 @@ public class SimpleDataProcessor extends DataProcessor {
 //        }
         scraper.getItems().forEach(itemService::processParsedItemDto);
         scraper.getItems().clear();
-        scraper.nextPage();
     }
 }
