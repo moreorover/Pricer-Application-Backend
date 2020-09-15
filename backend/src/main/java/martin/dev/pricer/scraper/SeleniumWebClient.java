@@ -56,7 +56,6 @@ public class SeleniumWebClient extends WebClient {
                 ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
         String source = this.webDriver.getPageSource();
         scraper.setPageHtmlDocument(Jsoup.parse(source));
-        scraper.parseResponseToAds();
     }
 
     @Override
