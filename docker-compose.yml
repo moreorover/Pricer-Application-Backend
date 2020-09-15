@@ -58,7 +58,7 @@ services:
     container_name: pricer-chrome
     image: selenium/standalone-chrome:4.0.0-alpha-7-prerelease-20200907
     environment:
-      - START_XVFB=false
+      - START_XVFB=true
     volumes:
       - /dev/shm:/dev/shm
     ports:
