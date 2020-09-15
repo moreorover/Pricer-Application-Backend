@@ -17,8 +17,9 @@ public class TicWatchesParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("li[class^=col]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -28,7 +29,7 @@ public class TicWatchesParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("a");
             String title = titleElement.attr("title");
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -39,7 +40,7 @@ public class TicWatchesParser implements Parser {
             Element upcElement = adInJsoupHtml.selectFirst("div");
             String upc = upcElement.attr("data-infid");
             return "TIC_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -51,7 +52,7 @@ public class TicWatchesParser implements Parser {
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -62,7 +63,7 @@ public class TicWatchesParser implements Parser {
             Element imgElement = adInJsoupHtml.selectFirst("img");
             String imgSrc = imgElement.attr("abs:data-src");
             return imgSrc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -73,7 +74,7 @@ public class TicWatchesParser implements Parser {
             Element aElement = adInJsoupHtml.selectFirst("a");
             String url = aElement.attr("href");
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

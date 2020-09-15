@@ -17,8 +17,9 @@ public class DebenhamsParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("div[class^=c-product-item]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 

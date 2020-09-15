@@ -18,8 +18,9 @@ public class ArgosParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("div[class^=ProductCardstyles__Wrapper-]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -29,7 +30,7 @@ public class ArgosParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("a[class*=Title]");
             String title = titleElement.text();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -39,7 +40,7 @@ public class ArgosParser implements Parser {
         try {
             String upc = adInJsoupHtml.attr("data-product-id");
             return "A_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -51,7 +52,7 @@ public class ArgosParser implements Parser {
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -77,7 +78,7 @@ public class ArgosParser implements Parser {
             Element urlElement = adInJsoupHtml.selectFirst("a");
             String url = urlElement.attr("abs:href");
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

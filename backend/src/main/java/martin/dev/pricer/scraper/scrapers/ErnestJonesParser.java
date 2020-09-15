@@ -17,8 +17,9 @@ public class ErnestJonesParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("li[class^=product-tile-list__item]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
 
     }
@@ -29,7 +30,7 @@ public class ErnestJonesParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("p[class=product-tile__description]");
             String title = titleElement.text();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -42,7 +43,7 @@ public class ErnestJonesParser implements Parser {
             strings = strings[1].split("/");
             String upc = strings[0];
             return "EJ_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -54,7 +55,7 @@ public class ErnestJonesParser implements Parser {
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -65,7 +66,7 @@ public class ErnestJonesParser implements Parser {
             Element imgElement = adInJsoupHtml.selectFirst("img[class^=product-tile__image]");
             String imgUrl = imgElement.attr("data-src");
             return imgUrl;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -76,7 +77,7 @@ public class ErnestJonesParser implements Parser {
             Element aElement = adInJsoupHtml.select("a").first();
             String url = aElement.attr("abs:href");
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

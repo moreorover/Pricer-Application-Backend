@@ -18,8 +18,9 @@ public class CreationWatchesParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("div[class=product-box]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -29,7 +30,7 @@ public class CreationWatchesParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("h3[class=product-name]").selectFirst("a");
             String title = titleElement.text();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -43,7 +44,7 @@ public class CreationWatchesParser implements Parser {
             String upc = stringArray[1];
 
             return "CW_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -56,7 +57,7 @@ public class CreationWatchesParser implements Parser {
             Double price = ScraperTools.parseDoubleFromString(priceString);
 
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -68,7 +69,7 @@ public class CreationWatchesParser implements Parser {
             String imgUrl = titleElement.attr("src");
 
             return imgUrl;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -80,7 +81,7 @@ public class CreationWatchesParser implements Parser {
             String url = titleElement.attr("href");
 
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

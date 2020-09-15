@@ -17,8 +17,9 @@ public class HSamuelParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("li[class^=product-tile-list__item]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -28,7 +29,7 @@ public class HSamuelParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("p[class=product-tile__description]");
             String title = titleElement.text();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -42,7 +43,7 @@ public class HSamuelParser implements Parser {
             String upc = strings[0];
 
             return "HS_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
 
@@ -56,7 +57,7 @@ public class HSamuelParser implements Parser {
             Double price = ScraperTools.parseDoubleFromString(priceString);
 
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -65,12 +66,10 @@ public class HSamuelParser implements Parser {
     public String parseAdImage(Element adInJsoupHtml) {
         try {
             // adInJsoupHtml.select("noscript").select("img").attr("src")
-
-            Element imgElement = adInJsoupHtml.selectFirst("noscript");
-            imgElement = imgElement.selectFirst("img");
+            Element imgElement = adInJsoupHtml.selectFirst("img");
             String imgUrl = imgElement.attr("src");
             return imgUrl;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -82,7 +81,7 @@ public class HSamuelParser implements Parser {
             String url = aElement.attr("href");
 
             return "https://www.hsamuel.co.uk" + url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

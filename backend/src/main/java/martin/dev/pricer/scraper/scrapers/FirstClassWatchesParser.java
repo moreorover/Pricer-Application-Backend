@@ -18,8 +18,9 @@ public class FirstClassWatchesParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("a[class=listingproduct]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -28,7 +29,7 @@ public class FirstClassWatchesParser implements Parser {
         try {
             String title = adInJsoupHtml.attr("title").trim();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -38,7 +39,7 @@ public class FirstClassWatchesParser implements Parser {
         try {
             String upc = adInJsoupHtml.attr("data-id");
             return "FCW_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -50,7 +51,7 @@ public class FirstClassWatchesParser implements Parser {
             Double price = ScraperTools.parseDoubleFromString(priceString);
 
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -64,7 +65,7 @@ public class FirstClassWatchesParser implements Parser {
                 return "";
             }
             return imgUrl;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -74,7 +75,7 @@ public class FirstClassWatchesParser implements Parser {
         try {
             String url = adInJsoupHtml.attr("href");
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

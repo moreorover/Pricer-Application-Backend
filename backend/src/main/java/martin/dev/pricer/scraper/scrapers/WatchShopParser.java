@@ -17,8 +17,9 @@ public class WatchShopParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("div[class*=product-container]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -28,7 +29,7 @@ public class WatchShopParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("meta[itemprop=name]");
             String title = titleElement.attr("content").trim();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -39,7 +40,7 @@ public class WatchShopParser implements Parser {
             Element upcElement = adInJsoupHtml.selectFirst("meta[itemprop=sku]");
             String upc = upcElement.attr("content");
             return "WS_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -52,7 +53,7 @@ public class WatchShopParser implements Parser {
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -67,7 +68,7 @@ public class WatchShopParser implements Parser {
                 return "";
             }
             return imgSrc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -80,7 +81,7 @@ public class WatchShopParser implements Parser {
             String url = imgElement.attr("abs:href");
 
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

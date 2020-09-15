@@ -17,8 +17,9 @@ public class SimpkinsJewellersParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("div.product.clearfix.product-hover");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -28,7 +29,7 @@ public class SimpkinsJewellersParser implements Parser {
             Element imageDiv = adInJsoupHtml.selectFirst("div[class=image]");
             String title = imageDiv.selectFirst("img").attr("alt");
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -40,7 +41,7 @@ public class SimpkinsJewellersParser implements Parser {
             String upcString = hoverElement.attr("onclick");
             String upc = ScraperTools.parseIntegerFromString(upcString).toString();
             return "SJ_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -60,7 +61,7 @@ public class SimpkinsJewellersParser implements Parser {
             Double price = ScraperTools.parseDoubleFromString(priceText);
 
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -71,7 +72,7 @@ public class SimpkinsJewellersParser implements Parser {
             Element imageDiv = adInJsoupHtml.selectFirst("div[class=image]").selectFirst("img");
             String imgUrl = imageDiv.attr("src");
             return imgUrl;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -82,7 +83,7 @@ public class SimpkinsJewellersParser implements Parser {
             Element imageDiv = adInJsoupHtml.selectFirst("div[class=image]").selectFirst("a");
             String url = imageDiv.attr("href");
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

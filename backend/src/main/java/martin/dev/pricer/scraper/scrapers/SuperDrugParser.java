@@ -17,7 +17,7 @@ public class SuperDrugParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("div[class=item__content]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
         }
     }
@@ -28,7 +28,7 @@ public class SuperDrugParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
             String title = titleElement.text();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -40,7 +40,7 @@ public class SuperDrugParser implements Parser {
             String[] strings = url.split("/p/");
             String upc = strings[1];
             return "SD_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -52,7 +52,7 @@ public class SuperDrugParser implements Parser {
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -69,7 +69,7 @@ public class SuperDrugParser implements Parser {
                 String imgElementText = imgElement.attr("data-src");
                 return "https://www.superdrug.com" + imgElementText;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -80,7 +80,7 @@ public class SuperDrugParser implements Parser {
             Element aElement = adInJsoupHtml.selectFirst("a[class*=item__productName]");
             String url = aElement.attr("href");
             return "https://www.superdrug.com" + url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }

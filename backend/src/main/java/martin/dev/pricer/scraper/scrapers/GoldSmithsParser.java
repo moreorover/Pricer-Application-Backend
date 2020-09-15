@@ -17,8 +17,9 @@ public class GoldSmithsParser implements Parser {
             Elements parsedElements = scraper.getPageHtmlDocument().select("div[class=product]");
             Validate.notNull(parsedElements, "Elements should not be null");
             scraper.setAds(parsedElements);
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             log.error(e.getMessage());
+            scraper.setAds(new Elements());
         }
     }
 
@@ -28,7 +29,7 @@ public class GoldSmithsParser implements Parser {
             Element titleElement = adInJsoupHtml.selectFirst("div[class=product-title]");
             String title = titleElement.text();
             return title;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -39,7 +40,7 @@ public class GoldSmithsParser implements Parser {
             Element aElement = adInJsoupHtml.selectFirst("a");
             String upc = aElement.attr("id");
             return "GS_" + upc;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -51,7 +52,7 @@ public class GoldSmithsParser implements Parser {
             String priceString = priceElement.text();
             Double price = ScraperTools.parseDoubleFromString(priceString);
             return price;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return 0.0;
         }
     }
@@ -65,7 +66,7 @@ public class GoldSmithsParser implements Parser {
                 return imgSrc;
             }
             return "";
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
@@ -77,7 +78,7 @@ public class GoldSmithsParser implements Parser {
             String url = aElement.attr("abs:href");
 
             return url;
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             return "";
         }
     }
