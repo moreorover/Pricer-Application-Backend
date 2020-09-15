@@ -75,9 +75,8 @@ public class ArgosParser implements Parser {
     @Override
     public String parseAdUrl(Element adInJsoupHtml) {
         try {
-            Element urlElement = adInJsoupHtml.selectFirst("a");
-            String url = urlElement.attr("abs:href");
-            return url;
+            String upc = adInJsoupHtml.attr("data-product-id");
+            return "https://www.argos.co.uk/product/" + upc;
         } catch (NullPointerException e) {
             return "";
         }
