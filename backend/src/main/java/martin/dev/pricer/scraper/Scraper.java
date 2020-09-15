@@ -38,8 +38,9 @@ public abstract class Scraper {
     }
 
     public void fetchUrl() {
-        this.dataReader.fetchUrl(this);
-        this.fetchHtml();
+        if (this.dataReader.fetchUrl(this)) {
+            this.fetchHtml();
+        }
     }
 
     public void fetchHtml() {

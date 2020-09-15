@@ -18,7 +18,7 @@ public class RepoDataReader extends DataReader {
     }
 
     @Override
-    public void fetchUrl(Scraper scraper) {
+    public boolean fetchUrl(Scraper scraper) {
         Status statusReady = this.statusService.findStatusByStatus("Ready");
         Status statusProcessing = this.statusService.findStatusByStatus("Processing");
 
@@ -29,6 +29,8 @@ public class RepoDataReader extends DataReader {
             this.urlService.updateUrlLastCheckedAtAndStatus(url, url.getCheckedAt(), statusProcessing);
             scraper.setUrl(url);
             scraper.setCurrentPageUrl(url.getUrl());
+            return true;
         }
+        return false;
     }
 }
