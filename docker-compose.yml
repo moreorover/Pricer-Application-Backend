@@ -62,8 +62,8 @@ services:
     volumes:
       - /dev/shm:/dev/shm
     ports:
-    - "4444:4444"
-    - "5900:5900"
+      - "4444:4444"
+      - "5900:5900"
     networks:
       - backend
 
