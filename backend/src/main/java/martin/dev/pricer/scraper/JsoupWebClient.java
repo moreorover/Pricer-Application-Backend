@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
@@ -19,7 +20,9 @@ public class JsoupWebClient extends WebClient {
         try {
             Connection connection = Jsoup.connect(scraper.getCurrentPageUrl());
             if (connection.response().statusCode() < 400) {
-                scraper.setPageHtmlDocument(connection.get());
+                Document document = connection.get();
+                document.setBaseUri(scraper.getUrl().getStore().getUrl());
+                scraper.setPageHtmlDocument(document);
             } else {
                 throw new RuntimeException("Response code above: " + connection.response().statusCode());
             }

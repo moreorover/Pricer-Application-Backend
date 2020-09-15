@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -55,7 +56,9 @@ public class SeleniumWebClient extends WebClient {
         wait.until((ExpectedCondition<Boolean>) wd ->
                 ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
         String source = this.webDriver.getPageSource();
-        scraper.setPageHtmlDocument(Jsoup.parse(source));
+        Document document = Jsoup.parse(source);
+        document.setBaseUri(scraper.getUrl().getStore().getUrl());
+        scraper.setPageHtmlDocument(document);
     }
 
     @Override
