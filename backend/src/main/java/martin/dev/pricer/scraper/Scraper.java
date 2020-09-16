@@ -80,7 +80,7 @@ public class Scraper {
             this.nextPageUrl();
             this.fetchHtml();
         } else {
-            this.webClient.closeWebDriver();
+            this.webClient.close();
             this.dataWriter.write(this);
             this.dataSender.send();
         }

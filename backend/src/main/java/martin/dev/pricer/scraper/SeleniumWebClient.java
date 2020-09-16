@@ -1,7 +1,6 @@
 package martin.dev.pricer.scraper;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,10 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Slf4j
-public class SeleniumWebClient extends WebClient {
+public class SeleniumWebClient implements WebClient {
 
     private RemoteWebDriver webDriver;
     private boolean headless;
@@ -44,7 +42,6 @@ public class SeleniumWebClient extends WebClient {
         this.webDriver = new RemoteWebDriver(remoteAddress, chromeOptions);
     }
 
-    @Override
     public void fetchSourceHtml(Scraper scraper) {
         if (this.webDriver == null || this.webDriver.getSessionId() == null) {
             this.startWebDriver();
@@ -61,8 +58,7 @@ public class SeleniumWebClient extends WebClient {
         scraper.setPageHtmlDocument(document);
     }
 
-    @Override
-    public void closeWebDriver() {
+    public void close() {
         if (this.webDriver != null) {
             log.info("Closing a Web Driver session. " + this.webDriver.getSessionId().toString());
             this.webDriver.quit();

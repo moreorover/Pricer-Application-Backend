@@ -1,7 +1,6 @@
 package martin.dev.pricer.scraper;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -9,12 +8,10 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
-@EqualsAndHashCode(callSuper = true)
 @Slf4j
 @Data
-public class JsoupWebClient extends WebClient {
+public class JsoupWebClient implements WebClient {
 
-    @Override
     public void fetchSourceHtml(Scraper scraper) {
         log.info("Attempting to fetch Html for:\n" + scraper.getCurrentPageUrl());
         try {
@@ -33,7 +30,10 @@ public class JsoupWebClient extends WebClient {
             log.error("Catching Response Code exception.");
             log.error(e.getMessage());
         }
+    }
 
+    @Override
+    public void close() {
 
     }
 }

@@ -1,11 +1,7 @@
 package martin.dev.pricer.scraper;
 
-import lombok.Data;
+public interface WebClient {
 
-@Data
-public abstract class WebClient {
-
-    public abstract void fetchSourceHtml(Scraper scraper);
-    public void closeWebDriver() {
-    };
+    void fetchSourceHtml(Scraper scraper);
+    void close();
 }
