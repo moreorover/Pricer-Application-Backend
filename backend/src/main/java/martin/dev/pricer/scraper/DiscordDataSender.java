@@ -101,7 +101,7 @@ public class DiscordDataSender extends DataSender {
                         break;
                 }
 
-                if (deal.getItem().getName().toLowerCase().contains("seiko") && deal.getItem().getDelta() > 10) {
+                if (deal.getItem().getName().toLowerCase().contains("seiko") && deal.getItem().getDelta() <= -10) {
                     this.discordService.sendMessage(deal, seiko);
                 }
 
