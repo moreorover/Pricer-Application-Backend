@@ -7,10 +7,10 @@ import scrapeUrl from './scraper/CreationWatches'
 const main = async () => {
   await createConnection({
     type: 'mysql',
-    host: '51.178.240.249',
-    database: 'pricer-node',
-    username: 'root',
-    password: 'LyAGZympuR5yZfAX',
+    host: '',
+    database: '',
+    username: '',
+    password: '',
     logging: true,
     synchronize: true,
     entities: [path.join(__dirname, './entities/*')],
