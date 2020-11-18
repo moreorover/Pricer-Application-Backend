@@ -8,7 +8,11 @@ export default async function scrapeUrl(url: string) {
   await page.goto(url, { waitUntil: 'networkidle0' })
 
   let ads = await page.evaluate(() => {
-    let ads = document.querySelectorAll('div[class=product-box]')
+    // let ads = document.querySelectorAll('div[class=product-box]')
+
+    let ads = Array.from(
+      document.querySelectorAll('div[class=product-box]').values()
+    ).map(el => el.innerHTML)
 
     return ads
   })
