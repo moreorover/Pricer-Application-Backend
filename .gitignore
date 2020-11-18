@@ -36,3 +36,7 @@ build/
 
 /scrapoxy/
 /docker-compose.local.yml
+
+/node/-backend/node_modules/
+/node/-backend/dist/
+.env
