@@ -16,16 +16,15 @@ const main = async () => {
     entities: [path.join(__dirname, './entities/*')],
   })
 
-  let store: Store | undefined
+  const store = await Store.findOne(1)
 
-  store = await Store.findOne(1)
+  const urlToScrape = store!.urls[0].url
 
-  console.log(store)
-  console.log('url', store?.urls[0].url)
+  console.log(urlToScrape)
 
-  const urlToScrape = store?.urls[0].url
-
-  scrapeUrl(urlToScrape!)
+  store!.urls
+    .filter(url => url.statusId === 1)
+    .forEach(url => scrapeUrl(url.url))
 
   const app = express()
 
