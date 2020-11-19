@@ -5,9 +5,9 @@ export class PuppeteerScraper implements Scraper {
   browser: pupeteer.Browser
   page: pupeteer.Page
 
-  async init() {
+  async init(headless: boolean) {
     this.browser = await pupeteer.launch({
-      headless: true,
+      headless: headless,
     })
     this.page = await this.browser.newPage()
     this.page.setJavaScriptEnabled(true)
