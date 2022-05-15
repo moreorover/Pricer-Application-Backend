@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="107b78f3-cfdc-4320-8910-da3c32ff2bb0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/PricerApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/BaseEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Category.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Deal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Item.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Job.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/ParserError.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Price.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Status.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Store.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/Url.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/child/CategoryDtoChild.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/child/DealDtoChild.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/child/ItemDtoChild.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/child/PriceDtoChild.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/child/StoreDtoChild.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/child/UrlDtoChild.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/parent/CategoryDtoParent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/parent/DealDtoParent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/parent/ItemDtoParent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/parent/PriceDtoParent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/parent/StoreDtoParent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/model/dto/parent/UrlDtoParent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/repository/CategoryRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/repository/DealRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/repository/ItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/repository/ParserErrorRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/repository/StatusRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/repository/StoreRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/repository/UrlRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/service/DealService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/service/ItemService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/service/StatusService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/data/service/UrlService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/discord/DiscordService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/profile/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/profile/LocalRdpProdProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/DataProcessor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/DataReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/DataSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/DataWriter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/DiscordDataSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/JsoupWebClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/ParsedItemDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/Parser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/RepoDataReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/RepoDataWriter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/Scraper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/ScraperTools.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/SeleniumWebClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/SimpleDataProcessor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/WebClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/ArgosParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/CreationWatchesParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/DebenhamsParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/ErnestJonesParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/FirstClassWatchesParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/GoldSmithsParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/HSamuelParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/SimpkinsJewellersParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/SuperDrugParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/TicWatchesParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/WatchShopParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/scraper/parser/WatchoParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/martin/dev/pricer/web/controller/DealController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application-test.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/db/migration/V1__init.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/db/migration/V2__parserError.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/db/migration/V3__parserError_foundTime.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/db/test/V1__init.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/martin/dev/pricer/PricerApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/martin/dev/pricer/data/repository/StoreRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/martin/dev/pricer/data/repository/UrlRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/martin/dev/pricer/data/service/ItemServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.env.local" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.env.production" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/DealsApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HelloWorld.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LineChart.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/navigation/Drawer.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/navigation/Footer.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/plugins/vuetify.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/router/dealRoutes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/router/errorRoutes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/router/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/About.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/Deal.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/Home.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/NotFound.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vue.config.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="refresh" />
+                    <option name="lastUsedInstant" value="1652636458" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1652636457" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="29CYjsNLCD0iLQYR3JHeKMjmrft" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RunManager" selected="JUnit.UrlRepositoryTest.addUrlsNull">
+    <configuration name="UrlRepositoryTest.addUrlsNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="pricer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="martin.dev.pricer.data.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="martin.dev.pricer.data.repository" />
+      <option name="MAIN_CLASS_NAME" value="martin.dev.pricer.data.repository.UrlRepositoryTest" />
+      <option name="METHOD_NAME" value="addUrlsNull" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PricerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="pricer" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="martin.dev.pricer.PricerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UrlRepositoryTest.addUrlsNull" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpringBeansView">
+    <option name="beanDetailsProportion" value="0.3" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="107b78f3-cfdc-4320-8910-da3c32ff2bb0" name="Changes" comment="" />
+      <created>1652618674746</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652618674746</updated>
+      <workItem from="1652618676590" duration="3702000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
